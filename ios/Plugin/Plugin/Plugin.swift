@@ -23,9 +23,10 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
         }
         data.value = value
         let res: Bool = mDb.addData(data:data)
+
         call.success([
             "result": res
-        ])
+            ])
     }
     
     @objc func getData(_ call: CAPPluginCall) {
@@ -35,12 +36,9 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
         }
         let data: Data = mDb.getDataByName(name:name)!
         if data.id != nil {
-            let result = [
-                "value": data.value!
-            ]
             call.success([
-                "result": result
-                ])
+                "value": data.value!
+            ])
 
         } else {
             call.error("No value found for name \(name)")

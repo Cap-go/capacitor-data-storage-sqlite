@@ -10,4 +10,5 @@
     s.source_files = 'ios/Plugin/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}'
     s.ios.deployment_target  = '10.0'
     s.dependency 'Capacitor'
+    s.dependency 'SQLite.swift'
   end
