@@ -1,0 +1,32 @@
+PODS:
+  - Capacitor (0.0.113):
+    - CapacitorCordova (= 0.0.113)
+    - GCDWebServer (~> 3.0)
+  - CapacitorCordova (0.0.113)
+  - GCDWebServer (3.4.2):
+    - GCDWebServer/Core (= 3.4.2)
+  - GCDWebServer/Core (3.4.2)
+  - SQLite.swift (0.11.5):
+    - SQLite.swift/standard (= 0.11.5)
+  - SQLite.swift/standard (0.11.5)
+
+DEPENDENCIES:
+  - Capacitor
+  - SQLite.swift (~> 0.11.5)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Capacitor
+    - CapacitorCordova
+    - GCDWebServer
+    - SQLite.swift
+
+SPEC CHECKSUMS:
+  Capacitor: b37060b0b2685257bedbc69e49a54a74ef30fb9a
+  CapacitorCordova: a923a32bc7ad5f1f3d69664ca86ff69580343ed3
+  GCDWebServer: 8d67ee9f634b4bb91eb4b8aee440318a5fc6debd
+  SQLite.swift: 6e5356850bb1791459f8c16d6ee9195b28714a2e
+
+PODFILE CHECKSUM: ce673dbc2f286189495007face77891ddb913ab4
+
+COCOAPODS: 1.5.0
