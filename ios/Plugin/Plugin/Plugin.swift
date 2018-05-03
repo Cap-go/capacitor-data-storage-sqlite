@@ -10,57 +10,95 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
     
     let mDb:StorageDatabaseHelper = StorageDatabaseHelper()
     
-    @objc func saveData(_ call: CAPPluginCall) {
+    @objc func set(_ call: CAPPluginCall) {
         var data: Data = Data()
-        guard let name = call.options["name"] as? String else {
-            call.error("Must provide a name")
+        guard let key = call.options["key"] as? String else {
+            call.reject("Must provide a key")
             return
         }
-        data.name = name
+        data.name = key
         guard let value = call.options["value"] as? String else {
-            call.error("Must provide a value")
+            call.reject("Must provide a value")
             return
         }
         data.value = value
-        let res: Bool = mDb.addData(data:data)
+        let res: Bool = mDb.set(data:data)
 
-        call.success([
+        call.resolve([
             "result": res
-            ])
+        ])
     }
     
-    @objc func getData(_ call: CAPPluginCall) {
-        guard let name = call.options["name"] as? String else {
-            call.error("Must provide a name")
+    @objc func get(_ call: CAPPluginCall) {
+        guard let key = call.options["key"] as? String else {
+            call.reject("Must provide a key")
             return
         }
-        let data: Data = mDb.getDataByName(name:name)!
+        let data: Data = mDb.get(name:key)!
         if data.id != nil {
-            call.success([
+            call.resolve([
                 "value": data.value!
             ])
 
         } else {
-            call.error("No value found for name \(name)")
+            call.reject("No value found for key \(key)")
             return
         }
     }
     
-    @objc func removeData(_ call: CAPPluginCall) {
-        guard let name = call.options["name"] as? String else {
-            call.error("Must provide a name")
+    @objc func remove(_ call: CAPPluginCall) {
+        guard let key = call.options["key"] as? String else {
+            call.reject("Must provide a key")
             return
         }
-        let result = mDb.deleteDataByName(name:name)
-        call.success([
+        let result = mDb.remove(name:key)
+        call.resolve([
             "result": result
         ])
     }
 
-    @objc func removeAllData(_ call: CAPPluginCall) {
-        let result = mDb.deleteAllData()
-        call.success([
+    @objc func clear(_ call: CAPPluginCall) {
+        let result = mDb.clear()
+        call.resolve([
             "result": result
         ])
     }
+    
+    @objc func iskey(_ call: CAPPluginCall) {
+        guard let key = call.options["key"] as? String else {
+            call.reject("Must provide a key")
+            return
+        }
+        let result = mDb.iskey(name:key)
+        call.resolve([
+            "result": result
+        ])
+    }
+    
+    @objc func keys(_ call: CAPPluginCall) {
+        let result = mDb.keys()
+        call.resolve([
+            "keys": result!
+        ])
+    }
+    
+    @objc func values(_ call: CAPPluginCall) {
+        let result = mDb.values()
+        call.resolve([
+            "values": result!
+        ])
+    }
+    
+    @objc func keysvalues(_ call: CAPPluginCall) {
+        let results = mDb.keysvalues()
+        var dic: Array<Any> = []
+        for result in results! {
+            let res = ["key" : result.name, "value" : result.value]
+            dic.append(res)
+        }
+        call.resolve([
+            "keysvalues": dic
+        ])
+    }
+
 }

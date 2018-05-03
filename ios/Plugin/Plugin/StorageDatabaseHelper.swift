@@ -22,7 +22,6 @@ class StorageDatabaseHelper {
     let path: String = NSSearchPathForDirectoriesInDomains(
         .documentDirectory, .userDomainMask, true
         ).first!
-    
     init() {
         print("path: \(path)")
         // connect to the database (create if doesn't exist)
@@ -49,22 +48,19 @@ class StorageDatabaseHelper {
             print("init: Error Table creation failed: \(error)")
         }
     }
-    
     func getWritableDatabase() -> Connection? {
         guard let db = try? Connection("\(path)/\(DATABASE_NAME)") else {return nil}
         return db
     }
-    
     func getReadableDatabase() -> Connection? {
         guard let db = try? Connection("\(path)/\(DATABASE_NAME)", readonly: true) else {return nil}
         return db
     }
-    
-    func addData(data:Data) -> Bool {
+    func set(data:Data) -> Bool {
         var ret: Bool = false
         guard let db: Connection = try? getWritableDatabase()! else {return false}
         // check if the data already exists
-        if (try! getDataByName(name: data.name!))!.id != nil {
+        if iskey(name: data.name!) {
             ret = updateData(data: data)
         } else {
             do {
@@ -74,12 +70,11 @@ class StorageDatabaseHelper {
                 ))
                 ret = true
             } catch let error {
-                print("addData: Error Data insertion failed: \(error)")
+                print("set: Error Data insertion failed: \(error)")
             }
         }
         return ret
     }
-    
     func updateData(data:Data) -> Bool {
         var ret: Bool = false
         guard let db: Connection = try? getWritableDatabase()! else {return false}
@@ -95,8 +90,7 @@ class StorageDatabaseHelper {
         }
         return ret
     }
-    
-    func deleteDataByName(name:String) -> Bool {
+    func remove(name:String) -> Bool {
         var ret: Bool = false
         guard let db: Connection = try? getWritableDatabase()! else {return false}
         let mFilter = TABLE_STORAGE.filter(COL_NAME == name)
@@ -112,7 +106,7 @@ class StorageDatabaseHelper {
         return ret
     }
     
-    func deleteAllData() -> Bool {
+    func clear() -> Bool {
         var ret: Bool = false
         guard let db: Connection = try? getWritableDatabase()! else {return false}
         do {
@@ -139,8 +133,7 @@ class StorageDatabaseHelper {
         }
         return ret
     }
-    
-    func getDataByName(name:String) -> Data? {
+    func get(name:String) -> Data? {
         var retData: Data = Data()
         guard let db: Connection = try? getReadableDatabase()! else {return nil}
         let query = TABLE_STORAGE.filter(COL_NAME == name).limit(1)
@@ -153,7 +146,7 @@ class StorageDatabaseHelper {
         return retData
     }
     
-    func getAllData() -> Array<Data>? {
+    func keysvalues() -> Array<Data>? {
         var retArray: Array<Data> = Array<Data>()
         guard let db: Connection = try? getReadableDatabase()! else {return nil}
         guard let retData: AnySequence<Row> = try? db.prepare(TABLE_STORAGE) else { return nil}
@@ -166,5 +159,35 @@ class StorageDatabaseHelper {
         }
         return retArray
     }
+    
+    func iskey(name:String) -> Bool {
+        var ret: Bool = false
+        // check if the key already exists
+        if (try! get(name: name))!.id != nil {
+            ret = true
+        }
+        return ret
+    }
+    
+    func keys() -> Array<String>? {
+        var retArray: Array<String> = Array<String>()
+        guard let db: Connection = try? getReadableDatabase()! else {return nil}
+        guard let retData: AnySequence<Row> = try? db.prepare(TABLE_STORAGE) else { return nil}
+        for rData in retData {
+            retArray.append(rData[COL_NAME])
+        }
+        return retArray
+    }
+    
+    func values() -> Array<String>? {
+        var retArray: Array<String> = Array<String>()
+        guard let db: Connection = try? getReadableDatabase()! else {return nil}
+        guard let retData: AnySequence<Row> = try? db.prepare(TABLE_STORAGE) else { return nil}
+        for rData in retData {
+            retArray.append(rData[COL_VALUE])
+        }
+        return retArray
+    }
+    
 }
 

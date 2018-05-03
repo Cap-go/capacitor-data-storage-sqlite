@@ -4,25 +4,39 @@ declare global  {
     }
 }
 export interface CapacitorDataStorageSqlite {
-    saveData(options: {
-        name: string;
+    set(options: {
+        key: string;
         value: string;
     }): Promise<{
         result: boolean;
     }>;
-    getData(options: {
-        name: string;
+    get(options: {
+        key: string;
     }): Promise<{
         result: {
             value: string;
         };
     }>;
-    removeData(options: {
-        name: string;
+    remove(options: {
+        key: string;
     }): Promise<{
         result: boolean;
     }>;
-    removeAllData(): Promise<{
+    clear(): Promise<{
         result: boolean;
+    }>;
+    iskey(options: {
+        key: string;
+    }): Promise<{
+        result: boolean;
+    }>;
+    keys(): Promise<{
+        keys: Array<string>;
+    }>;
+    values(): Promise<{
+        values: Array<string>;
+    }>;
+    keysvalues(): Promise<{
+        keysvalues: Array<any>;
     }>;
 }

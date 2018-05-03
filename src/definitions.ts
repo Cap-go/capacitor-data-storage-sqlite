@@ -5,8 +5,12 @@ declare global {
 }
 
 export interface CapacitorDataStorageSqlite {
-  saveData(options: { name: string, value: string }): Promise<{result: boolean}>;
-  getData(options: { name: string}): Promise<{result: { value: string }}>;
-  removeData(options: {name:string}): Promise<{result: boolean}>;
-  removeAllData(): Promise<{result: boolean}>;
+  set(options: { key: string, value: string }): Promise<{result: boolean}>;
+  get(options: { key: string}): Promise<{result: { value: string }}>;
+  remove(options: {key:string}): Promise<{result: boolean}>;
+  clear(): Promise<{result: boolean}>;
+  iskey(options: {key:string}): Promise<{result: boolean}>;
+  keys(): Promise<{keys: Array<string>}>;
+  values(): Promise<{values: Array<string>}>;
+  keysvalues(): Promise<{keysvalues: Array<any>}>;
 }
