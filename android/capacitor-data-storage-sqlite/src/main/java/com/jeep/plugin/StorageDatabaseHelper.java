@@ -132,18 +132,18 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // delete a data into the database
-    public boolean remove(Data data) {
+    public boolean remove(String name) {
         boolean ret = false;
         SQLiteDatabase db = getWritableDatabase();
         // wrap our delete in a transaction.
         db.beginTransaction();
         try {
-            db.delete(TABLE_STORAGE, COL_NAME + "= '" + data.name +"'",
+            db.delete(TABLE_STORAGE, COL_NAME + "= '" + name +"'",
                     null);
             db.setTransactionSuccessful();
             ret = true;
         } catch (Exception e) {
-            Log.d(TAG, "remove: Error while trying to delete " + data.name);
+            Log.d(TAG, "remove: Error while trying to delete " + name);
         } finally {
             db.endTransaction();
             return ret;
