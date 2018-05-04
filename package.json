@@ -21,7 +21,8 @@
   "files": [
     "dist/",
     "ios/",
-    "android/"
+    "android/",
+    "CapacitorDataStorageSqlite.podspec"
   ],
   "keywords": [
     "capacitor",

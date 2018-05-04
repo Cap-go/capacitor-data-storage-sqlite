@@ -6,8 +6,6 @@ As capacitor provides fisrt-class Progressive Web App support so you can use thi
 ```bash
 npm install --save capacitor-data-storage-sqlite@latest
 ```
-*** warning *** 
-As there is currently a misfunctionning of the Capacitor npm publish process for the IOS plugin, just after the installation you should open your favorite code editor and move the file ./node_modules/capacitor-data-storage-sqlite/ios/Plugin/CapacitorDataStorageSqlite.podspec to ./node_modules/capacitor-data-storage-sqlite/CapacitorDataStorageSqlite.podspec
 
 Ionic App that shows an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionic-capacitor-data-storage-sqlite)
 
