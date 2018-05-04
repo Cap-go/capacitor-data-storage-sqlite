@@ -41,8 +41,9 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             ])
 
         } else {
-            call.reject("No value found for key \(key)")
-            return
+            call.resolve([
+                "value": data.id!
+            ])
         }
     }
     
