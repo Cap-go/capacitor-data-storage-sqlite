@@ -12,12 +12,8 @@ As there is currently a misfunctionning of the Capacitor npm publish process for
 Ionic App that shows an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionic-capacitor-data-storage-sqlite)
 
 ## Limitations
-The first release of the plugin includes the Native IOS code (Objective-C/Swift) using Capacitor v1.0.0-alpha.36
+The second release of the plugin includes the Native IOS code (Objective-C/Swift)  and the Native Android code (Java) using Capacitor v1.0.0-alpha.37
 
 ## Roadmap
-    - Native Android code
     - Web with IndexDB
-
-As i am quite new in Capacitor and Swift do not hesitate to comment and challenge the code
-
 
