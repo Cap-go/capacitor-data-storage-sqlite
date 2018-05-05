@@ -3,7 +3,7 @@ package com.jeep.plugin;
 import android.app.Activity;
 import android.content.Context;
 
-
+import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
@@ -11,6 +11,9 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.jeep.plugin.StorageDatabaseHelper;
 import com.jeep.plugin.Data;
+
+import java.util.List;
+import org.json.JSONException;
 
 @NativePlugin()
 public class CapacitorDataStorageSqlite extends Plugin {
@@ -91,4 +94,56 @@ public class CapacitorDataStorageSqlite extends Plugin {
         call.resolve(ret);
     }
 
+    @PluginMethod()
+    public void keys(PluginCall call) {
+        List<String> resKeys = mDb.keys();
+        String[] keyArray = resKeys.toArray(new String[resKeys.size()]);
+
+        JSObject ret = new JSObject();
+        try {
+            ret.put("keys", new JSArray(keyArray));
+        } catch (JSONException ex) {
+        call.reject("Unable to create key array.");
+        return;
+        }
+        call.resolve(ret);
+    }
+
+    @PluginMethod()
+    public void values(PluginCall call) {
+        List<String> resValues = mDb.values();
+        String[] valueArray = resValues.toArray(new String[resValues.size()]);
+
+        JSObject ret = new JSObject();
+        try {
+            ret.put("values", new JSArray(valueArray));
+        } catch (JSONException ex) {
+        call.reject("Unable to create value array.");
+        return;
+        }
+        call.resolve(ret);
+    }
+    
+    @PluginMethod()
+    public void keysvalues(PluginCall call) {
+        List<Data> resKeysValues = mDb.keysvalues();
+        JSObject[] jsObjArray = new JSObject[resKeysValues.size()] ;
+
+        for (int i = 0; i < resKeysValues.size(); i++) {
+            JSObject res = new JSObject();
+            res.put("key",resKeysValues.get(i).name);
+            res.put("value",resKeysValues.get(i).value);
+            jsObjArray[i] = res;
+        }
+
+        JSObject ret = new JSObject();
+        try {
+            ret.put("keysvalues", new JSArray(jsObjArray));
+        } catch (JSONException ex) {
+            call.reject("Unable to create key/value array.");
+            return;
+        }
+        call.resolve(ret);
+    }
+  
 }

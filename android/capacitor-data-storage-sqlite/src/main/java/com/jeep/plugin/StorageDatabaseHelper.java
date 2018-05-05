@@ -278,7 +278,6 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-
     // get All Data
     public List<Data> keysvalues() {
         List<Data> data = new ArrayList<>();
