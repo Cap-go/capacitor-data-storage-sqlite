@@ -68,7 +68,7 @@ export class StorageDatabaseHelper {
 
     values(): Promise<Array<string>> {
         let values: Array<string> = [];
-        return this._db.iterate(((value:string, key:string, iterationNumber:number) => {
+        return this._db.iterate(((value:string) => {
           values.push(value);
         })).then(() => {
             return Promise.resolve(values)
@@ -81,7 +81,7 @@ export class StorageDatabaseHelper {
 
     keysvalues(): Promise<Array<Data>> {
         let keysvalues: Array<Data> = [];
-        return this._db.iterate(((value:string, key:string, iterationNumber:number) => {
+        return this._db.iterate(((value:string, key:string) => {
           let data: Data = new Data();
           data.name = key;
           data.value = value; 
