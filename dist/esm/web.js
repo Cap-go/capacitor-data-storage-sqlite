@@ -98,6 +98,6 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin {
         });
     }
 }
-const CapacitorDataStorageIdb = new CapacitorDataStorageIdbWeb();
-export { CapacitorDataStorageIdb };
+const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
+export { CapacitorDataStorageSqlite };
 //# sourceMappingURL=web.js.map

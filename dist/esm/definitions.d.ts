@@ -1,9 +1,9 @@
 declare global  {
     interface PluginRegistry {
-        CapacitorDataStorageSqlite?: CapacitorDataStorageSqlite;
+        CapacitorDataStorageSqlite?: CapacitorDataStorageSqlitePlugin;
     }
 }
-export interface CapacitorDataStorageSqlite {
+export interface CapacitorDataStorageSqlitePlugin {
     set(options: {
         key: string;
         value: string;
@@ -13,9 +13,7 @@ export interface CapacitorDataStorageSqlite {
     get(options: {
         key: string;
     }): Promise<{
-        result: {
-            value: string;
-        };
+        value: string;
     }>;
     remove(options: {
         key: string;

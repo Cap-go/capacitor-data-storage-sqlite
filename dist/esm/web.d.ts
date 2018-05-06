@@ -1,6 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
-export declare class CapacitorDataStorageIdbWeb extends WebPlugin {
+import { CapacitorDataStorageSqlitePlugin } from '.';
+export declare class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     mDb: StorageDatabaseHelper;
     constructor();
     set(options: {
@@ -37,5 +38,5 @@ export declare class CapacitorDataStorageIdbWeb extends WebPlugin {
         keysvalues: Array<any>;
     }>;
 }
-declare const CapacitorDataStorageIdb: CapacitorDataStorageIdbWeb;
-export { CapacitorDataStorageIdb };
+declare const CapacitorDataStorageSqlite: CapacitorDataStorageIdbWeb;
+export { CapacitorDataStorageSqlite };
