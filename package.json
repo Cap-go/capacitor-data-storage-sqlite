@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "0.0.5-2",
+  "version": "0.0.5-3",
   "description": "Capacitor data storage on SQLite plugin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

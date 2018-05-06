@@ -12,7 +12,7 @@ import { Data } from './web-utils/data';
 export class CapacitorDataStorageIdbWeb extends WebPlugin {
     constructor() {
         super({
-            name: 'CapacitorDataStorageIdb',
+            name: 'CapacitorDataStorageSqlite',
             platforms: ['web']
         });
         this.mDb = new StorageDatabaseHelper();
@@ -98,6 +98,6 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin {
         });
     }
 }
-const MyPlugin = new CapacitorDataStorageIdbWeb();
-export { MyPlugin };
+const CapacitorDataStorageIdb = new CapacitorDataStorageIdbWeb();
+export { CapacitorDataStorageIdb };
 //# sourceMappingURL=web.js.map

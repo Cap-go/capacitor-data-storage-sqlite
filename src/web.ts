@@ -3,11 +3,12 @@ import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
 
 export class CapacitorDataStorageIdbWeb extends WebPlugin {
+  // as we are on the web the store will be on indexDB and not on SQLite
   mDb:StorageDatabaseHelper;
   
   constructor() {
     super({
-      name: 'CapacitorDataStorageIdb',
+      name: 'CapacitorDataStorageSqlite',
       platforms: ['web']
     });
     this.mDb = new StorageDatabaseHelper();
@@ -86,6 +87,6 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin {
   }
 }
 
-const MyPlugin = new CapacitorDataStorageIdbWeb();
+const CapacitorDataStorageIdb = new CapacitorDataStorageIdbWeb();
 
-export { MyPlugin };
+export { CapacitorDataStorageIdb };

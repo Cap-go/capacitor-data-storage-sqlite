@@ -37,5 +37,5 @@ export declare class CapacitorDataStorageIdbWeb extends WebPlugin {
         keysvalues: Array<any>;
     }>;
 }
-declare const MyPlugin: CapacitorDataStorageIdbWeb;
-export { MyPlugin };
+declare const CapacitorDataStorageIdb: CapacitorDataStorageIdbWeb;
+export { CapacitorDataStorageIdb };
