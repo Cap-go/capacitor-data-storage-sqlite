@@ -1,4 +1,4 @@
-import { WebPlugin } from '@capacitor/core';
+import { WebPlugin, registerWebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
 import { CapacitorDataStorageSqlitePlugin } from '.';
@@ -89,5 +89,5 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
 }
 
 const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
-
+registerWebPlugin(CapacitorDataStorageSqlite);
 export { CapacitorDataStorageSqlite };
