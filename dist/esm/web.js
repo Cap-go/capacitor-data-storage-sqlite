@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { WebPlugin } from '@capacitor/core';
+import { WebPlugin, registerWebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
 export class CapacitorDataStorageIdbWeb extends WebPlugin {
@@ -99,5 +99,6 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin {
     }
 }
 const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
+registerWebPlugin(CapacitorDataStorageSqlite);
 export { CapacitorDataStorageSqlite };
 //# sourceMappingURL=web.js.map
