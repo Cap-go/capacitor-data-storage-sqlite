@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "0.0.5-6",
+  "version": "0.0.5-7",
   "description": "Capacitor data storage on SQLite plugin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,7 +22,8 @@
   "files": [
     "dist/",
     "ios/",
-    "android/"
+    "android/",
+    "CapacitorDataStorageSqlite.podspec"
   ],
   "keywords": [
     "capacitor",
