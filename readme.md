@@ -4,7 +4,9 @@ As capacitor provides fisrt-class Progressive Web App support so you can use thi
 
 Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of type string only, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
 
-WARNING TO FURTHER NOTICE  KEEP RUNNING  FOR ANDROID AND IOS RELEASE BELOW 0.0.5-11  ALL THE ABOVE GOT AN ISSUE IN TRYING TO IMPLEMENT THE WEB PART OF THE PLUGIN
+WARNING   ANDROID AND IOS PLUGIN ARE BACK ON TRACK VERSION 0.0.6 
+          WEB PLUGIN HAS BEEN REMOVE FOR THE TIME BEEING 
+          NEVER USE VERSION 0.0.5.11 TO 0.0.5.17
 
 ## Methods available
 
