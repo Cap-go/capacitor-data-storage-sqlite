@@ -1,4 +1,4 @@
-import { Plugins, WebPlugin, WebPlugins, mergeWebPlugin } from '@capacitor/core';
+import { Plugins, WebPlugin, WebPlugins, mergeWebPlugins } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
 import { CapacitorDataStorageSqlitePlugin } from './definitions';
@@ -91,5 +91,5 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
 }
 
 const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
-mergeWebPlugin(Plugins,CapacitorDataStorageSqlite);
 export { CapacitorDataStorageSqlite };
+mergeWebPlugins(Plugins);

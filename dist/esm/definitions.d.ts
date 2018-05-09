@@ -38,3 +38,4 @@ export interface CapacitorDataStorageSqlitePlugin {
         keysvalues: Array<any>;
     }>;
 }
+export {};
