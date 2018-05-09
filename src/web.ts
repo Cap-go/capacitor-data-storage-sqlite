@@ -1,7 +1,7 @@
-import { Plugins, WebPlugin, WebPlugins, mergeWebPlugin } from '@capacitor/core';
+import { WebPlugin, WebPlugins, /*Plugins, mergeWebPlugin */} from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
-import { CapacitorDataStorageSqlitePlugin } from '.';
+import { CapacitorDataStorageSqlitePlugin } from './definitions';
 
 export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
   // as we are on the web the store will be on indexDB and not on SQLite
@@ -9,11 +9,11 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
   
   constructor() {
     super({
-      name: 'CapacitorDataStorageSqlite',
+      name: 'CapacitorDataStorageSqliteWeb',
       platforms: ['web']
     });
     let p: WebPlugin = WebPlugins.getPlugin('CapacitorDataStorageSqlite');
-    console.log('WebPlugin ',p)
+    console.log('WebPlugin ',p);
     this.mDb = new StorageDatabaseHelper();
   }
 
@@ -40,7 +40,9 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
     if (key == null) {
       return Promise.reject("Must provide key");
     }
+    console.log('key ',key)
     let data: Data = await this.mDb.get(key);
+    console.log('data ',data)
     ret = data != null ? data.value : null;
     return Promise.resolve({value: ret});
   }
@@ -90,6 +92,6 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
   }
 }
 
-const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
-mergeWebPlugin(Plugins,CapacitorDataStorageSqlite);
-export { CapacitorDataStorageSqlite };
+const CapacitorDataStorageSqliteWeb = new CapacitorDataStorageIdbWeb();
+//mergeWebPlugin(Plugins,CapacitorDataStorageSqlite);
+export { CapacitorDataStorageSqliteWeb };

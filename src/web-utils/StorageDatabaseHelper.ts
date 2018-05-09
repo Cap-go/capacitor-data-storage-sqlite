@@ -1,5 +1,5 @@
 import LocalForage from 'localforage';
-import { Data } from "../web-utils/data";
+import { Data } from "./data";
 
 const DATABASE: string = "storageIDB";
 const STORAGESTORE: string = "storage_store";
@@ -8,12 +8,12 @@ export class StorageDatabaseHelper {
 
     constructor() {
         let config: any= {
-            name: DATABASE,
-            storeName: STORAGESTORE,
-            driver: LocalForage.INDEXEDDB,
-            version: 1
-          }
-          this._db = LocalForage.createInstance(config);       
+          name: DATABASE,
+          storeName: STORAGESTORE,
+          driver: LocalForage.INDEXEDDB,
+          version: 1
+        };
+        this._db = LocalForage.createInstance(config);       
     }
 
     set(data:Data): Promise<boolean> {

@@ -1,12 +1,12 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "0.0.5-11",
+  "version": "0.0.5-17",
   "description": "Capacitor data storage on SQLite plugin",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc",
-    "clean": "rm -rf ./dist",
+    "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build"
   },
@@ -17,6 +17,7 @@
     "localforage": "^1.7.1"
   },
   "devDependencies": {
+    "rimraf": "^2.6.2",
     "typescript": "^2.6.2"
   },
   "files": [
