@@ -1,4 +1,4 @@
-import { Data } from "../web-utils/data";
+import { Data } from "./data";
 export declare class StorageDatabaseHelper {
     private _db;
     constructor();

@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
-import { CapacitorDataStorageSqlitePlugin } from '.';
+import { CapacitorDataStorageSqlitePlugin } from './definitions';
 export declare class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     mDb: StorageDatabaseHelper;
     constructor();

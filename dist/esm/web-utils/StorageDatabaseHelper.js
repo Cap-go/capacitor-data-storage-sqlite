@@ -1,5 +1,5 @@
 import LocalForage from 'localforage';
-import { Data } from "../web-utils/data";
+import { Data } from "./data";
 const DATABASE = "storageIDB";
 const STORAGESTORE = "storage_store";
 export class StorageDatabaseHelper {
