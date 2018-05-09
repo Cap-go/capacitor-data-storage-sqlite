@@ -6,11 +6,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Plugins, WebPlugin, WebPlugins, mergeWebPlugin } from '@capacitor/core';
+import { Plugins, WebPlugin, WebPlugins, mergeWebPlugins } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
 export class CapacitorDataStorageIdbWeb extends WebPlugin {
     constructor() {
+        console.log('TEST WEB LOAD');
         super({
             name: 'CapacitorDataStorageSqlite',
             platforms: ['web']
@@ -101,6 +102,6 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin {
     }
 }
 const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
-mergeWebPlugin(Plugins, CapacitorDataStorageSqlite);
 export { CapacitorDataStorageSqlite };
+mergeWebPlugins(Plugins);
 //# sourceMappingURL=web.js.map
