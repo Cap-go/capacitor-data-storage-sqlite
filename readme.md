@@ -1,12 +1,10 @@
 # Capacitor Data Storage SQLite Plugin
-Capacitor Data Storage SQlite  Plugin is a custom Native Capacitor plugin to store permanently data to SQLite on IOS and Android platforms and to IndexDB for the Web platform.
+Capacitor Data Storage SQlite  Plugin is a custom Native Capacitor plugin to store permanently data to SQLite on IOS and Android platforms and to IndexDB for the Web and Electron platforms.
 As capacitor provides fisrt-class Progressive Web App support so you can use this plugin in your app which will later be deployed to the app stores and the mobile web.
 
 Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of type string only, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
 
-WARNING   ANDROID AND IOS PLUGIN ARE BACK ON TRACK VERSION 0.0.6 
-          WEB PLUGIN HAS BEEN REMOVE FOR THE TIME BEEING 
-          NEVER USE VERSION 0.0.5.11 TO 0.0.5.17
+WARNING  NEVER USE VERSION 0.0.5.11 TO 0.0.5.17
 
 ## Methods available
 
@@ -26,9 +24,10 @@ npm install --save capacitor-data-storage-sqlite@latest
 
 Ionic App that shows an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionic-capacitor-data-storage-sqlite)
 
-## Limitations
-The second release of the plugin includes the Native IOS code (Objective-C/Swift)  and the Native Android code (Java) using Capacitor v1.0.0-alpha.37
+## Remarks
+The third release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.0.0-alpha.37
 
-## Roadmap
-    - Web with IndexDB
+## Dependencies
+The IOS code is based on SQLite.swift as wrapper for SQLite, the Web code has been implemented with localforage  as wrapper for indexDB.
+
 
