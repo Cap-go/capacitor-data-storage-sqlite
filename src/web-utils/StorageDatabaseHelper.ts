@@ -28,7 +28,10 @@ export class StorageDatabaseHelper {
 
     get(name: string): Promise<Data> {
         return this._db.getItem(name).then((value:string) => {
-          return Promise.resolve(value);
+          let data: Data = new Data();
+          data.name = name;
+          data.value = value;
+          return Promise.resolve(data);
         })
         .catch((error: string) => {
           console.log('get: Error Data retrieve failed: ' + error);
@@ -96,8 +99,8 @@ export class StorageDatabaseHelper {
     } 
 
     iskey(name:string):Promise<boolean> {
-        return this.get(name).then((value)=> {
-          if(value != null) {
+        return this.get(name).then((data)=> {
+          if(data.value != null) {
             return Promise.resolve(true);
           } else {
             return Promise.resolve(false); 

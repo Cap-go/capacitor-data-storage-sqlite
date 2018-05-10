@@ -1,4 +1,4 @@
-import { WebPlugin, WebPlugins, /*Plugins, mergeWebPlugin */} from '@capacitor/core';
+import { WebPlugin} from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
 import { CapacitorDataStorageSqlitePlugin } from './definitions';
@@ -9,11 +9,9 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
   
   constructor() {
     super({
-      name: 'CapacitorDataStorageSqliteWeb',
+      name: 'CapacitorDataStorageSqlite',
       platforms: ['web']
     });
-    let p: WebPlugin = WebPlugins.getPlugin('CapacitorDataStorageSqlite');
-    console.log('WebPlugin ',p);
     this.mDb = new StorageDatabaseHelper();
   }
 
@@ -40,9 +38,7 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
     if (key == null) {
       return Promise.reject("Must provide key");
     }
-    console.log('key ',key)
     let data: Data = await this.mDb.get(key);
-    console.log('data ',data)
     ret = data != null ? data.value : null;
     return Promise.resolve({value: ret});
   }
@@ -86,12 +82,16 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
   }
 
   async keysvalues(): Promise<{keysvalues: Array<any>}> {
-    let ret: Array<any>;
-    ret = await this.mDb.keysvalues();
+    let ret: Array<any> = [];
+    let results: Array<Data>;
+    results = await this.mDb.keysvalues();
+    for (let i:number = 0;i<results.length;i++) {
+      let res:any = {"key" : results[i].name, "value" : results[i].value};
+      ret.push(res);
+    }
     return Promise.resolve({keysvalues:ret});
   }
 }
 
-const CapacitorDataStorageSqliteWeb = new CapacitorDataStorageIdbWeb();
-//mergeWebPlugin(Plugins,CapacitorDataStorageSqlite);
-export { CapacitorDataStorageSqliteWeb };
+const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
+export { CapacitorDataStorageSqlite };
