@@ -6,6 +6,9 @@ Capacitor Data Storage SQlite Plugin provides a key-value store for simple data 
 
 WARNING  NEVER USE VERSION 0.0.5.11 TO 0.0.5.17
 
+## View Me
+[capacitor-data-storage-sqlite](https://ionicpwacapacitorstorage.firebaseapp.com)
+
 ## Methods available
 
     clear()                             clear the store
@@ -22,7 +25,11 @@ WARNING  NEVER USE VERSION 0.0.5.11 TO 0.0.5.17
 npm install --save capacitor-data-storage-sqlite@latest
 ```
 
-Ionic App that shows an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionic-capacitor-data-storage-sqlite)
+Ionic App showing an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionic-capacitor-data-storage-sqlite)
+
+PWA App showing an integration of 
+[capacitor-data-storage-sqlite plugin] (https://github.com/jepiqueau/ionicpwacapacitorstorage.git)
+
 
 ## Remarks
 The third release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.0.0-alpha.37
