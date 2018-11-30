@@ -32,7 +32,7 @@ PWA App showing an integration of
 
 
 ## Remarks
-The third release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.0.0-alpha.37
+The third release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.0.0-beta.11
 
 ## Dependencies
 The IOS code is based on SQLite.swift as wrapper for SQLite, the Web code has been implemented with localforage  as wrapper for indexDB.
