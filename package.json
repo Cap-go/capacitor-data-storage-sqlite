@@ -1,23 +1,22 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "0.0.7-2",
+  "version": "0.0.8",
   "description": "Capacitor data storage on SQLite plugin",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc",
-    "clean": "rimraf ./dist",
+    "clean": "rm -rf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build"
   },
   "author": "Jean Pierre Quéau",
   "license": "MIT",
   "dependencies": {
-    "@capacitor/core": "^1.0.0-alpha.38",
-    "localforage": "^1.7.1"
+    "@capacitor/core": "^1.0.0-beta.11",
+    "localforage": "^1.7.3"
   },
   "devDependencies": {
-    "rimraf": "^2.6.2",
     "typescript": "^2.6.2"
   },
   "files": [
@@ -39,5 +38,12 @@
     "android": {
       "src": "android"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jepiqueau/capacitor-data-storage-sqlite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/issues"
   }
 }

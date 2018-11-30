@@ -39,13 +39,10 @@ typedef enum : NSUInteger {
 
 @implementation CAPKeyboard
 
-// Define the plugin
-//AVOCADO_EXPORT_PLUGIN("com.avocadojs.plugin.keyboard")
-
-
-
 - (void)load
 {
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object: nil];
+  
   self.keyboardResizes = ResizeNative;
   BOOL doesResize = YES;
   if (!doesResize) {
@@ -61,7 +58,7 @@ typedef enum : NSUInteger {
         self.keyboardResizes = ResizeBody;
       }
     }
-    NSLog(@"CAPIonicKeyboard: resize mode %d", self.keyboardResizes);
+    // NSLog(@"CAPIonicKeyboard: resize mode %d", self.keyboardResizes);
   }
   self.hideFormAccessoryBar = YES;
   
@@ -69,6 +66,8 @@ typedef enum : NSUInteger {
   
   [nc addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
   [nc addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+  [nc addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+  [nc addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
   
   [nc removeObserver:self.webView name:UIKeyboardWillChangeFrameNotification object:nil];
   [nc removeObserver:self.webView name:UIKeyboardDidChangeFrameNotification object:nil];
@@ -76,6 +75,10 @@ typedef enum : NSUInteger {
 
 
 #pragma mark Keyboard events
+
+-(void)statusBarDidChangeFrame:(NSNotification*)notification {
+  [self _updateFrame];
+}
 
 - (void)resetScrollView
 {
@@ -87,7 +90,7 @@ typedef enum : NSUInteger {
 {
   [self setKeyboardHeight:0 delay:0.01];
   [self resetScrollView];
-  [self.bridge evalWithPlugin:self js:@"plugin.fireOnHiding();"];
+  [self.bridge triggerWindowJSEventWithEventName:@"keyboardWillHide"];
 }
 
 - (void)onKeyboardWillShow:(NSNotification *)note
@@ -99,8 +102,8 @@ typedef enum : NSUInteger {
   [self setKeyboardHeight:height delay:duration/2.0];
   [self resetScrollView];
   
-  NSString *js = [NSString stringWithFormat:@"plugin.fireOnShowing(%d);", (int)height];
-  [self.bridge evalWithPlugin:self js:js];
+  NSString * data = [NSString stringWithFormat:@"{ 'keyboardHeight': %d }", (int)height];
+  [self.bridge triggerWindowJSEventWithEventName:@"keyboardWillShow" data:data];
 }
 
 - (void)onKeyboardDidShow:(NSNotification *)note
@@ -110,13 +113,13 @@ typedef enum : NSUInteger {
   
   [self resetScrollView];
   
-  NSString *js = [NSString stringWithFormat:@"plugin.fireOnShow(%d);", (int)height];
-  [self.bridge evalWithPlugin:self js:js];
+  NSString * data = [NSString stringWithFormat:@"{ 'keyboardHeight': %d }", (int)height];
+  [self.bridge triggerWindowJSEventWithEventName:@"keyboardDidShow" data:data];
 }
 
 - (void)onKeyboardDidHide:(NSNotification *)sender
 {
-  [self.bridge evalWithPlugin:self js:@"plugin.fireOnHide();"];
+  [self.bridge triggerWindowJSEventWithEventName:@"keyboardDidHide"];
   [self resetScrollView];
 }
 
@@ -147,26 +150,34 @@ typedef enum : NSUInteger {
 
 - (void)_updateFrame
 {
-  NSLog(@"CDVIonicKeyboard: updating frame");
+  CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+  int statusBarHeight = MIN(statusBarSize.width, statusBarSize.height);
+  
+  int _paddingBottom = (int)self.paddingBottom;
+  
+  if (statusBarHeight == 40) {
+    _paddingBottom = _paddingBottom + 20;
+  }
   CGRect f = [[UIScreen mainScreen] bounds];
+  CGRect wf = self.webView.frame;
   switch (self.keyboardResizes) {
     case ResizeBody:
     {
       NSString *js = [NSString stringWithFormat:@"plugin.fireOnResize(%d, %d, document.body);",
-                      (int)self.paddingBottom, (int)f.size.height];
+                      _paddingBottom, (int)f.size.height];
       [self.bridge evalWithPlugin:self js:js];
       break;
     }
     case ResizeIonic:
     {
       NSString *js = [NSString stringWithFormat:@"plugin.fireOnResize(%d, %d, document.querySelector('ion-app'));",
-                      (int)self.paddingBottom, (int)f.size.height];
+                      _paddingBottom, (int)f.size.height];
       [self.bridge evalWithPlugin:self js:js];
       break;
     }
     case ResizeNative:
     {
-      [self.webView setFrame:CGRectMake(f.origin.x, f.origin.y, f.size.width, f.size.height - self.paddingBottom)];
+      [self.webView setFrame:CGRectMake(wf.origin.x, wf.origin.y, f.size.width - wf.origin.x, f.size.height - wf.origin.y - self.paddingBottom)];
       break;
     }
     default:
@@ -216,19 +227,22 @@ static IMP WKOriginalImp;
 
 - (void)setAccessoryBarVisible:(CAPPluginCall *)call
 {
-  BOOL value = [self getBool:call field:@"visible" defaultValue:FALSE];
+  BOOL value = [self getBool:call field:@"isVisible" defaultValue:FALSE];
 
-  //NSNumber* value = [call getBool:@"visible" defaultValue:nil];
   NSLog(@"Accessory bar visible change %d", value);
   self.hideFormAccessoryBar = !value;
   [call successHandler];
 }
 
-- (void)hide:(CAPPluginCall *)command
+- (void)hide:(CAPPluginCall *)call
 {
   [self.webView endEditing:YES];
 }
 
+- (void)show:(CAPPluginCall *)call
+{
+  [call successHandler];
+}
 
 #pragma mark dealloc
 

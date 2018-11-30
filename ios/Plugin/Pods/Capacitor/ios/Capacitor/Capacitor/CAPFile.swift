@@ -26,6 +26,14 @@ public class CAPFile {
     
     return nil
   }
+  
+  public static func getPortablePath(uri: URL?) -> String? {
+    if uri != nil {
+      let assetUrl = uri!.absoluteString.replacingOccurrences(of: "file://", with: "capacitor-asset://")
+      return assetUrl
+    }
+    return nil
+  }
 }
 
 private protocol CAPFileResolver {

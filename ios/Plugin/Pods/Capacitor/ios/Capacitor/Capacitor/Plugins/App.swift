@@ -50,8 +50,18 @@ public class CAPAppPlugin : CAPPlugin {
     ])
   }
   
+  @objc func exitApp(_ call: CAPPluginCall) {
+    call.unimplemented()
+  }
+  
   @objc func getLaunchUrl(_ call: CAPPluginCall) {
-    call.success()
+    if let lastUrl = CAPBridge.getLastUrl() {
+      let urlValue = lastUrl.absoluteString
+      call.resolve([
+        "url": urlValue
+      ])
+    }
+    call.resolve()
   }
   
   @objc func canOpenUrl(_ call: CAPPluginCall) {

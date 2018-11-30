@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2E676FA66C1C04DA3B04FAF0F01DC655"
+               BlueprintIdentifier = "EF421B8AA046EF847E09051189A25CAB"
                BuildableName = "Cordova.framework"
                BlueprintName = "CapacitorCordova"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2E676FA66C1C04DA3B04FAF0F01DC655"
+            BlueprintIdentifier = "EF421B8AA046EF847E09051189A25CAB"
             BuildableName = "Cordova.framework"
             BlueprintName = "CapacitorCordova"
             ReferencedContainer = "container:Pods.xcodeproj">

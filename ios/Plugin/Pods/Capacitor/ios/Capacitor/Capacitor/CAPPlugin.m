@@ -35,6 +35,10 @@
   return TRUE;
 }
 
+-(id)getConfigValue:(NSString *)key {
+  return [CAPConfig getPluginConfigValue:self.pluginName :key];
+}
+
 -(void)load {}
 
 - (void)addEventListener:(NSString *)eventName listener:(CAPPluginCall *)listener {
@@ -90,8 +94,8 @@
 
 - (void)addListener:(CAPPluginCall *)call {
   NSString *eventName = [call.options objectForKey:@"eventName"];
-  [self addEventListener:eventName listener:call];
   [call setIsSaved:TRUE];
+  [self addEventListener:eventName listener:call];
 }
 
 - (void)removeListener:(CAPPluginCall *)call {
