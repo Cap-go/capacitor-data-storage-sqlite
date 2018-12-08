@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { WebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
-export class CapacitorDataStorageIdbWeb extends WebPlugin {
+export class CapacitorDataStorageSqlitePluginWeb extends WebPlugin {
     constructor() {
         super({
             name: 'CapacitorDataStorageSqlite',
@@ -103,6 +103,6 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin {
         });
     }
 }
-const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
+const CapacitorDataStorageSqlite = new CapacitorDataStorageSqlitePluginWeb();
 export { CapacitorDataStorageSqlite };
 //# sourceMappingURL=web.js.map

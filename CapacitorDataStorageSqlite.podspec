@@ -1,7 +1,7 @@
 
   Pod::Spec.new do |s|
     s.name = 'CapacitorDataStorageSqlite'
-    s.version = '0.0.8-1'
+    s.version = '0.0.9'
     s.summary = 'Capacitor data storage on SQLite plugin'
     s.license = 'MIT'
     s.homepage = 'https://github.com/jepiqueau/capacitor-data-storage-sqlite.git'

@@ -1,42 +1,17 @@
 import { WebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
-import { CapacitorDataStorageSqlitePlugin } from './definitions';
-export declare class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
+import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorageResult } from './definitions';
+export declare class CapacitorDataStorageSqlitePluginWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     mDb: StorageDatabaseHelper;
     constructor();
-    set(options: {
-        key: string;
-        value: string;
-    }): Promise<{
-        result: boolean;
-    }>;
-    get(options: {
-        key: string;
-    }): Promise<{
-        value: string;
-    }>;
-    remove(options: {
-        key: string;
-    }): Promise<{
-        result: boolean;
-    }>;
-    clear(): Promise<{
-        result: boolean;
-    }>;
-    iskey(options: {
-        key: string;
-    }): Promise<{
-        result: boolean;
-    }>;
-    keys(): Promise<{
-        keys: Array<string>;
-    }>;
-    values(): Promise<{
-        values: Array<string>;
-    }>;
-    keysvalues(): Promise<{
-        keysvalues: Array<any>;
-    }>;
+    set(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    get(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    remove(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    clear(): Promise<capDataStorageResult>;
+    iskey(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    keys(): Promise<capDataStorageResult>;
+    values(): Promise<capDataStorageResult>;
+    keysvalues(): Promise<capDataStorageResult>;
 }
-declare const CapacitorDataStorageSqlite: CapacitorDataStorageIdbWeb;
+declare const CapacitorDataStorageSqlite: CapacitorDataStorageSqlitePluginWeb;
 export { CapacitorDataStorageSqlite };

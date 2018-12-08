@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "0.0.8-1",
+  "version": "0.0.9",
   "description": "Capacitor data storage on SQLite plugin",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",

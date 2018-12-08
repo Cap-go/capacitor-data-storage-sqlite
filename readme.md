@@ -4,7 +4,6 @@ As capacitor provides fisrt-class Progressive Web App support so you can use thi
 
 Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of type string only, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
 
-WARNING  NEVER USE VERSION 0.0.5.11 TO 0.0.5.17
 
 ## View Me
 [capacitor-data-storage-sqlite](https://ionicpwacapacitorstorage.firebaseapp.com)
@@ -27,12 +26,14 @@ npm install --save capacitor-data-storage-sqlite@latest
 
 Ionic App showing an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionic-capacitor-data-storage-sqlite)
 
+Vue App showing an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/vue-capacitor-data-storage-sqlite)
+
 PWA App showing an integration of 
-[capacitor-data-storage-sqlite plugin] (https://github.com/jepiqueau/ionicpwacapacitorstorage.git)
+[capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionicpwacapacitorstorage.git)
 
 
 ## Remarks
-The third release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.0.0-beta.11
+This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.0.0-beta.11
 
 ## Dependencies
 The IOS code is based on SQLite.swift as wrapper for SQLite, the Web code has been implemented with localforage  as wrapper for indexDB.

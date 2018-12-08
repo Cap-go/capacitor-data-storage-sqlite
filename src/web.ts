@@ -1,9 +1,9 @@
 import { WebPlugin} from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/data';
-import { CapacitorDataStorageSqlitePlugin } from './definitions';
+import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorageResult  } from './definitions';
 
-export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
+export class CapacitorDataStorageSqlitePluginWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
   // as we are on the web the store will be on indexDB and not on SQLite
   mDb:StorageDatabaseHelper;
   
@@ -15,7 +15,7 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
     this.mDb = new StorageDatabaseHelper();
   }
 
-  async set(options: { key: string, value: string }): Promise<{result: boolean}> {
+  async set(options: capDataStorageOptions): Promise<capDataStorageResult> {
     let ret: boolean;
     let key:string = options.key;
     if (key == null) {
@@ -32,7 +32,7 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
     return Promise.resolve({result:ret});
   }
 
-  async get(options: { key: string}): Promise<{value: string }> {
+  async get(options: capDataStorageOptions): Promise<capDataStorageResult> {
     let ret:  string;
     let key:string = options.key;
     if (key == null) {
@@ -43,7 +43,7 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
     return Promise.resolve({value: ret});
   }
 
-  async remove(options: {key:string}): Promise<{result: boolean}> {
+  async remove(options: capDataStorageOptions): Promise<capDataStorageResult> {
     let ret: boolean;
     let key:string = options.key;
     if (key == null) {
@@ -53,13 +53,13 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
     return Promise.resolve({result:ret});
   }
 
-  async clear(): Promise<{result: boolean}> {
+  async clear(): Promise<capDataStorageResult> {
     let ret: boolean;
     ret = await this.mDb.clear();
     return Promise.resolve({result:ret});
   }
 
-  async iskey(options: {key:string}): Promise<{result: boolean}> {
+  async iskey(options: capDataStorageOptions): Promise<capDataStorageResult> {
     let ret: boolean;
     let key:string = options.key;
     if (key == null) {
@@ -69,19 +69,19 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
     return Promise.resolve({result:ret});
   }
 
-  async keys(): Promise<{keys: Array<string>}> {
+  async keys(): Promise<capDataStorageResult> {
     let ret: Array<string>;
     ret = await this.mDb.keys();
     return Promise.resolve({keys:ret});
   }
 
-  async values(): Promise<{values: Array<string>}> {
+  async values(): Promise<capDataStorageResult> {
     let ret: Array<string>;
     ret = await this.mDb.values();
     return Promise.resolve({values:ret});
   }
 
-  async keysvalues(): Promise<{keysvalues: Array<any>}> {
+  async keysvalues(): Promise<capDataStorageResult> {
     let ret: Array<any> = [];
     let results: Array<Data>;
     results = await this.mDb.keysvalues();
@@ -93,5 +93,5 @@ export class CapacitorDataStorageIdbWeb extends WebPlugin implements CapacitorDa
   }
 }
 
-const CapacitorDataStorageSqlite = new CapacitorDataStorageIdbWeb();
+const CapacitorDataStorageSqlite = new CapacitorDataStorageSqlitePluginWeb();
 export { CapacitorDataStorageSqlite };
