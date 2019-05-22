@@ -21,7 +21,9 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             call.reject("Must provide a value")
             return
         }
-        data.value = value
+        let cleanValue = value.replacingOccurrences(of: "\\", with: "\\");
+        
+        data.value = cleanValue
         let res: Bool = mDb.set(data:data)
 
         call.resolve([
@@ -41,9 +43,7 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             ])
 
         } else {
-            call.resolve([
-                "value": data.id!
-            ])
+            call.resolve(["result":false])
         }
     }
     
