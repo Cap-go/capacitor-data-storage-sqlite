@@ -21,7 +21,7 @@ Capacitor Data Storage SQlite Plugin provides a key-value store for simple data 
 
 ## To use the Plugin in your Project
 ```bash
-npm install --save capacitor-data-storage-sqlite@one
+npm install --save capacitor-data-storage-sqlite@latest
 ```
 
 Ionic App showing an integration of [capacitor-data-storage-sqlite plugin](https://github.com/jepiqueau/ionic-capacitor-data-storage-sqlite)
@@ -33,7 +33,7 @@ PWA App showing an integration of
 
 
 ## Remarks
-This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.0.0
+This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.1.0
 
 ## Dependencies
 The IOS code is based on SQLite.swift as wrapper for SQLite, the Web code has been implemented with localforage  as wrapper for indexDB.
