@@ -5,11 +5,12 @@
 //  Created by  Quéau Jean Pierre on 16/06/2019.
 //  Copyright © 2019 Max Lynch. All rights reserved.
 //
-
 import Foundation
 import Capacitor
-
-
+/**
+ * Please read the Capacitor iOS Plugin Development Guide
+ * here: https://capacitor.ionicframework.com/docs/plugins/ios
+ */
 @objc(CapacitorDataStorageSqlite)
 public class CapacitorDataStorageSqlite: CAPPlugin {
     

@@ -1,7 +1,7 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "1.1.1",
-  "description": "Capacitor Data Storage to SQLite for Ios,Android and IDB for Web",
+  "version": "1.2.1",
+  "description": "Capacitor Data Storage SQLite Plugin",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "scripts": {
@@ -13,12 +13,12 @@
   "author": "Jean Pierre Quéau",
   "license": "MIT",
   "dependencies": {
-    "@capacitor/core": "^1.1.1",
+    "@capacitor/core": "latest",
     "localforage": "^1.7.3"
   },
   "devDependencies": {
-    "@capacitor/android": "^1.1.1",
-    "@capacitor/ios": "^1.1.1",
+    "@capacitor/android": "latest",
+    "@capacitor/ios": "latest",
     "typescript": "^3.2.4"
   },
   "files": [

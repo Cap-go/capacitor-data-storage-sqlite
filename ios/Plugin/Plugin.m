@@ -5,7 +5,6 @@
 //  Created by  Quéau Jean Pierre on 16/06/2019.
 //  Copyright © 2019 Max Lynch. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import <Capacitor/Capacitor.h>
 
@@ -20,4 +19,4 @@ CAP_PLUGIN(CapacitorDataStorageSqlite, "CapacitorDataStorageSqlite",
            CAP_PLUGIN_METHOD(values, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(keysvalues, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(iskey, CAPPluginReturnPromise);
-           )
+    )

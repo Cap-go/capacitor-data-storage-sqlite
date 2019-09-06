@@ -1,12 +1,10 @@
-import { WebPlugin} from '@capacitor/core';
+import { WebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/Data';
 import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorageResult  } from './definitions';
 
-export class CapacitorDataStorageSqlitePluginWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
-  // as we are on the web the store will be on indexDB and not on SQLite
+export class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
   mDb:StorageDatabaseHelper;
-  
   constructor() {
     super({
       name: 'CapacitorDataStorageSqlite',
@@ -93,7 +91,9 @@ export class CapacitorDataStorageSqlitePluginWeb extends WebPlugin implements Ca
   }
 }
 
-const CapacitorDataStorageSqlite = new CapacitorDataStorageSqlitePluginWeb();
+const CapacitorDataStorageSqlite = new CapacitorDataStorageSqliteWeb();
+
 export { CapacitorDataStorageSqlite };
+
 import { registerWebPlugin } from '@capacitor/core';
 registerWebPlugin(CapacitorDataStorageSqlite);

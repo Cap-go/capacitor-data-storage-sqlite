@@ -1,7 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorageResult } from './definitions';
-export declare class CapacitorDataStorageSqlitePluginWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
+export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     mDb: StorageDatabaseHelper;
     constructor();
     set(options: capDataStorageOptions): Promise<capDataStorageResult>;
@@ -13,5 +13,5 @@ export declare class CapacitorDataStorageSqlitePluginWeb extends WebPlugin imple
     values(): Promise<capDataStorageResult>;
     keysvalues(): Promise<capDataStorageResult>;
 }
-declare const CapacitorDataStorageSqlite: CapacitorDataStorageSqlitePluginWeb;
+declare const CapacitorDataStorageSqlite: CapacitorDataStorageSqliteWeb;
 export { CapacitorDataStorageSqlite };
