@@ -1,4 +1,4 @@
-import LocalForage from 'localforage';
+import LocalForage from 'jeep-localforage';
 import { Data } from "./Data";
 const DATABASE = "storageIDB";
 const STORAGESTORE = "storage_store";
@@ -7,7 +7,7 @@ export class StorageDatabaseHelper {
         let config = {
             name: DATABASE,
             storeName: STORAGESTORE,
-            driver: LocalForage.INDEXEDDB,
+            driver: [LocalForage.INDEXEDDB, LocalForage.WEBSQL],
             version: 1
         };
         this._db = LocalForage.createInstance(config);
