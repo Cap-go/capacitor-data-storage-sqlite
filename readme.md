@@ -4,6 +4,11 @@ As capacitor provides fisrt-class Progressive Web App support so you can use thi
 
 Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of type string only, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
 
+*****************************************************************
+WARNING !!!! NEVER USE RELEASES 1.2.1-5 to 1.2.1-8.
+They are unsuccessful attemps of an Electron plugin using sqlite3
+Will wait until the Ionic Capacitor Team provides a methodology
+*****************************************************************
 
 ## View Me
 [capacitor-data-storage-sqlite](https://ionicpwacapacitorstorage.firebaseapp.com)

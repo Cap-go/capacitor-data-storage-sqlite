@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/taskHistory.bin" afterDir="false" />
@@ -15,223 +14,15 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.project" beforeDir="false" afterPath="$PROJECT_DIR$/.project" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/generateDebugRFile/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/generateDebugRFile/R.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dist/esm/web-utils/StorageDatabaseHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dist/esm/web-utils/StorageDatabaseHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dist/esm/web-utils/StorageDatabaseHelper.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../dist/esm/web-utils/StorageDatabaseHelper.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ios/Plugin.xcworkspace/xcuserdata/queaujeanpierre.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/Plugin.xcworkspace/xcuserdata/queaujeanpierre.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/generateDebugRFile/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/generateDebugRFile/R.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/intermediate-jars/debug/classes.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/intermediate-jars/debug/classes.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge.class" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/getcapacitor/Bridge.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/packaged-classes/debug/classes.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/intermediates/packaged-classes/debug/classes.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/outputs/aar/capacitor-android-debug.aar" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/build/outputs/aar/capacitor-android-debug.aar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/Bridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/capacitor/src/main/java/com/getcapacitor/Bridge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/android/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/android/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/core/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/core/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/ios/Capacitor.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/ios/Capacitor.podspec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/ios/CapacitorCordova.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/ios/CapacitorCordova.podspec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/ios/ios/Capacitor/Capacitor/CAPBridgeViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/ios/ios/Capacitor/Capacitor/CAPBridgeViewController.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/@capacitor/ios/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/@capacitor/ios/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/lie/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/lie/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/.npmignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/.tscache/typing_tests/timestamp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/CONTRIBUTING.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/assert/.bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/assert/HISTORY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/assert/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/assert/assert.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/assert/bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/assert/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/es6-promise/.bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/es6-promise/bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/es6-promise/promise.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/es6-promise/promise.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/expect/.bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/expect/.npmignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/expect/History.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/expect/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/expect/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/expect/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/.bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/History.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/Readme.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/media/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/mocha.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/mocha/mocha.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/.bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/.npmignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/a-download.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/audio-audiodata-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/audio-webaudio-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/battery-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/battery-level.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/blob-constructor.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/canvas-todataurl-type.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/contenteditable.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/contentsecuritypolicy.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/contextmenu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/cookies.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/cors.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-backgroundposition-shorthand.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-backgroundposition-xy.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-backgroundrepeat.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-backgroundsizecover.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-boxsizing.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-calc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-cubicbezierrange.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-displayrunin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-displaytable.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-filters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-hyphens.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-lastchild.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-mask.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-mediaqueries.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-objectfit.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-overflow-scrolling.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-pointerevents.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-positionsticky.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-regions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-remunit.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-resize.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-scrollbars.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-shapes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-subpixelfont.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-supports.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-userselect.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-vhunit.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-vmaxunit.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-vminunit.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/css-vwunit.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/custom-protocol-handler.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/dart.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/dataview-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/dom-classlist.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/dom-createElement-attrs.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/dom-dataset.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/dom-microdata.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/elem-datalist.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/elem-details.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/elem-output.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/elem-progress-meter.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/elem-ruby.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/elem-time.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/elem-track.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/emoji.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/es5-strictmode.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/event-deviceorientation-motion.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/exif-orientation.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/file-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/file-filesystem.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/forms-fileinput.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/forms-formattribute.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/forms-inputnumber-l10n.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/forms-placeholder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/forms-speechinput.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/forms-validation.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/fullscreen-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/gamepad.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/getusermedia.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/ie8compat.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/iframe-sandbox.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/iframe-seamless.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/iframe-srcdoc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/img-apng.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/img-webp.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/json.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/lists-reversed.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/mathml.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/network-connection.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/network-eventsource.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/network-xhr2.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/notification.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/performance.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/pointerlock-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/quota-management-api.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/requestanimationframe.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/script-async.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/script-defer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/style-scoped.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/svg-filters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/unicode.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/url-data-uri.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/userdata.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/vibration.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/web-intents.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/webgl-extensions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/websockets-binary.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/window-framed.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/workers-blobworkers.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/workers-dataworkers.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/feature-detects/workers-sharedworkers.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/grunt.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/media/Modernizr 2 Logo.ai" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/media/Modernizr 2 Logo.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/media/Modernizr 2 Logo.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/media/Modernizr 2 Logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/media/Modernizr 2 Logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/modernizr.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/modernizr/readme.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/requirejs/.bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/requirejs/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/requirejs/bower.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/bower_components/requirejs/require.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/build/es5src/drivers/indexeddb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/build/es5src/drivers/localstorage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/build/es5src/drivers/websql.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/build/es5src/localforage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/build/es5src/utils/serializer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/component.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/contribute.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/dist/localforage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/dist/localforage.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/dist/localforage.nopromises.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/dist/localforage.nopromises.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/drivers/indexeddb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/drivers/localstorage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/drivers/websql.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/localforage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/createBlob.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/executeCallback.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/executeTwoCallbacks.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/getCallback.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/idb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/includes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/isArray.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/isIndexedDBValid.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/isLocalStorageValid.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/isWebSQLValid.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/normalizeKey.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/promise.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/src/utils/serializer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/localforage/typings/localforage.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/typescript/lib/tsc.js" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/typescript/lib/tsc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/typescript/lib/tsserver.js" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/typescript/lib/tsserver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/typescript/lib/tsserverlibrary.js" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/typescript/lib/tsserverlibrary.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/typescript/lib/typescript.js" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/typescript/lib/typescript.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/typescript/lib/typescriptServices.js" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/typescript/lib/typescriptServices.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/typescript/lib/typingsInstaller.js" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/typescript/lib/typingsInstaller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/typescript/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../node_modules/typescript/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/web-utils/StorageDatabaseHelper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/web-utils/StorageDatabaseHelper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/../readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../src/index.ts" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -313,10 +104,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
