@@ -1,3 +1,16 @@
+## 1.2.1-10 (2019-11-14)
+
+### Added Features
+
+* add openStore to customize the database name and table name
+* add setTable to add a new table or set an existing table to an opened store
+
+## 1.2.1-10 (2019-11-08)
+
+### Bug Fixes
+
+* fix Firefox issue
+
 ## 1.2.1-4 (2019-10-06)
 
 ## 1.2.1-2 (2019-10-06)

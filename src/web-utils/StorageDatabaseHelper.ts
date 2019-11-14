@@ -1,22 +1,38 @@
 import LocalForage from 'jeep-localforage';
 import { Data } from "./Data";
 
-const DATABASE: string = "storageIDB";
-const STORAGESTORE: string = "storage_store";
+//const DATABASE: string = "storageIDB";
+//const STORAGESTORE: string = "storage_store";
 export class StorageDatabaseHelper {
-    private _db: any;
-
-    constructor() {
-        let config: any= {
-          name: DATABASE,
-          storeName: STORAGESTORE,
-          driver: [LocalForage.INDEXEDDB,LocalForage.WEBSQL],
-          version: 1
-        };
-        this._db = LocalForage.createInstance(config);       
+    private _db: any = null;
+    private _dbName: string;
+ 
+    constructor(dbName: string, tableName: string) {
+      this.openStore(dbName, tableName);
     }
-
-    set(data:Data): Promise<boolean> {
+    openStore(dbName: string, tableName: string) : boolean {
+      let ret:boolean = false;
+      const config: any = this.setConfig(dbName, tableName)
+      this._db = LocalForage.createInstance(config); 
+      if(this._db != null) {
+        this._dbName = dbName;
+        ret = true;
+      } 
+      return ret;    
+    }
+    setConfig(dbName: string, tableName: string): any {
+      let config: any= {
+        name: dbName,
+        storeName: tableName,
+        driver: [LocalForage.INDEXEDDB,LocalForage.WEBSQL],
+        version: 1
+      };
+      return config;
+    }
+    async setTable(tableName: string) : Promise<boolean> {
+      return this.openStore(this._dbName, tableName);
+    }
+    async set(data:Data): Promise<boolean> {
         return this._db.setItem(data.name, data.value).then(()=> {
           return Promise.resolve(true);
         })
@@ -26,7 +42,7 @@ export class StorageDatabaseHelper {
         });
     } 
 
-    get(name: string): Promise<Data> {
+    async get(name: string): Promise<Data> {
         return this._db.getItem(name).then((value:string) => {
           let data: Data = new Data();
           data.name = name;
@@ -39,7 +55,7 @@ export class StorageDatabaseHelper {
         });
     }
 
-    remove(name: string): Promise<boolean> {
+    async remove(name: string): Promise<boolean> {
         return this._db.removeItem(name).then(()=> {
           return Promise.resolve(true);
         })
@@ -49,7 +65,7 @@ export class StorageDatabaseHelper {
         });
     }
     
-    clear(): Promise<boolean> {
+    async clear(): Promise<boolean> {
         return this._db.clear().then(()=> {
           return Promise.resolve(true);
         })
@@ -59,7 +75,7 @@ export class StorageDatabaseHelper {
         });
     } 
     
-    keys(): Promise<Array<string>> {
+    async keys(): Promise<Array<string>> {
         return this._db.keys().then((keys:Array<string>) => {
             return Promise.resolve(keys)
         })
@@ -69,7 +85,7 @@ export class StorageDatabaseHelper {
         });
     }
 
-    values(): Promise<Array<string>> {
+    async values(): Promise<Array<string>> {
         let values: Array<string> = [];
         return this._db.iterate(((value:string) => {
           values.push(value);
@@ -82,7 +98,7 @@ export class StorageDatabaseHelper {
         });
     } 
 
-    keysvalues(): Promise<Array<Data>> {
+    async keysvalues(): Promise<Array<Data>> {
         let keysvalues: Array<Data> = [];
         return this._db.iterate(((value:string, key:string) => {
           let data: Data = new Data();
@@ -98,7 +114,7 @@ export class StorageDatabaseHelper {
         });
     } 
 
-    iskey(name:string):Promise<boolean> {
+    async iskey(name:string):Promise<boolean> {
         return this.get(name).then((data)=> {
           if(data.value != null) {
             return Promise.resolve(true);

@@ -24,7 +24,49 @@ public class CapacitorDataStorageSqlite extends Plugin {
     public void load() {
         // Get singleton instance of database
         context = getContext();
-        mDb = StorageDatabaseHelper.getInstance(context);
+//        mDb = StorageDatabaseHelper.getInstance(context);
+    }
+    @PluginMethod()
+    public void openStore(PluginCall call) {
+        String dbName = null;
+        String tableName = null;
+        dbName = call.getString("database");
+        if (dbName == null) {
+            dbName = "storage";
+        }
+        tableName = call.getString("table");
+        if (tableName == null) {
+            tableName = "storage_table";
+        }
+//        mDb = StorageDatabaseHelper.getInstance(context,dbName+"SQLite.db",tableName,1);
+        mDb = new StorageDatabaseHelper(context,dbName+"SQLite.db",tableName,1);
+        JSObject ret = new JSObject();
+        ret.put("result",true);
+        call.resolve(ret);
+    }
+
+    @PluginMethod()
+    public void setTable(PluginCall call) {
+        String tableName = null;
+        String message = "";
+        boolean res = false;
+        tableName = call.getString("table");
+        if (tableName == null) {
+            call.reject("Must provide a table name");
+            return;
+        }
+        if(mDb != null) {
+            res = mDb.setTable(tableName);
+            if (!res) {
+                message = "failed in adding table";
+            }
+        } else {
+            message = "Must open a store first";
+        }
+        JSObject ret = new JSObject();
+        ret.put("result",res);
+        ret.put("message",message);
+        call.resolve(ret);
     }
 
     @PluginMethod()

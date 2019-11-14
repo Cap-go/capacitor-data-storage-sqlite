@@ -10,19 +10,45 @@ They are unsuccessful attemps of an Electron plugin using sqlite3
 Will wait until the Ionic Capacitor Team provides a methodology
 *****************************************************************
 
+
+*******************************************************
+Change since release 1.2.1-11
+ - openStore method has been included to specify
+    - the database name
+    - the table name
+
+   To be compatible with previous releases you must do:
+   ```openStore()``` 
+
+   To define new database and table name do:
+   ```openStore({database:"MyDatabase",table:"MyTableName"})```
+
+ - setTable method has been included to 
+    - add a table to an existing opened store
+    - set an already existing table to an existing opened store
+
+    ```setTable({table:"MyNewTableName"})``` 
+
+
+
+*******************************************************
+
 ## View Me
 [capacitor-data-storage-sqlite](https://ionicpwacapacitorstorage.firebaseapp.com)
 
 ## Methods available
 
-    clear()                             clear the store
-    get({key:"foo"})                    get a value given the key           
-    iskey({key:"foo"})                  test key exists
-    keys()                              get all keys
-    keysvalues()                        get all key/value pairs
-    remove({key:"foo"})                 remove a key
-    set({key:"foo",value:"foovalue"})   set key and its value
-    values()                            get all values
+    clear()                                             clear the store
+    openStore({})                                       open the store with default database and table names
+    openStore({database:"fooDB",table:"fooTable"})      open the store with given database and table names
+    setTable({table:"foo1Table"})                       set or add a table to the opened store
+    get({key:"foo"})                                    get the value of a given key  
+    iskey({key:"foo"})                                  test key exists
+    keys()                                              get all keys
+    keysvalues()                                        get all key/value pairs
+    remove({key:"foo"})                                 remove a key
+    set({key:"foo",value:"foovalue"})                   set key and its value
+    values()                                            get all values
 
 ## To use the Plugin in your Project
 ```bash
@@ -38,7 +64,7 @@ PWA App showing an integration of
 
 
 ## Remarks
-This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.1.0
+This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.2.1
 
 ## Dependencies
 The IOS code is based on SQLite.swift as wrapper for SQLite, the Web code has been implemented with localforage  as wrapper for indexDB.

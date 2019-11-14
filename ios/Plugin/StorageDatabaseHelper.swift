@@ -9,12 +9,15 @@
 import Foundation
 import SQLite
 class StorageDatabaseHelper {
-    let DATABASE_NAME: String = "storageSQLite.db"
+    var databaseName: String
+    var tableName: String
+    var tableStorage: Table
+//    let DATABASE_NAME: String = "storageSQLite.db"
     let TABLE_INDEX: Table = Table("sqlite_sequence")
     let IDX_COL_NAME: Expression<String> = Expression<String>("name")
     let IDX_COL_SEQ: Expression<Int64> = Expression<Int64>("seq")
-    let TABLE_STORAGE_NAME = "storage_table"
-    let TABLE_STORAGE: Table = Table("storage_table")
+//    let TABLE_STORAGE_NAME = "storage_table"
+//    let TABLE_STORAGE: Table = Table("storage_table")
     let COL_ID: Expression<Int64> = Expression<Int64>("id")
     let COL_NAME: Expression<String> = Expression<String>("name")
     let COL_VALUE: Expression<String> = Expression<String>("value")
@@ -22,40 +25,43 @@ class StorageDatabaseHelper {
     let path: String = NSSearchPathForDirectoriesInDomains(
         .documentDirectory, .userDomainMask, true
         ).first!
-    init() {
+    init(databaseName: String,tableName: String) {
+        print("databaseName: \(databaseName) ")
+        print("tableName: \(tableName) ")
         print("path: \(path)")
+        self.databaseName = databaseName
+        self.tableName = tableName
+        self.tableStorage = Table(tableName)
+
         // connect to the database (create if doesn't exist)
-        guard let db = try? Connection("\(path)/\(DATABASE_NAME)") else {
+        guard let db = try? Connection("\(path)/\(databaseName)") else {
             let error:String = "init: Error Database connection failed"
             print(error)
             return
         }
         // create table
-        do {
-            try db.run(TABLE_STORAGE.create(ifNotExists: true) { t in
-                t.column(COL_ID, primaryKey: .autoincrement)
-                t.column(COL_NAME,unique: true)
-                t.column(COL_VALUE)
-            })
-            // index COL_NAME
-            do {
-                try db.run(TABLE_STORAGE.createIndex(COL_NAME, ifNotExists: true))
-                
-            } catch let error {
-                print("init: Error Index creation failed: \(error)")
-            }
-        } catch let error {
-            print("init: Error Table creation failed: \(error)")
-        }
+        _ = createTable(db:db,tableName:tableName);
+
+
     }
     func getWritableDatabase() -> Connection? {
-        guard let db = try? Connection("\(path)/\(DATABASE_NAME)") else {return nil}
+        guard let db = try? Connection("\(path)/\(databaseName)") else {return nil}
         return db
     }
     func getReadableDatabase() -> Connection? {
-        guard let db = try? Connection("\(path)/\(DATABASE_NAME)", readonly: true) else {return nil}
+        guard let db = try? Connection("\(path)/\(databaseName)", readonly: true) else {return nil}
         return db
     }
+    func setTable(tblName: String) -> Bool {
+        guard let db: Connection = getWritableDatabase() else {return false}
+        let res: Bool = createTable(db:db,tableName:tblName);
+        if res {
+            tableName = tblName;
+            tableStorage = Table(tableName)
+        }
+        return res
+    }
+
     func set(data:Data) -> Bool {
         var ret: Bool = false
         guard let db: Connection = getWritableDatabase() else {return false}
@@ -64,7 +70,7 @@ class StorageDatabaseHelper {
             ret = updateData(data: data)
         } else {
             do {
-                try db.run(TABLE_STORAGE.insert(
+                try db.run(tableStorage.insert(
                     COL_NAME <- data.name!,
                     COL_VALUE <- data.value!
                 ))
@@ -78,7 +84,7 @@ class StorageDatabaseHelper {
     func updateData(data:Data) -> Bool {
         var ret: Bool = false
         guard let db: Connection = getWritableDatabase() else {return false}
-        let mFilter = TABLE_STORAGE.filter(COL_NAME == data.name!)
+        let mFilter = tableStorage.filter(COL_NAME == data.name!)
         do {
             if try db.run(mFilter.update(COL_VALUE <- data.value!)) > 0 {
                 ret = true
@@ -93,7 +99,7 @@ class StorageDatabaseHelper {
     func remove(name:String) -> Bool {
         var ret: Bool = false
         guard let db: Connection = getWritableDatabase() else {return false}
-        let mFilter = TABLE_STORAGE.filter(COL_NAME == name)
+        let mFilter = tableStorage.filter(COL_NAME == name)
         do {
             if try db.run(mFilter.delete()) > 0 {
                 ret = true
@@ -110,7 +116,7 @@ class StorageDatabaseHelper {
         var ret: Bool = false
         guard let db: Connection = getWritableDatabase() else {return false}
         do {
-            try db.run(TABLE_STORAGE.delete())
+            try db.run(tableStorage.delete())
             ret = resetIndex()
         } catch let error {
             print("deleteAllData: Error All data delete failed: \(error)")
@@ -121,7 +127,7 @@ class StorageDatabaseHelper {
     func resetIndex() -> Bool {
         var ret: Bool = false
         guard let db: Connection = getWritableDatabase() else {return false}
-        let idxFilter = TABLE_INDEX.filter(IDX_COL_NAME == TABLE_STORAGE_NAME).limit(1)
+        let idxFilter = TABLE_INDEX.filter(IDX_COL_NAME == tableName).limit(1)
         do {
             if try db.run(idxFilter.update(IDX_COL_SEQ <- 0)) > 0{
                 ret = true
@@ -136,7 +142,7 @@ class StorageDatabaseHelper {
     func get(name:String) -> Data? {
         var retData: Data = Data()
         guard let db: Connection = getReadableDatabase() else {return nil}
-        let query = TABLE_STORAGE.filter(COL_NAME == name).limit(1)
+        let query = tableStorage.filter(COL_NAME == name).limit(1)
         guard let rData = try? db.prepare(query) else {return nil}
         for data in rData {
             retData.id = data[COL_ID]
@@ -149,7 +155,7 @@ class StorageDatabaseHelper {
     func keysvalues() -> Array<Data>? {
         var retArray: Array<Data> = Array<Data>()
         guard let db: Connection = getReadableDatabase() else {return nil}
-        guard let retData: AnySequence<Row> = try? db.prepare(TABLE_STORAGE) else { return nil}
+        guard let retData: AnySequence<Row> = try? db.prepare(tableStorage) else { return nil}
         for rData in retData {
             var data = Data()
             data.id = rData[COL_ID]
@@ -172,7 +178,7 @@ class StorageDatabaseHelper {
     func keys() -> Array<String>? {
         var retArray: Array<String> = Array<String>()
         guard let db: Connection = getReadableDatabase() else {return nil}
-        guard let retData: AnySequence<Row> = try? db.prepare(TABLE_STORAGE) else { return nil}
+        guard let retData: AnySequence<Row> = try? db.prepare(tableStorage) else { return nil}
         for rData in retData {
             retArray.append(rData[COL_NAME])
         }
@@ -182,12 +188,33 @@ class StorageDatabaseHelper {
     func values() -> Array<String>? {
         var retArray: Array<String> = Array<String>()
         guard let db: Connection = getReadableDatabase() else {return nil}
-        guard let retData: AnySequence<Row> = try? db.prepare(TABLE_STORAGE) else { return nil}
+        guard let retData: AnySequence<Row> = try? db.prepare(tableStorage) else { return nil}
         for rData in retData {
             retArray.append(rData[COL_VALUE])
         }
         return retArray
     }
-    
+    private func createTable (db: Connection, tableName: String ) -> Bool {
+        let tableStorage = Table(tableName);
+        do {
+            try db.run(tableStorage.create(ifNotExists: true) { t in
+                t.column(COL_ID, primaryKey: .autoincrement)
+                t.column(COL_NAME,unique: true)
+                t.column(COL_VALUE)
+            })
+            // index COL_NAME
+            do {
+                try db.run(tableStorage.createIndex(COL_NAME, ifNotExists: true))
+                
+            } catch let error {
+                print("init: Error Index creation failed: \(error)")
+                return false
+            }
+        } catch let error {
+            print("init: Error Table creation failed: \(error)")
+            return false
+        }
+        return true
+    }
 }
 

@@ -16,7 +16,39 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
             name: 'CapacitorDataStorageSqlite',
             platforms: ['web']
         });
-        this.mDb = new StorageDatabaseHelper();
+    }
+    openStore(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let ret = false;
+            let dbName = options.database ? `${options.database}IDB` : "storageIDB";
+            let tableName = options.table ? options.table : "storage_store";
+            this.mDb = new StorageDatabaseHelper(dbName, tableName);
+            if (this.mDb)
+                ret = true;
+            return Promise.resolve({ result: ret });
+        });
+    }
+    setTable(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let tableName = options.table;
+            if (tableName == null) {
+                return Promise.reject("Must provide a table name");
+            }
+            let ret = false;
+            let message = "";
+            if (this.mDb) {
+                ret = yield this.mDb.setTable(tableName);
+                if (ret) {
+                    return Promise.resolve({ result: ret, message: message });
+                }
+                else {
+                    return Promise.resolve({ result: ret, message: "failed in adding table" });
+                }
+            }
+            else {
+                return Promise.resolve({ result: ret, message: "Must open a store first" });
+            }
+        });
     }
     set(options) {
         return __awaiter(this, void 0, void 0, function* () {

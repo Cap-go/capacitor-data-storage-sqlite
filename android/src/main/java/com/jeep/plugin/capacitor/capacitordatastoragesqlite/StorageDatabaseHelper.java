@@ -22,58 +22,62 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "StorageDatabaseHelper";
     private static StorageDatabaseHelper sInstance;
     // Database Info
-    private static final String DATABASE_NAME = "storageSQLite.db";
-    private static final int DATABASE_VERSION = 1;
+//    private static final String DATABASE_NAME = "storageSQLite.db";
+//    private static final int DATABASE_VERSION = 1;
 
     // Table Names
-    private static final String TABLE_STORAGE = "storage_table";
+//    private static final String TABLE_STORAGE = "storage_table";
+    private String tableName;
+    private final String dbName;
+    private final int dbVersion;
 
     // Storage Table Columns
     private static final String COL_ID = "id";
     private static final String COL_NAME = "name";
     private static final String COL_VALUE = "value";
-
-    public static synchronized StorageDatabaseHelper getInstance(Context context) {
+/*
+    public static synchronized StorageDatabaseHelper getInstance(Context context, String _dbName, String _tableName, int _vNumber) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
-            sInstance = new StorageDatabaseHelper(context.getApplicationContext());
+            sInstance = new StorageDatabaseHelper(context.getApplicationContext(),_dbName,_tableName,_vNumber);
         }
         return sInstance;
     }
-
+*/
     /**
      * Constructor should be private to prevent direct instantiation.
      * Make a call to the static method "getInstance()" instead.
      */
-    private StorageDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    //private StorageDatabaseHelper(Context context,String _dbName, String _tableName,int _vNumber) {
+    StorageDatabaseHelper(Context context, String _dbName, String _tableName, int _vNumber) {
+        super(context, _dbName, null, _vNumber);
+        dbName = _dbName;
+        tableName = _tableName;
+        dbVersion = _vNumber;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_STORAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_STORAGE +
-                "(" +
-                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + // Define a primary key
-                COL_NAME + " TEXT," +
-                COL_VALUE + " TEXT" +
-                ")";
-        String CREATE_INDEX_NAME = "CREATE INDEX tag_name on " + TABLE_STORAGE +
-                " (" + COL_NAME  + ")";
-        db.execSQL(CREATE_STORAGE_TABLE);
-        db.execSQL(CREATE_INDEX_NAME);
-        Log.d(TAG, "onCreate: name: database created");
+        Log.d(TAG, "onCreate: "+ tableName);
+        createTable(db,tableName);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_STORAGE);
+            dropAllTables(db);
             onCreate(db);
         }
     }
+    public boolean setTable(String _tableName) {
+        SQLiteDatabase db = getWritableDatabase();
+        boolean ret = createTable(db,_tableName);
+        Log.d(TAG, "setTable: "+ tableName);
+        return ret;
 
+    }
     // Insert a data into the database
     public boolean set(Data data) {
         boolean ret = false;
@@ -96,7 +100,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 values.put(COL_VALUE, data.value);
 
                 // do not need to specify the primary key. SQLite auto increments the primary key column.
-                db.insertOrThrow(TABLE_STORAGE, null, values);
+                db.insertOrThrow(tableName, null, values);
                 db.setTransactionSuccessful();
                 ret = true;
             } catch (Exception e) {
@@ -118,7 +122,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         // wrap our update in a transaction.
         db.beginTransaction();
         try {
-            db.update(TABLE_STORAGE, values, COL_NAME + " = ?",
+            db.update(tableName, values, COL_NAME + " = ?",
                     new String[] { String.valueOf(data.name) });
             db.setTransactionSuccessful();
             ret = true;
@@ -138,7 +142,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         // wrap our delete in a transaction.
         db.beginTransaction();
         try {
-            db.delete(TABLE_STORAGE, COL_NAME + "= '" + name +"'",
+            db.delete(tableName, COL_NAME + "= '" + name +"'",
                     null);
             db.setTransactionSuccessful();
             ret = true;
@@ -159,10 +163,10 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         values.put("SEQ", 0);
         db.beginTransaction();
         try {
-            db.delete(TABLE_STORAGE, null, null);
+            db.delete(tableName, null, null);
             // set back the key primary index to 0
             db.update("SQLITE_SEQUENCE", values, "NAME = ?",
-                    new String[] { String.valueOf(TABLE_STORAGE) });
+                    new String[] { String.valueOf(tableName) });
             db.setTransactionSuccessful();
             ret = true;
         } catch (Exception e) {
@@ -185,7 +189,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public Data get(String name) {
         Data data = null;
 
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ TABLE_STORAGE +
+        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName +
                 " WHERE " + COL_NAME + " = '" + name + "'";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
@@ -218,7 +222,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public List<String> keys() {
         List<String> data = new ArrayList<>();
 
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ TABLE_STORAGE;
+        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
@@ -250,7 +254,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public List<String> values() {
         List<String> data = new ArrayList<>();
 
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ TABLE_STORAGE;
+        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
@@ -282,7 +286,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public List<Data> keysvalues() {
         List<Data> data = new ArrayList<>();
 
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ TABLE_STORAGE;
+        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
@@ -310,5 +314,54 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         }
         return data;
     }
+    private boolean dropAllTables(SQLiteDatabase db) {
+        boolean ret = false;
+        List<String> tables = new ArrayList<String>();
+        Cursor cursor = db.rawQuery("SELECT * FROM sqlite_master WHERE type='table';", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String tableName = cursor.getString(1);
+            if (!tableName.equals("android_metadata") &&
+                    !tableName.equals("sqlite_sequence"))
+                tables.add(tableName);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        try {
+            for(String tableName:tables) {
+                db.execSQL("DROP TABLE IF EXISTS " + tableName);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error: dropAllTables failed: ",e);
+        } finally {
+            ret = true;
+        }
+        return ret;
+    }
+    private boolean createTable(SQLiteDatabase db, String _tableName) {
 
+        String CREATE_STORAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + _tableName +
+                "(" +
+                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + // Define a primary key
+                COL_NAME + " TEXT," +
+                COL_VALUE + " TEXT" +
+                ")";
+        String CREATE_INDEX_NAME = "CREATE INDEX IF NOT EXISTS idx_"+_tableName+"_name on " + _tableName +
+                " (" + COL_NAME  + ")";
+        Log.d(TAG, "onsetTable: "+ _tableName);
+        db.beginTransaction();
+        try {
+            db.execSQL(CREATE_STORAGE_TABLE);
+            db.execSQL(CREATE_INDEX_NAME);
+            Log.d(TAG, "onCreate: name: database created");
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d(TAG, "set: Error while trying to add a table to database");
+            return false;
+        } finally {
+            db.endTransaction();
+            tableName = _tableName;
+            return true;
+        }
+    }
 }

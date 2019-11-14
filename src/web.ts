@@ -1,7 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { Data } from './web-utils/Data';
-import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorageResult  } from './definitions';
+import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorageResult , capOpenStorageOptions } from './definitions';
 
 export class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
   mDb:StorageDatabaseHelper;
@@ -10,9 +10,35 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin implements Capacito
       name: 'CapacitorDataStorageSqlite',
       platforms: ['web']
     });
-    this.mDb = new StorageDatabaseHelper();
   }
 
+  async openStore(options: capOpenStorageOptions): Promise<capDataStorageResult> {
+    let ret: boolean = false;
+    let dbName = options.database ? `${options.database}IDB` : "storageIDB";
+    let tableName = options.table ? options.table : "storage_store";
+    this.mDb = new StorageDatabaseHelper(dbName,tableName);
+    if(this.mDb) ret = true;
+    return Promise.resolve({result:ret});
+  }
+
+  async setTable(options: capOpenStorageOptions): Promise<capDataStorageResult> {
+    let tableName = options.table;
+    if (tableName == null) {
+      return Promise.reject("Must provide a table name");
+    }
+    let ret: boolean = false;
+    let message: string = "";
+    if(this.mDb) {
+      ret = await this.mDb.setTable(tableName);
+      if (ret) {
+        return Promise.resolve({result:ret, message:message});
+      } else {
+        return Promise.resolve({result:ret, message:"failed in adding table"});
+      }
+    } else {
+      return Promise.resolve({result:ret, message:"Must open a store first"});
+    }
+  }
   async set(options: capDataStorageOptions): Promise<capDataStorageResult> {
     let ret: boolean;
     let key:string = options.key;

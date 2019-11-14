@@ -14,8 +14,38 @@ import Capacitor
 @objc(CapacitorDataStorageSqlite)
 public class CapacitorDataStorageSqlite: CAPPlugin {
     
-    let mDb:StorageDatabaseHelper = StorageDatabaseHelper()
-    
+//    let mDb:StorageDatabaseHelper = StorageDatabaseHelper()
+    var mDb: StorageDatabaseHelper?
+
+    @objc func openStore(_ call: CAPPluginCall) {
+        let dbName = call.options["database"] as? String ?? "storage"
+        let tableName = call.options["table"] as? String ?? "storage_table"
+        mDb = StorageDatabaseHelper(databaseName:"\(dbName)SQLite.db",tableName:tableName)
+        if(mDb != nil) {
+            call.success([
+                "result": true
+            ])
+        } else {
+            call.reject("No database connection")
+        }
+    }    
+    @objc func setTable(_ call: CAPPluginCall) {
+        guard let tableName = call.options["table"] as? String else {
+            call.reject("Must provide a table name")
+            return
+        }
+        var res: Bool = false;
+        var message: String = "";
+        if(mDb != nil) {
+            res = mDb!.setTable(tblName:tableName)
+            if (!res) {
+                message = "failed in adding table";
+            }
+        } else {
+            message = "Must open a store first";
+        }
+        call.success(["result" : res , "message" : message])
+    }    
     @objc func set(_ call: CAPPluginCall) {
         var data: Data = Data()
         guard let key = call.options["key"] as? String else {
@@ -28,7 +58,7 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             return
         }
         data.value = value
-        let res: Bool = mDb.set(data:data)
+        let res: Bool = mDb!.set(data:data)
         
         call.resolve([
             "result": res
@@ -40,7 +70,7 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             call.reject("Must provide a key")
             return
         }
-        let data: Data = mDb.get(name:key)!
+        let data: Data = mDb!.get(name:key)!
         if data.id != nil {
             call.resolve([
                 "value": data.value!
@@ -60,14 +90,14 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             call.reject("Must provide a key")
             return
         }
-        let result = mDb.remove(name:key)
+        let result = mDb!.remove(name:key)
         call.resolve([
             "result": result
             ])
     }
     
     @objc func clear(_ call: CAPPluginCall) {
-        let result = mDb.clear()
+        let result = mDb!.clear()
         call.resolve([
             "result": result
             ])
@@ -78,28 +108,28 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             call.reject("Must provide a key")
             return
         }
-        let result = mDb.iskey(name:key)
+        let result = mDb!.iskey(name:key)
         call.resolve([
             "result": result
             ])
     }
     
     @objc func keys(_ call: CAPPluginCall) {
-        let result = mDb.keys()
+        let result = mDb!.keys()
         call.resolve([
             "keys": result!
             ])
     }
     
     @objc func values(_ call: CAPPluginCall) {
-        let result = mDb.values()
+        let result = mDb!.values()
         call.resolve([
             "values": result!
             ])
     }
     
     @objc func keysvalues(_ call: CAPPluginCall) {
-        let results = mDb.keysvalues()
+        let results = mDb!.keysvalues()
         var dic: Array<Any> = []
         for result in results! {
             let res = ["key" : result.name, "value" : result.value]
