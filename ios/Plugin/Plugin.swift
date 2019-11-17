@@ -139,5 +139,5 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             "keysvalues": dic
             ])
     }
-    
+
 }

@@ -50,6 +50,131 @@ Change since release 1.2.1-11
     set({key:"foo",value:"foovalue"})                   set key and its value
     values()                                            get all values
 
+## Using a wrapper to adhere to the Storage API 
+(https://developer.mozilla.org/de/docs/Web/API/Storage)
+
+```javascript
+export const createCapacitorSqliteStorage = (storage:any) => {
+
+    return {
+      openStore: (options,cb) => {
+          storage.openStore(options)
+          .then(({result} ) => cb(null, result))
+          .catch(cb);
+      },
+      setTable: (table, cb) => {
+        storage.setTable(table)
+        .then(({result,message} ) => cb(null, result,message))
+        .catch(cb);
+      },
+      getAllKeys: cb => {
+        storage.keys()
+          .then(({ keys }) => cb(null, keys))
+          .catch(cb);
+      },
+      getItem: (key, cb) => {
+        storage.get({ key })
+          .then(({ value }) => cb(null, value))
+          .catch(cb);
+      },
+      setItem: (key, value, cb) => {
+        storage.set({ key, value })
+          .then(() => cb())
+          .catch(cb);
+      },
+      removeItem: (key, cb) => {
+        storage.remove({ key })
+          .then(() => cb())
+          .catch(cb);
+      },
+      clear: cb => {
+        storage.clear()
+          .then(() => cb())
+          .catch(cb);
+      },
+    };
+}
+
+```
+
+```typescript
+export const wrapperToCapacitorSqliteStorage = (storage:any) => {
+
+  return {
+    openStore: async (options:any): Promise<boolean> => {
+        const {result} = await storage.openStore(options);
+        return result;
+    },
+    setTable: async (table:any): Promise<any> => {
+      const {result,message} = await storage.setTable(table);
+      return Promise.resolve([result,message])
+    },
+    setItem: async (key:string, value:string): Promise<void> => {
+      await storage.set({ key, value });
+      return;
+    },
+    getItem: async (key:string): Promise<string> => {
+      const {value} = await storage.get({ key });
+      return value;
+    },
+    getAllKeys: async (): Promise<Array<string>> => {
+      const {keys} = await storage.keys();
+      return keys;
+    },
+    removeItem: async (key:string): Promise<void> => {
+      await storage.remove({ key });
+      return;
+    },
+    clear: async (): Promise<void> => {
+      await storage.clear();
+      return;
+    },
+
+  }
+}
+```
+
+and in your app file
+
+```typescript
+const info = await Device.getInfo();
+let storage:any;
+if (info.platform === "ios" || info.platform === "android") {
+    storage = CapacitorDataStorageSqlite;
+}  else {
+    storage = CapacitorSQLPlugin.CapacitorDataStorageSqlite;     
+}
+    let result: boolean = await wrapperToCapacitorSqliteStorage(this.storage).openStore({});
+    if(result){
+      await wrapperToCapacitorSqliteStorage(this.storage).clear();
+      await wrapperToCapacitorSqliteStorage(this.storage).setItem("key-test", "This is a test");
+      let value:string = await wrapperToCapacitorSqliteStorage(this.storage).getItem("key-test")
+      if (value === "This is a test") ret1 = true;
+      let keys:Array<string> = await wrapperToCapacitorSqliteStorage(this.storage).getAllKeys();
+      if (keys[0] === "key-test") ret2 = true;     
+      await wrapperToCapacitorSqliteStorage(this.storage).removeItem("key-test");
+      keys = await wrapperToCapacitorSqliteStorage(this.storage).getAllKeys();
+      if (keys.length === 0) ret3 = true;           
+      result = await wrapperToCapacitorSqliteStorage(this.storage).openStore({database:"testStore",table:"table1"});
+      if(result) {
+        await wrapperToCapacitorSqliteStorage(this.storage).clear();
+        await wrapperToCapacitorSqliteStorage(this.storage).setItem("key1-test", "This is a new store");
+        value = await wrapperToCapacitorSqliteStorage(this.storage).getItem("key1-test")
+        if (value === "This is a new store") ret4 = true;
+        let statusTable: any = await wrapperToCapacitorSqliteStorage(this.storage).setTable({table:"table2"}); 
+        if(statusTable[0]) ret5 = true;
+        await wrapperToCapacitorSqliteStorage(this.storage).clear();
+        await wrapperToCapacitorSqliteStorage(this.storage).setItem("key2-test", "This is a second table");
+        value = await wrapperToCapacitorSqliteStorage(this.storage).getItem("key2-test")
+        if (value === "This is a second table") ret6 = true;
+      }
+    }
+    if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6) {
+      console.log('testPlugin2 is successful')
+    }
+
+```
+
 ## To use the Plugin in your Project
 ```bash
 npm install --save capacitor-data-storage-sqlite@latest

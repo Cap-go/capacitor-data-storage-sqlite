@@ -1,4 +1,11 @@
-## 1.2.1-10 (2019-11-14)
+## 1.2.1-12 (2019-11-17)
+
+### Bug Fixes
+
+* fix definition comments 
+* add in README the use of a wrapper to conform to Storage API
+
+## 1.2.1-11 (2019-11-14)
 
 ### Added Features
 

@@ -13,16 +13,16 @@ export interface CapacitorDataStorageSqlitePlugin {
   openStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
   /**
    * Set or Add a table to an existing store
-   * @param {capOpenStorageOptions} options 
+   * @param {capOpenStorageOptions} options {table: string}
    * @returns {Promise<capDataStorageResult>} {result:boolean}
    */
   setTable(options: capOpenStorageOptions): Promise<capDataStorageResult>;
   /**
    * Store a data with given key and value
-   * @param {capDataStorageOptions} options {table: string}
+   * @param {capDataStorageOptions} options {key: string, value: string}
    * @returns {Promise<capDataStorageResult>} {result:boolean}
    */
-   set(options: capDataStorageOptions): Promise<capDataStorageResult>;
+  set(options: capDataStorageOptions): Promise<capDataStorageResult>;
   /**
    * Retrieve a data value for a given data key
    * @param {capDataStorageOptions} options {key:"foo",value:"foovalue"}
@@ -46,12 +46,6 @@ export interface CapacitorDataStorageSqlitePlugin {
    * @returns {Promise<capDataStorageResult>} {result:boolean}
    */
   iskey(options: capDataStorageOptions): Promise<capDataStorageResult>; 
-  /**
-   * Remove a data key if exists
-   * @param {capDataStorageOptions} options {key:"foo"}
-   * @returns {Promise<capDataStorageResult>} {result:boolean}
-   */
-  remove(options: capDataStorageOptions): Promise<capDataStorageResult>;
   /**
    * Get the data key list
    * @returns {Promise<capDataStorageResult>} {keys:Array<string>}
