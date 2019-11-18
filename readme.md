@@ -53,8 +53,10 @@ Change since release 1.2.1-11
 ## Using a wrapper to adhere to the Storage API 
 (https://developer.mozilla.org/de/docs/Web/API/Storage)
 
+ - Javascript wrapper
+
 ```javascript
-export const createCapacitorSqliteStorage = (storage:any) => {
+export const StorageAPIWrapper = (storage:any) => {
 
     return {
       openStore: (options,cb) => {
@@ -96,83 +98,97 @@ export const createCapacitorSqliteStorage = (storage:any) => {
 }
 
 ```
+ - Typescript wrapper class
 
 ```typescript
-export const wrapperToCapacitorSqliteStorage = (storage:any) => {
+import { Plugins } from '@capacitor/core';
+import * as CapacitorSQLPlugin from 'capacitor-data-storage-sqlite';
+const { CapacitorDataStorageSqlite, Device } = Plugins;
 
-  return {
-    openStore: async (options:any): Promise<boolean> => {
-        const {result} = await storage.openStore(options);
+export class StorageAPIWrapper {
+    public storage: any = {}
+    constructor() { 
+    }
+    async init(): Promise<void> {
+        const info = await Device.getInfo();
+        console.log('platform ',info.platform)
+        if (info.platform === "ios" || info.platform === "android") {
+            this.storage = CapacitorDataStorageSqlite;
+        }  else {
+            this.storage = CapacitorSQLPlugin.CapacitorDataStorageSqlite;     
+        } 
+    }
+    public async openStore(options:any): Promise<boolean> {
+        await this.init();
+        const {result} = await this.storage.openStore(options);
         return result;
-    },
-    setTable: async (table:any): Promise<any> => {
-      const {result,message} = await storage.setTable(table);
-      return Promise.resolve([result,message])
-    },
-    setItem: async (key:string, value:string): Promise<void> => {
-      await storage.set({ key, value });
-      return;
-    },
-    getItem: async (key:string): Promise<string> => {
-      const {value} = await storage.get({ key });
-      return value;
-    },
-    getAllKeys: async (): Promise<Array<string>> => {
-      const {keys} = await storage.keys();
-      return keys;
-    },
-    removeItem: async (key:string): Promise<void> => {
-      await storage.remove({ key });
-      return;
-    },
-    clear: async (): Promise<void> => {
-      await storage.clear();
-      return;
-    },
-
-  }
+    }
+    public async setTable(table:any): Promise<any>  {
+        const {result,message} = await this.storage.setTable(table);
+        return Promise.resolve([result,message]);
+    }
+    public async setItem(key:string, value:string): Promise<void> {
+        await this.storage.set({ key, value });
+    return;
+    }
+    public async getItem(key:string): Promise<string> {
+        const {value} = await this.storage.get({ key });
+    return value;
+    }
+    public async getAllKeys(): Promise<Array<string>> {
+        const {keys} = await this.storage.keys();
+    return keys;
+    }
+    public async removeItem(key:string): Promise<void> {
+        await this.storage.remove({ key });
+    return;
+    }
+    public async clear(): Promise<void> {
+        await this.storage.clear();
+    return;
+    }
 }
 ```
 
-and in your app file
+and in your typescript app file
 
 ```typescript
-const info = await Device.getInfo();
-let storage:any;
-if (info.platform === "ios" || info.platform === "android") {
-    storage = CapacitorDataStorageSqlite;
-}  else {
-    storage = CapacitorSQLPlugin.CapacitorDataStorageSqlite;     
-}
-    let result: boolean = await wrapperToCapacitorSqliteStorage(this.storage).openStore({});
+  async testPluginWithWrapper() {
+    this.storage = new StorageAPIWrapper();
+    let ret1: boolean = false;
+    let ret2: boolean = false;
+    let ret3: boolean = false;
+    let ret4: boolean = false;
+    let ret5: boolean = false;
+    let ret6: boolean = false;
+    let result: boolean = await this.storage.openStore({});
     if(result){
-      await wrapperToCapacitorSqliteStorage(this.storage).clear();
-      await wrapperToCapacitorSqliteStorage(this.storage).setItem("key-test", "This is a test");
-      let value:string = await wrapperToCapacitorSqliteStorage(this.storage).getItem("key-test")
+      await this.storage.clear();
+      await this.storage.setItem("key-test", "This is a test");
+      let value:string = await this.storage.getItem("key-test")
       if (value === "This is a test") ret1 = true;
-      let keys:Array<string> = await wrapperToCapacitorSqliteStorage(this.storage).getAllKeys();
+      let keys:Array<string> = await this.storage.getAllKeys();
       if (keys[0] === "key-test") ret2 = true;     
-      await wrapperToCapacitorSqliteStorage(this.storage).removeItem("key-test");
-      keys = await wrapperToCapacitorSqliteStorage(this.storage).getAllKeys();
+      await this.storage.removeItem("key-test");
+      keys = await this.storage.getAllKeys();
       if (keys.length === 0) ret3 = true;           
-      result = await wrapperToCapacitorSqliteStorage(this.storage).openStore({database:"testStore",table:"table1"});
+      result = await this.storage.openStore({database:"testStore",table:"table1"});
       if(result) {
-        await wrapperToCapacitorSqliteStorage(this.storage).clear();
-        await wrapperToCapacitorSqliteStorage(this.storage).setItem("key1-test", "This is a new store");
-        value = await wrapperToCapacitorSqliteStorage(this.storage).getItem("key1-test")
+        await this.storage.clear();
+        await this.storage.setItem("key1-test", "This is a new store");
+        value = await this.storage.getItem("key1-test")
         if (value === "This is a new store") ret4 = true;
-        let statusTable: any = await wrapperToCapacitorSqliteStorage(this.storage).setTable({table:"table2"}); 
-        if(statusTable[0]) ret5 = true;
-        await wrapperToCapacitorSqliteStorage(this.storage).clear();
-        await wrapperToCapacitorSqliteStorage(this.storage).setItem("key2-test", "This is a second table");
-        value = await wrapperToCapacitorSqliteStorage(this.storage).getItem("key2-test")
+        let statusTable: any = await this.storage.setTable({table:"table2"});if(statusTable[0]) ret5 = true;
+        await this.storage.clear();
+        await this.storage.setItem("key2-test", "This is a second table");
+        value = await this.storage.getItem("key2-test")
         if (value === "This is a second table") ret6 = true;
       }
     }
     if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6) {
-      console.log('testPlugin2 is successful')
+      console.log('testPlugin2 is successful');
     }
-
+  }
 ```
 
 ## To use the Plugin in your Project

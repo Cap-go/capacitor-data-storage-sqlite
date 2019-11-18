@@ -1,3 +1,15 @@
+## 1.2.1-14 (2019-11-18)
+
+### Bug Fixes
+
+* fix README with Typescript wrapper class StorageAPIWrapper
+
+## 1.2.1-13 (2019-11-17)
+
+### Bug Fixes
+
+* fix README 
+
 ## 1.2.1-12 (2019-11-17)
 
 ### Bug Fixes
