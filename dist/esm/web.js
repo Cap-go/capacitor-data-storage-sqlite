@@ -17,6 +17,12 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
             platforms: ['web']
         });
     }
+    echo(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('ECHO', options);
+            return options;
+        });
+    }
     openStore(options) {
         return __awaiter(this, void 0, void 0, function* () {
             let ret = false;

@@ -5,6 +5,7 @@ declare module "@capacitor/core" {
 }
 
 export interface CapacitorDataStorageSqlitePlugin {
+  echo(options: { value: string }): Promise<{value: string}>;
   /**
    * Open a store
    * @param {capOpenStorageOptions} options {database: string, table: string}
@@ -75,6 +76,18 @@ export interface capOpenStorageOptions {
   table?: string;   // default:
                     //  ios, android: storage_table
                     //  web: storage_store
+  /**
+   * Set to true for database encryption
+   */
+  encrypted?: boolean;  // only for ios and android
+  /**
+   * The secret key for database encryption
+   */
+  secret?: string;  // only for ios and android
+  /**
+   * The new secret key for database encryption
+   */
+  newsecret?: string;  // only for ios and android
 
 }
 export interface capDataStorageOptions {

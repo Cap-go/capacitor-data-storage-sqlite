@@ -1,3 +1,18 @@
+## 1.4.0-dev.5 (2019-12-28)
+### Added Features
+
+* add encrypted database for IOS
+
+### Bug Fixes
+
+* fix Android encrypted database for Android
+
+
+## 1.4.0-dev.4 (2019-12-25)
+### Added Features
+
+* add encrypted database for Android Only
+
 ## 1.2.1-14 (2019-11-18)
 
 ### Bug Fixes

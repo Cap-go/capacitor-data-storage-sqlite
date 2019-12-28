@@ -12,6 +12,11 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin implements Capacito
     });
   }
 
+  async echo(options: { value: string }): Promise<{value: string}> {
+    console.log('ECHO', options);
+    return options;
+  }
+
   async openStore(options: capOpenStorageOptions): Promise<capDataStorageResult> {
     let ret: boolean = false;
     let dbName = options.database ? `${options.database}IDB` : "storageIDB";

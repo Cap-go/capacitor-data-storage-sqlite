@@ -4,6 +4,11 @@ import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorage
 export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     mDb: StorageDatabaseHelper;
     constructor();
+    echo(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
     openStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
     setTable(options: capOpenStorageOptions): Promise<capDataStorageResult>;
     set(options: capDataStorageOptions): Promise<capDataStorageResult>;

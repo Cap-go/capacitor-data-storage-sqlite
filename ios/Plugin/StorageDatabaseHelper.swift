@@ -2,171 +2,261 @@
 //  StorageDatabaseHelper.swift
 //  Plugin
 //
-//  Created by  Quéau Jean Pierre on 16/06/2019.
+//  Created by  Quéau Jean Pierre on 22/12/2019.
 //  Copyright © 2019 Max Lynch. All rights reserved.
 //
 
 import Foundation
-import SQLite
+
+import SQLCipher
+
+enum StorageDatabaseHelperError: Error {
+    case connectionFailed
+    case wrongSecret
+    case wrongNewSecret
+    case creationTableFailed
+    case creationIndexFailed
+    case encryptionFailed
+    case deleteFileFailed
+    case fileNotExist
+    case alreadyEncrypted
+    case noTables
+    case renameFileFailed
+    case insertRowFailed
+}
+
 class StorageDatabaseHelper {
-    var databaseName: String
+    public var isOpen: Bool = false;
     var tableName: String
-    var tableStorage: Table
-//    let DATABASE_NAME: String = "storageSQLite.db"
-    let TABLE_INDEX: Table = Table("sqlite_sequence")
-    let IDX_COL_NAME: Expression<String> = Expression<String>("name")
-    let IDX_COL_SEQ: Expression<Int64> = Expression<Int64>("seq")
-//    let TABLE_STORAGE_NAME = "storage_table"
-//    let TABLE_STORAGE: Table = Table("storage_table")
-    let COL_ID: Expression<Int64> = Expression<Int64>("id")
-    let COL_NAME: Expression<String> = Expression<String>("name")
-    let COL_VALUE: Expression<String> = Expression<String>("value")
+    var secret: String
+    var newsecret: String
+    var encrypted: Bool
+    var dbName: String
+    let TABLE_INDEX:String = "sqlite_sequence"
+    let IDX_COL_NAME: String = "name"
+    let IDX_COL_SEQ: String = "seq"
+    let COL_ID: String = "id"
+    let COL_NAME: String = "name"
+    let COL_VALUE: String = "value"
     // define the path for the database
     let path: String = NSSearchPathForDirectoriesInDomains(
         .documentDirectory, .userDomainMask, true
         ).first!
-    init(databaseName: String,tableName: String) {
-        print("databaseName: \(databaseName) ")
-        print("tableName: \(tableName) ")
+    
+    // init function
+    
+    init(databaseName: String,tableName: String, encrypted:Bool, secret:String = "", newsecret:String = "") throws {
         print("path: \(path)")
-        self.databaseName = databaseName
         self.tableName = tableName
-        self.tableStorage = Table(tableName)
+        self.secret = secret
+        self.newsecret = newsecret
+
+        self.encrypted = encrypted
+        self.dbName = databaseName
 
         // connect to the database (create if doesn't exist)
-        guard let db = try? Connection("\(path)/\(databaseName)") else {
-            let error:String = "init: Error Database connection failed"
-            print(error)
-            return
+        var db: OpaquePointer?
+        if !self.encrypted {
+            if secret.count > 0 {
+                 if isFileExist(filePath: "\(path)/\(self.dbName)") {
+                    // rename database file as temp.db
+                    let tempFile: String = "\(path)/temp.db"
+                    try renameFile(filePath: "\(path)/\(self.dbName)", toFilePath: tempFile)
+                    do {
+                        try db = connection("\(path)/\(self.dbName)",readonly: false,key: secret)
+                        // copy the temp file in the new encrypted database
+                        let tempDB: OpaquePointer = try connection(tempFile)
+                        let tables: Array<String> = try getTables(db: tempDB)
+                        let currentTableName: String = self.tableName
+                        for table: String in tables {
+                            self.tableName = table
+                            let rawData: Array<Data> = getKeysValues(db: tempDB)!
+                            // Create table
+                            let res: Bool = createTable(db: db!,tableName: table, ifNotExists: false)
+                            if res {
+                                for row: Data in rawData {
+                                    let insertStatementString = "INSERT INTO \(table) (\(COL_NAME), \(COL_VALUE)) VALUES (?, ?);"
+                                    var insertStatement: OpaquePointer? = nil
+
+                                    if sqlite3_prepare_v2(db, insertStatementString, -1, &insertStatement, nil) == SQLITE_OK {
+                                        let name: NSString = row.name! as NSString
+                                        let value: NSString = row.value! as NSString
+
+                                        sqlite3_bind_text(insertStatement, 1, name.utf8String, -1, nil)
+                                        sqlite3_bind_text(insertStatement, 2, value.utf8String, -1, nil)
+
+                                      if sqlite3_step(insertStatement) != SQLITE_DONE {
+                                        print("init: Could not insert row.")
+                                        throw StorageDatabaseHelperError.insertRowFailed
+                                      }
+                                    } else {
+                                        print("init: INSERT statement could not be prepared.")
+                                        throw StorageDatabaseHelperError.insertRowFailed
+                                    }
+                                    sqlite3_finalize(insertStatement)
+
+                                }
+                                // create index
+                                let resIndex:Bool = createIndex(db:db!,tableName:table,colName:IDX_COL_NAME,ifNotExists:true);
+                                if !resIndex {
+                                    throw StorageDatabaseHelperError.creationIndexFailed
+                                }
+                            } else {
+                                throw StorageDatabaseHelperError.creationTableFailed
+                            }
+                        }
+                        try deleteFile(filePath: tempFile)
+                        self.tableName = currentTableName
+                        self.encrypted = true
+                        self.isOpen = true
+
+                    } catch {
+                        let error:String = "init: Error Database connection failed wrong secret"
+                        print(error)
+                        throw StorageDatabaseHelperError.wrongSecret
+                    }
+                } else {
+                    let error:String = "init: Error Database not existing"
+                    print(error)
+                    throw StorageDatabaseHelperError.fileNotExist
+                }
+            } else {
+                do {
+                    try db = connection("\(path)/\(self.dbName)")
+                    self.isOpen = true
+                } catch {
+                    let error:String = "init: Error Database connection failed"
+                    print(error)
+                    throw StorageDatabaseHelperError.connectionFailed
+                }
+            }
+        } else if encrypted && secret.count > 0 && newsecret.count == 0 {
+            do {
+                try db = connection("\(path)/\(self.dbName)",readonly: false,key: secret)
+                self.isOpen = true
+            } catch {
+                let error:String = "init: Error Database connection failed wrong secret"
+                print(error)
+                throw StorageDatabaseHelperError.wrongSecret
+            }
+
+        } else if encrypted && secret.count > 0 && newsecret.count > 0 {
+            do {
+                try db = connection("\(path)/\(self.dbName)",readonly: false,key: secret)
+                
+                let keyStatementString = """
+                PRAGMA rekey = '\(newsecret)';
+                """
+                if sqlite3_exec(db, keyStatementString, nil,nil,nil) != SQLITE_OK  {
+                    print("connection: Unable to open a connection to database at \(path)/\(self.dbName)")
+                    throw StorageDatabaseHelperError.wrongNewSecret
+                }
+                /* this should work but doe not sqlite3_rekey_v2 is not known
+                if sqlite3_rekey_v2(db!, "\(path)/\(self.dbName)", newsecret, Int32(newsecret.count)) == SQLITE_OK {
+                    self.isOpen = true
+                } else {
+                    print("Unable to open a connection to database at \(path)/\(self.dbName)")
+                    throw StorageDatabaseHelperError.wrongNewSecret
+                }
+                */
+                self.secret = newsecret
+                self.isOpen = true
+
+            } catch {
+                let error:String = "init: Error Database connection failed wrong secret"
+                print(error)
+                throw StorageDatabaseHelperError.wrongSecret
+            }
+
+
         }
+        print("Successfully opened connection to database at \(path)/\(self.dbName)")
+
         // create table
-        _ = createTable(db:db,tableName:tableName);
-
-
-    }
-    func getWritableDatabase() -> Connection? {
-        guard let db = try? Connection("\(path)/\(databaseName)") else {return nil}
-        return db
-    }
-    func getReadableDatabase() -> Connection? {
-        guard let db = try? Connection("\(path)/\(databaseName)", readonly: true) else {return nil}
-        return db
-    }
-    func setTable(tblName: String) -> Bool {
-        guard let db: Connection = getWritableDatabase() else {return false}
-        let res: Bool = createTable(db:db,tableName:tblName);
-        if res {
-            tableName = tblName;
-            tableStorage = Table(tableName)
+        var res: Bool = createTable(db:db!,tableName:tableName,ifNotExists:true);
+        if !res {
+            throw StorageDatabaseHelperError.creationTableFailed
         }
-        return res
+        // create index
+        res = createIndex(db:db!,tableName:tableName,colName:IDX_COL_NAME,ifNotExists:true);
+        if !res {
+            throw StorageDatabaseHelperError.creationIndexFailed
+        }
     }
-
-    func set(data:Data) -> Bool {
+    
+    // Public function
+    
+    public func set(data:Data) -> Bool {
         var ret: Bool = false
-        guard let db: Connection = getWritableDatabase() else {return false}
+        let db: OpaquePointer?
+        do {
+            try db = getWritableDatabase()
+        } catch let error {
+            print("Error: \(error)")
+            return false
+        }
         // check if the data already exists
         if iskey(name: data.name!) {
             ret = updateData(data: data)
         } else {
-            do {
-                try db.run(tableStorage.insert(
-                    COL_NAME <- data.name!,
-                    COL_VALUE <- data.value!
-                ))
-                ret = true
-            } catch let error {
-                print("set: Error Data insertion failed: \(error)")
-            }
-        }
-        return ret
-    }
-    func updateData(data:Data) -> Bool {
-        var ret: Bool = false
-        guard let db: Connection = getWritableDatabase() else {return false}
-        let mFilter = tableStorage.filter(COL_NAME == data.name!)
-        do {
-            if try db.run(mFilter.update(COL_VALUE <- data.value!)) > 0 {
-                ret = true
+            let insertStatementString = "INSERT INTO \(tableName) (\(COL_NAME), \(COL_VALUE)) VALUES (?, ?);"
+            var insertStatement: OpaquePointer? = nil
+
+            if sqlite3_prepare_v2(db, insertStatementString, -1, &insertStatement, nil) == SQLITE_OK {
+                let name: NSString = data.name! as NSString
+                let value: NSString = data.value! as NSString
+
+                sqlite3_bind_text(insertStatement, 1, name.utf8String, -1, nil)
+                sqlite3_bind_text(insertStatement, 2, value.utf8String, -1, nil)
+
+              if sqlite3_step(insertStatement) == SQLITE_DONE {
+                 ret = true
+              } else {
+                print("set: Could not insert row.")
+              }
             } else {
-                print("updateData: Error \(COL_NAME) not found")
+              print("set: INSERT statement could not be prepared.")
             }
-        } catch let error {
-            print("updateData: Error update failed: \(error)")
+            sqlite3_finalize(insertStatement)
         }
         return ret
     }
-    func remove(name:String) -> Bool {
-        var ret: Bool = false
-        guard let db: Connection = getWritableDatabase() else {return false}
-        let mFilter = tableStorage.filter(COL_NAME == name)
-        do {
-            if try db.run(mFilter.delete()) > 0 {
-                ret = true
-            } else {
-                print("deleteDataByName: Error \(COL_NAME) not found")
-            }
-        } catch let error {
-            print("deleteDataByName: Error delete failed: \(error)")
-        }
-        return ret
-    }
-    
-    func clear() -> Bool {
-        var ret: Bool = false
-        guard let db: Connection = getWritableDatabase() else {return false}
-        do {
-            try db.run(tableStorage.delete())
-            ret = resetIndex()
-        } catch let error {
-            print("deleteAllData: Error All data delete failed: \(error)")
-        }
-        return ret
-    }
-    
-    func resetIndex() -> Bool {
-        var ret: Bool = false
-        guard let db: Connection = getWritableDatabase() else {return false}
-        let idxFilter = TABLE_INDEX.filter(IDX_COL_NAME == tableName).limit(1)
-        do {
-            if try db.run(idxFilter.update(IDX_COL_SEQ <- 0)) > 0{
-                ret = true
-            } else {
-                print("resetIndex: Error did not update the index" )
-            }
-        } catch let error {
-            print("resetIndex: Error Index update failed: \(error)")
-        }
-        return ret
-    }
-    func get(name:String) -> Data? {
+    public func get(name:String) -> Data? {
+        var resArray: Array<Data> = []
         var retData: Data = Data()
-        guard let db: Connection = getReadableDatabase() else {return nil}
-        let query = tableStorage.filter(COL_NAME == name).limit(1)
-        guard let rData = try? db.prepare(query) else {return nil}
-        for data in rData {
-            retData.id = data[COL_ID]
-            retData.name = data[COL_NAME]
-            retData.value = data[COL_VALUE]
+        let db: OpaquePointer?
+        do {
+           try db = getReadableDatabase()
+        } catch let error {
+           print("Error: \(error)")
+           return nil
+        }
+        let getString: String = """
+        SELECT * FROM \(tableName) WHERE \(COL_NAME) = "\(name)";
+        """
+        var getStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, getString, -1, &getStatement, nil) == SQLITE_OK {
+            while (sqlite3_step(getStatement) == SQLITE_ROW ) {
+                var rowData: Data = Data()
+                rowData.id = Int64(sqlite3_column_int(getStatement, 0))
+                let queryResultCol1 = sqlite3_column_text(getStatement, 1)
+                rowData.name = String(cString: queryResultCol1!)
+                let queryResultCol2 = sqlite3_column_text(getStatement, 2)
+                rowData.value = String(cString: queryResultCol2!)
+                resArray.append(rowData)
+            }
+        } else {
+            print("get: Error statement could not be prepared.")
+        }
+        sqlite3_finalize(getStatement)
+        if resArray.count > 0 {
+            retData = resArray[0]
+        } else {
+            retData.id = nil
         }
         return retData
     }
-    
-    func keysvalues() -> Array<Data>? {
-        var retArray: Array<Data> = Array<Data>()
-        guard let db: Connection = getReadableDatabase() else {return nil}
-        guard let retData: AnySequence<Row> = try? db.prepare(tableStorage) else { return nil}
-        for rData in retData {
-            var data = Data()
-            data.id = rData[COL_ID]
-            data.name = rData[COL_NAME]
-            data.value = rData[COL_VALUE]
-            retArray.append(data)
-        }
-        return retArray
-    }
-    
-    func iskey(name:String) -> Bool {
+    public func iskey(name:String) -> Bool {
         var ret: Bool = false
         // check if the key already exists
         if (get(name: name))!.id != nil {
@@ -174,47 +264,360 @@ class StorageDatabaseHelper {
         }
         return ret
     }
+    public func updateData(data:Data) -> Bool {
+        var ret: Bool = false
+        let db: OpaquePointer?
+        do {
+           try db = getWritableDatabase()
+        } catch let error {
+           print("Error: \(error)")
+           return false
+        }
+        
+        let updateStatementString = """
+        UPDATE \(tableName) SET \(COL_VALUE) = ?
+        WHERE \(COL_NAME) = ?;
+        """
+        var updateStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, updateStatementString, -1, &updateStatement, nil) == SQLITE_OK {
+            let name: NSString = data.name! as NSString
+            let value: NSString = data.value! as NSString
+
+            sqlite3_bind_text(updateStatement, 1, value.utf8String, -1, nil)
+            sqlite3_bind_text(updateStatement, 2, name.utf8String, -1, nil)
+
+          if sqlite3_step(updateStatement) == SQLITE_DONE {
+             ret = true
+          } else {
+            print("updateData: Could not update row.")
+          }
+        } else {
+          print("updateData: UPDATE statement could not be prepared")
+        }
+        sqlite3_finalize(updateStatement)
+        return ret
+    }
+    public func remove(name:String) -> Bool {
+        var ret: Bool = false
+        let db: OpaquePointer?
+        do {
+           try db = getWritableDatabase()
+        } catch let error {
+           print("Error: \(error)")
+           return false
+        }
+        let deleteStatementStirng = "DELETE FROM \(tableName) WHERE \(COL_NAME) = '\(name)';"
+        
+        var deleteStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, deleteStatementStirng, -1, &deleteStatement, nil) == SQLITE_OK {
+          if sqlite3_step(deleteStatement) == SQLITE_DONE {
+            ret = true
+          } else {
+            print("remove: Could not delete row.")
+          }
+        } else {
+          print("remove: DELETE statement could not be prepared")
+        }
+        sqlite3_finalize(deleteStatement)
+        return ret
+    }
+    public func clear() -> Bool {
+        var ret: Bool = false
+        let db: OpaquePointer?
+        do {
+           try db = getWritableDatabase()
+        } catch let error {
+           print("Error: \(error)")
+           return false
+        }
+        let deleteStatementStirng = "DELETE FROM \(tableName);"
+        
+        var deleteStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, deleteStatementStirng, -1, &deleteStatement, nil) == SQLITE_OK {
+          if sqlite3_step(deleteStatement) == SQLITE_DONE {
+            ret = true
+          } else {
+            print("clear: Could not delete all rows.")
+          }
+        } else {
+          print("clear: DELETE statement could not be prepared")
+        }
+        sqlite3_finalize(deleteStatement)
+        if ret {
+            ret = resetIndex()
+        }
+        return ret
+    }
+    
+    func setTable(tblName: String) -> Bool {
+        var ret: Bool = false
+        let db: OpaquePointer?
+        do {
+            try db = getWritableDatabase()
+        } catch let error {
+            print("Error: \(error)")
+            return false
+        }
+        let res: Bool = createTable(db:db!,tableName:tblName, ifNotExists: true);
+        if res {
+            tableName = tblName;
+            // create index
+            let resIndex: Bool = createIndex(db:db!,tableName:tableName,colName:IDX_COL_NAME,ifNotExists:true);
+            if resIndex {
+                ret = true
+            }
+        }
+        return ret
+    }
     
     func keys() -> Array<String>? {
         var retArray: Array<String> = Array<String>()
-        guard let db: Connection = getReadableDatabase() else {return nil}
-        guard let retData: AnySequence<Row> = try? db.prepare(tableStorage) else { return nil}
-        for rData in retData {
-            retArray.append(rData[COL_NAME])
+        let db: OpaquePointer?
+        do {
+           try db = getReadableDatabase()
+        } catch let error {
+           print("Error: \(error)")
+           return nil
         }
+        let getKeysString: String = "SELECT * FROM \(tableName);"
+        var getKeysStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, getKeysString, -1, &getKeysStatement, nil) == SQLITE_OK {
+            while (sqlite3_step(getKeysStatement) == SQLITE_ROW ) {
+                let queryResultCol1 = sqlite3_column_text(getKeysStatement, 1)
+                retArray.append(String(cString: queryResultCol1!))
+            }
+        } else {
+            print("getKeys: Error statement could not be prepared.")
+        }
+        sqlite3_finalize(getKeysStatement)
         return retArray
     }
     
     func values() -> Array<String>? {
         var retArray: Array<String> = Array<String>()
-        guard let db: Connection = getReadableDatabase() else {return nil}
-        guard let retData: AnySequence<Row> = try? db.prepare(tableStorage) else { return nil}
-        for rData in retData {
-            retArray.append(rData[COL_VALUE])
+        let db: OpaquePointer?
+        do {
+           try db = getReadableDatabase()
+        } catch let error {
+           print("Error: \(error)")
+           return nil
         }
+        let getValuesString: String = "SELECT * FROM \(tableName);"
+        var getValuesStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, getValuesString, -1, &getValuesStatement, nil) == SQLITE_OK {
+            while (sqlite3_step(getValuesStatement) == SQLITE_ROW ) {
+                let queryResultCol2 = sqlite3_column_text(getValuesStatement, 2)
+                retArray.append(String(cString: queryResultCol2!))
+            }
+        } else {
+            print("getValues: Error statement could not be prepared.")
+        }
+        sqlite3_finalize(getValuesStatement)
         return retArray
     }
-    private func createTable (db: Connection, tableName: String ) -> Bool {
-        let tableStorage = Table(tableName);
+    
+    func keysvalues() -> Array<Data>? {
+        var retArray: Array<Data> = Array<Data>()
+        let db: OpaquePointer?
         do {
-            try db.run(tableStorage.create(ifNotExists: true) { t in
-                t.column(COL_ID, primaryKey: .autoincrement)
-                t.column(COL_NAME,unique: true)
-                t.column(COL_VALUE)
-            })
-            // index COL_NAME
-            do {
-                try db.run(tableStorage.createIndex(COL_NAME, ifNotExists: true))
-                
-            } catch let error {
-                print("init: Error Index creation failed: \(error)")
-                return false
-            }
+           try db = getReadableDatabase()
         } catch let error {
-            print("init: Error Table creation failed: \(error)")
-            return false
+           print("Error: \(error)")
+           return nil
         }
-        return true
+        retArray = getKeysValues(db: db)!
+        return retArray
     }
-}
 
+    // Private functions
+    
+    private func connection(_ filename: String, readonly: Bool = false, key: String = "") throws -> OpaquePointer {
+        let flags = readonly ? SQLITE_OPEN_READONLY : SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE
+        var db: OpaquePointer? = nil
+        if sqlite3_open_v2(filename, &db, flags | SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
+            if key.count > 0 {
+                let keyStatementString = """
+                PRAGMA key = '\(key)';
+                """
+                if sqlite3_exec(db, keyStatementString, nil,nil,nil) != SQLITE_OK  {
+                    print("connection: Unable to open a connection to database at \(filename)")
+                    throw StorageDatabaseHelperError.wrongSecret
+                }
+            }
+            /* this should work but doe not sqlite3_key_v2 is not known
+            if key.count > 0 {
+                let nKey:Int32 = Int32(key.count)
+                if sqlite3_key_v2(db!, filename, key, nKey) == SQLITE_OK {
+                    if (sqlite3_exec(db!, "SELECT count(*) FROM sqlite_master;", nil, nil, nil) != SQLITE_OK) {
+                      print("Unable to open a connection to database at \(filename)")
+                      throw StorageDatabaseHelperError.wrongSecret
+                    }
+                } else {
+                    print("Unable to open a connection to database at \(filename)")
+                    throw StorageDatabaseHelperError.wrongSecret
+                }
+            }
+            print("Successfully opened connection to database at \(filename)")
+            */
+            return db!
+        } else {
+            print("connection: Unable to open a connection to database at \(filename)")
+            throw StorageDatabaseHelperError.connectionFailed
+        }
+    }
+        
+    private func getWritableDatabase() throws -> OpaquePointer? {
+        guard let db = try? connection("\(path)/\(self.dbName)",readonly: false,key: secret) else {
+            throw StorageDatabaseHelperError.connectionFailed
+        }
+        return db
+    }
+    private func getReadableDatabase() throws -> OpaquePointer? {
+        guard let db = try? connection("\(path)/\(self.dbName)", readonly: true,key: secret) else {
+            throw StorageDatabaseHelperError.connectionFailed
+        }
+        return db
+    }
+
+    private func createTable (db: OpaquePointer, tableName: String ,ifNotExists: Bool) -> Bool {
+        var ret: Bool = false
+        let exist: String = ifNotExists ? "IF NOT EXISTS" : ""
+        let createTableString: String = """
+        CREATE TABLE \(exist) \(tableName) (
+        \(COL_ID) INTEGER PRIMARY KEY AUTOINCREMENT,
+        \(COL_NAME) TEXT NOT NULL UNIQUE,
+        \(COL_VALUE) TEXT);
+        """
+        var createTableStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
+            if sqlite3_step(createTableStatement) == SQLITE_DONE {
+                ret = true
+            } else {
+                print("createTable: Error \(tableName) table could not be created.")
+            }
+        } else {
+            print("createTable: Error CREATE TABLE statement could not be prepared.")
+        }
+        sqlite3_finalize(createTableStatement)
+        
+        return ret
+    }
+    private func createIndex(db: OpaquePointer, tableName: String, colName:String, ifNotExists: Bool) -> Bool {
+        var ret: Bool = false
+        let exist: String = ifNotExists ? "IF NOT EXISTS" : ""
+        let idx: String = "index_\(tableName)_on_\(colName)"
+        let createIndexString: String = """
+        CREATE INDEX \(exist) "\(idx)" ON "\(tableName)" ("\(colName)");
+        """
+        var createIndexStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createIndexString, -1, &createIndexStatement, nil) == SQLITE_OK {
+            if sqlite3_step(createIndexStatement) == SQLITE_DONE {
+                ret = true
+            } else {
+                print("createIndex: Error Index \(idx) on table \(tableName) could not be created.")
+            }
+        } else {
+            print("createIndex: Error CREATE INDEX statement could not be prepared.")
+        }
+        sqlite3_finalize(createIndexStatement)
+        return ret
+    }
+    private func getTables(db:OpaquePointer) throws -> Array<String> {
+        var retArray: Array<String> = Array<String>()
+
+        let getTablesString: String = """
+        SELECT * FROM sqlite_master WHERE TYPE="table";
+        """
+        var getTablesStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, getTablesString, -1, &getTablesStatement, nil) == SQLITE_OK {
+            while (sqlite3_step(getTablesStatement) == SQLITE_ROW ) {
+                let queryResultCol1 = sqlite3_column_text(getTablesStatement, 1)
+                let name = String(cString: queryResultCol1!)
+                if(name != "sqlite_sequence") {
+                    retArray.append(name)
+                }
+            }
+        } else {
+            print("getTables: Error statement could not be prepared.")
+        }
+        sqlite3_finalize(getTablesStatement)
+        if retArray.count > 0 {
+            return retArray
+        } else {
+            throw StorageDatabaseHelperError.noTables
+        }
+    }
+
+    private func isFileExist(filePath: String) -> Bool {
+        var ret: Bool = false
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: filePath) {
+            ret = true
+         }
+        return ret
+    }
+    
+    private func deleteFile (filePath: String) throws {
+        let fileManager = FileManager.default
+        do {
+            try fileManager.removeItem(atPath: filePath)
+        } catch {
+            throw StorageDatabaseHelperError.deleteFileFailed
+        }
+    }
+    private func renameFile (filePath: String, toFilePath: String) throws {
+        // rename database file as temp.db
+        let fileManager = FileManager.default
+        do {
+            try fileManager.moveItem(atPath: filePath, toPath: toFilePath)
+        }
+        catch  {
+            throw StorageDatabaseHelperError.renameFileFailed
+        }
+    }
+    
+    private func resetIndex() -> Bool {
+         var ret: Bool = false
+         let db: OpaquePointer?
+         do {
+            try db = getWritableDatabase()
+         } catch let error {
+            print("Error: \(error)")
+            return false
+         }
+         let updateStatementString = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='\(tableName)';"
+         var updateStatement: OpaquePointer? = nil
+         if sqlite3_prepare_v2(db, updateStatementString, -1, &updateStatement, nil) == SQLITE_OK {
+           if sqlite3_step(updateStatement) == SQLITE_DONE {
+             ret = true
+           } else {
+             print("resetIndex: Could not reset Index.")
+           }
+         } else {
+           print("resetIndex: UPDATE statement could not be prepared")
+         }
+         sqlite3_finalize(updateStatement)
+         return ret
+    }
+    private func getKeysValues(db: OpaquePointer?) -> Array<Data>? {
+        var retArray: Array<Data> = Array<Data>()
+        let getKeysValuesString: String = "SELECT * FROM \(tableName);"
+        var getKeysValuesStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, getKeysValuesString, -1, &getKeysValuesStatement, nil) == SQLITE_OK {
+            while (sqlite3_step(getKeysValuesStatement) == SQLITE_ROW ) {
+                var rowData: Data = Data()
+                let queryResultCol1 = sqlite3_column_text(getKeysValuesStatement, 1)
+                rowData.name = String(cString: queryResultCol1!)
+                let queryResultCol2 = sqlite3_column_text(getKeysValuesStatement, 2)
+                rowData.value = String(cString: queryResultCol2!)
+                retArray.append(rowData)
+            }
+        } else {
+            print("getKeysValues: Error statement could not be prepared.")
+        }
+        sqlite3_finalize(getKeysValuesStatement)
+        return retArray
+
+    }
+
+}

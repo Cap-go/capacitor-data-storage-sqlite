@@ -13,22 +13,43 @@ import Capacitor
  */
 @objc(CapacitorDataStorageSqlite)
 public class CapacitorDataStorageSqlite: CAPPlugin {
-    
-//    let mDb:StorageDatabaseHelper = StorageDatabaseHelper()
     var mDb: StorageDatabaseHelper?
-
+    
+    @objc func echo(_ call: CAPPluginCall) {
+        let value = call.getString("value") ?? ""
+        call.success([
+            "value": value
+        ])
+    }
     @objc func openStore(_ call: CAPPluginCall) {
         let dbName = call.options["database"] as? String ?? "storage"
         let tableName = call.options["table"] as? String ?? "storage_table"
-        mDb = StorageDatabaseHelper(databaseName:"\(dbName)SQLite.db",tableName:tableName)
-        if(mDb != nil) {
-            call.success([
-                "result": true
+        let secretKey = call.options["secret"] as? String ?? ""
+        let newsecretKey = call.options["newsecret"] as? String ?? ""
+        let encrypted = call.options["encrypted"] as? Bool ?? false
+        print("in openStore: dbName \(dbName)")
+        print("in openStore: tableName \(tableName)")
+        print("in openStore: secretKey \(secretKey)")
+        print("in openStore: newsecretKey \(newsecretKey)")
+        print("in openStore: encrypted \(encrypted)")
+        do {
+            mDb = try StorageDatabaseHelper(databaseName:"\(dbName)SQLite.db",tableName:tableName, encrypted: encrypted,secret:secretKey,newsecret:newsecretKey)
+        } catch let error {
+            call.resolve([
+                "result": false,
+                "message": "Error: \(error)"
+            ])
+        }
+        if !mDb!.isOpen {
+            call.resolve([
+                "result": false
             ])
         } else {
-            call.reject("No database connection")
+            call.resolve([
+                "result": true
+            ])
         }
-    }    
+    }
     @objc func setTable(_ call: CAPPluginCall) {
         guard let tableName = call.options["table"] as? String else {
             call.reject("Must provide a table name")
@@ -45,7 +66,7 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
             message = "Must open a store first";
         }
         call.success(["result" : res , "message" : message])
-    }    
+    }
     @objc func set(_ call: CAPPluginCall) {
         var data: Data = Data()
         guard let key = call.options["key"] as? String else {

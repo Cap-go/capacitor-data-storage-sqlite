@@ -4,11 +4,13 @@ As capacitor provides fisrt-class Progressive Web App support so you can use thi
 
 Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of type string only, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
 
-*****************************************************************
-WARNING !!!! NEVER USE RELEASES 1.2.1-5 to 1.2.1-8.
-They are unsuccessful attemps of an Electron plugin using sqlite3
-Will wait until the Ionic Capacitor Team provides a methodology
-*****************************************************************
+
+************************************************************
+The -dev release should not be used for production releases
+It is a complete re-write of the code to allow encrytion of
+the storage sqlite database
+It has been tested for Android and IOS
+************************************************************
 
 
 *******************************************************
@@ -38,17 +40,123 @@ Change since release 1.2.1-11
 
 ## Methods available
 
-    clear()                                             clear the store
-    openStore({})                                       open the store with default database and table names
-    openStore({database:"fooDB",table:"fooTable"})      open the store with given database and table names
-    setTable({table:"foo1Table"})                       set or add a table to the opened store
-    get({key:"foo"})                                    get the value of a given key  
-    iskey({key:"foo"})                                  test key exists
-    keys()                                              get all keys
-    keysvalues()                                        get all key/value pairs
-    remove({key:"foo"})                                 remove a key
-    set({key:"foo",value:"foovalue"})                   set key and its value
-    values()                                            get all values
+### `openStore({}) => Promise<{result:boolean}>`
+
+Open the store with default database and table names
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+### `openStore({database:"fooDB",table:"fooTable"}) => Promise<{result:boolean}>`
+
+Open the store with given database and table names
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+### `setTable({table:"foo1Table"}) => Promise<{result:boolean,message?: string}>`
+
+Set or add a table to an already opened store
+
+#### Returns
+
+Type: `Promise<{result:boolean,message?: string}>`
+
+### `set({key:"foo",value:"foovalue"}) => Promise<{result:boolean,message?: string}>`
+
+Set a key and its value in the store
+
+#### Returns
+
+Type: `Promise<{result:boolean,message?: string}>`
+
+### `get({key:"foo"}) => Promise<{value:string}>`
+
+Get the value of a given key from the store
+
+#### Returns
+
+Type: `Promise<{value:string}>`
+
+### `isKey({key:"foo"}) => Promise<{result:boolean}>`
+
+Check if a given key exists in the store
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+### `keys() => Promise<{keys:Array<string>}>`
+
+Get all keys from the store
+
+#### Returns
+
+Type: `Promise<{keys:Array<string>}>`
+
+### `values() => Promise<{values:Array<string>}>`
+
+Get all values from the store
+
+#### Returns
+
+Type: `Promise<{values:Array<string>}>`
+
+### `keysvalues() => Promise<{keysvalues:Array<{key:string,value:string}>}>`
+
+Get all key/value pairs from the store
+
+#### Returns
+
+Type: `Promise<{keysvalues:Array<{key:string,value:string}>}>`
+
+### `remove({key:"foo"}) => Promise<{result:boolean}>`
+
+Remove a key from the store
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+### `clear() => Promise<{result:boolean}>`
+
+Clear / Remove all keys from the store
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+
+## Methods available for encryption IOS and Android
+
+### `openStore({database:"fooDB",table:"fooTable",encrypted:false,secret:'test secret'}) => Promise<{result:boolean}>`
+
+Encrypt an existing store with a secret key and open the store with given database and table names
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+### `openStore({database:"fooDB",table:"fooTable",encrypted:true,secret:'test secret'}) => Promise<{result:boolean}>`
+
+Open an encrypted store with given database and table names and secret key
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+### `openStore({database:"fooDB",table:"fooTable",encrypted:true,secret:'test secret',newsecret:'test new secret'}) => Promise<{result:boolean}>`
+
+Modify the secret key with the newsecret key of an encrypted store and open it with given database and table names and newsecret key
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+
+
 
 ## Using a wrapper to adhere to the Storage API 
 (https://developer.mozilla.org/de/docs/Web/API/Storage)
@@ -208,6 +316,6 @@ PWA App showing an integration of
 This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.2.1
 
 ## Dependencies
-The IOS code is based on SQLite.swift as wrapper for SQLite, the Web code has been implemented with localforage  as wrapper for indexDB.
+The IOS  and Android codes are using SQLCipher allowing for database encryption, the Web code has been implemented with localforage  as wrapper for indexDB.
 
 
