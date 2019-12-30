@@ -45,7 +45,7 @@ class StorageDatabaseHelper {
     
     // init function
     
-    init(databaseName: String,tableName: String, encrypted:Bool, secret:String = "", newsecret:String = "") throws {
+    init(databaseName: String,tableName: String, encrypted:Bool, mode: String, secret:String = "", newsecret:String = "") throws {
         print("path: \(path)")
         self.tableName = tableName
         self.secret = secret
@@ -56,91 +56,26 @@ class StorageDatabaseHelper {
 
         // connect to the database (create if doesn't exist)
         var db: OpaquePointer?
-        if !self.encrypted {
-            if secret.count > 0 {
-                 if isFileExist(filePath: "\(path)/\(self.dbName)") {
-                    // rename database file as temp.db
-                    let tempFile: String = "\(path)/temp.db"
-                    try renameFile(filePath: "\(path)/\(self.dbName)", toFilePath: tempFile)
-                    do {
-                        try db = connection("\(path)/\(self.dbName)",readonly: false,key: secret)
-                        // copy the temp file in the new encrypted database
-                        let tempDB: OpaquePointer = try connection(tempFile)
-                        let tables: Array<String> = try getTables(db: tempDB)
-                        let currentTableName: String = self.tableName
-                        for table: String in tables {
-                            self.tableName = table
-                            let rawData: Array<Data> = getKeysValues(db: tempDB)!
-                            // Create table
-                            let res: Bool = createTable(db: db!,tableName: table, ifNotExists: false)
-                            if res {
-                                for row: Data in rawData {
-                                    let insertStatementString = "INSERT INTO \(table) (\(COL_NAME), \(COL_VALUE)) VALUES (?, ?);"
-                                    var insertStatement: OpaquePointer? = nil
-
-                                    if sqlite3_prepare_v2(db, insertStatementString, -1, &insertStatement, nil) == SQLITE_OK {
-                                        let name: NSString = row.name! as NSString
-                                        let value: NSString = row.value! as NSString
-
-                                        sqlite3_bind_text(insertStatement, 1, name.utf8String, -1, nil)
-                                        sqlite3_bind_text(insertStatement, 2, value.utf8String, -1, nil)
-
-                                      if sqlite3_step(insertStatement) != SQLITE_DONE {
-                                        print("init: Could not insert row.")
-                                        throw StorageDatabaseHelperError.insertRowFailed
-                                      }
-                                    } else {
-                                        print("init: INSERT statement could not be prepared.")
-                                        throw StorageDatabaseHelperError.insertRowFailed
-                                    }
-                                    sqlite3_finalize(insertStatement)
-
-                                }
-                                // create index
-                                let resIndex:Bool = createIndex(db:db!,tableName:table,colName:IDX_COL_NAME,ifNotExists:true);
-                                if !resIndex {
-                                    throw StorageDatabaseHelperError.creationIndexFailed
-                                }
-                            } else {
-                                throw StorageDatabaseHelperError.creationTableFailed
-                            }
-                        }
-                        try deleteFile(filePath: tempFile)
-                        self.tableName = currentTableName
-                        self.encrypted = true
-                        self.isOpen = true
-
-                    } catch {
-                        let error:String = "init: Error Database connection failed wrong secret"
-                        print(error)
-                        throw StorageDatabaseHelperError.wrongSecret
-                    }
-                } else {
-                    let error:String = "init: Error Database not existing"
-                    print(error)
-                    throw StorageDatabaseHelperError.fileNotExist
-                }
-            } else {
-                do {
-                    try db = connection("\(path)/\(self.dbName)")
-                    self.isOpen = true
-                } catch {
-                    let error:String = "init: Error Database connection failed"
-                    print(error)
-                    throw StorageDatabaseHelperError.connectionFailed
-                }
+        if !self.encrypted && mode == "no-encryption" {
+            do {
+                try db = connection("\(path)/\(self.dbName)")
+                self.isOpen = true
+            } catch {
+                let error:String = "init: Error Database connection failed"
+                print(error)
+                throw StorageDatabaseHelperError.connectionFailed
             }
-        } else if encrypted && secret.count > 0 && newsecret.count == 0 {
+        } else if encrypted && mode == "secret" && secret.count > 0 {
             do {
                 try db = connection("\(path)/\(self.dbName)",readonly: false,key: secret)
                 self.isOpen = true
             } catch {
                 let error:String = "init: Error Database connection failed wrong secret"
                 print(error)
-                throw StorageDatabaseHelperError.wrongSecret
+                self.isOpen = false
             }
 
-        } else if encrypted && secret.count > 0 && newsecret.count > 0 {
+        } else if encrypted && mode == "newsecret" && secret.count > 0 && newsecret.count > 0 {
             do {
                 try db = connection("\(path)/\(self.dbName)",readonly: false,key: secret)
                 
@@ -151,7 +86,7 @@ class StorageDatabaseHelper {
                     print("connection: Unable to open a connection to database at \(path)/\(self.dbName)")
                     throw StorageDatabaseHelperError.wrongNewSecret
                 }
-                /* this should work but doe not sqlite3_rekey_v2 is not known
+                /* this should work but does not sqlite3_rekey_v2 is not known
                 if sqlite3_rekey_v2(db!, "\(path)/\(self.dbName)", newsecret, Int32(newsecret.count)) == SQLITE_OK {
                     self.isOpen = true
                 } else {
@@ -167,20 +102,83 @@ class StorageDatabaseHelper {
                 print(error)
                 throw StorageDatabaseHelperError.wrongSecret
             }
+        } else if encrypted && mode == "encryption" && secret.count > 0 {
+            if isFileExist(filePath: "\(path)/\(self.dbName)") {
+                // rename database file as temp.db
+                let tempFile: String = "\(path)/temp.db"
+                try renameFile(filePath: "\(path)/\(self.dbName)", toFilePath: tempFile)
+                do {
+                    try db = connection("\(path)/\(self.dbName)",readonly: false,key: secret)
+                    // copy the temp file in the new encrypted database
+                    let tempDB: OpaquePointer = try connection(tempFile)
+                    let tables: Array<String> = try getTables(db: tempDB)
+                    let currentTableName: String = self.tableName
+                    for table: String in tables {
+                        self.tableName = table
+                        let rawData: Array<Data> = getKeysValues(db: tempDB)!
+                        // Create table
+                        let res: Bool = createTable(db: db!,tableName: table, ifNotExists: false)
+                        if res {
+                            for row: Data in rawData {
+                                let insertStatementString = "INSERT INTO \(table) (\(COL_NAME), \(COL_VALUE)) VALUES (?, ?);"
+                                var insertStatement: OpaquePointer? = nil
 
+                                if sqlite3_prepare_v2(db, insertStatementString, -1, &insertStatement, nil) == SQLITE_OK {
+                                    let name: NSString = row.name! as NSString
+                                    let value: NSString = row.value! as NSString
 
+                                    sqlite3_bind_text(insertStatement, 1, name.utf8String, -1, nil)
+                                    sqlite3_bind_text(insertStatement, 2, value.utf8String, -1, nil)
+
+                                  if sqlite3_step(insertStatement) != SQLITE_DONE {
+                                    print("init: Could not insert row.")
+                                    throw StorageDatabaseHelperError.insertRowFailed
+                                  }
+                                } else {
+                                    print("init: INSERT statement could not be prepared.")
+                                    throw StorageDatabaseHelperError.insertRowFailed
+                                }
+                                sqlite3_finalize(insertStatement)
+
+                            }
+                            // create index
+                            let resIndex:Bool = createIndex(db:db!,tableName:table,colName:IDX_COL_NAME,ifNotExists:true);
+                            if !resIndex {
+                                throw StorageDatabaseHelperError.creationIndexFailed
+                            }
+                        } else {
+                            throw StorageDatabaseHelperError.creationTableFailed
+                        }
+                    }
+                    try deleteFile(filePath: tempFile)
+                    self.tableName = currentTableName
+                    self.encrypted = true
+                    self.isOpen = true
+
+                } catch {
+                    let error:String = "init: Error Database connection failed wrong secret"
+                    print(error)
+                    throw StorageDatabaseHelperError.wrongSecret
+                }
+            } else {
+                let error:String = "init: Error Database not existing"
+                print(error)
+                throw StorageDatabaseHelperError.fileNotExist
+            }
         }
-        print("Successfully opened connection to database at \(path)/\(self.dbName)")
+        if(self.isOpen) {
+            print("Successfully opened connection to database at \(path)/\(self.dbName)")
 
-        // create table
-        var res: Bool = createTable(db:db!,tableName:tableName,ifNotExists:true);
-        if !res {
-            throw StorageDatabaseHelperError.creationTableFailed
-        }
-        // create index
-        res = createIndex(db:db!,tableName:tableName,colName:IDX_COL_NAME,ifNotExists:true);
-        if !res {
-            throw StorageDatabaseHelperError.creationIndexFailed
+            // create table
+            var res: Bool = createTable(db:db!,tableName:tableName,ifNotExists:true);
+            if !res {
+                throw StorageDatabaseHelperError.creationTableFailed
+            }
+            // create index
+            res = createIndex(db:db!,tableName:tableName,colName:IDX_COL_NAME,ifNotExists:true);
+            if !res {
+                throw StorageDatabaseHelperError.creationIndexFailed
+            }
         }
     }
     
@@ -439,7 +437,12 @@ class StorageDatabaseHelper {
                 let keyStatementString = """
                 PRAGMA key = '\(key)';
                 """
-                if sqlite3_exec(db, keyStatementString, nil,nil,nil) != SQLITE_OK  {
+                if sqlite3_exec(db, keyStatementString, nil,nil,nil) == SQLITE_OK  {
+                    if (sqlite3_exec(db!, "SELECT count(*) FROM sqlite_master;", nil, nil, nil) != SQLITE_OK) {
+                        print("Unable to open a connection to database at \(filename)")
+                        throw StorageDatabaseHelperError.wrongSecret
+                    }
+                } else {
                     print("connection: Unable to open a connection to database at \(filename)")
                     throw StorageDatabaseHelperError.wrongSecret
                 }

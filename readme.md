@@ -129,27 +129,30 @@ Clear / Remove all keys from the store
 Type: `Promise<{result:boolean}>`
 
 
-## Methods available for encryption IOS and Android
+## Methods available for encrypted database in IOS and Android
 
-### `openStore({database:"fooDB",table:"fooTable",encrypted:false,secret:'test secret'}) => Promise<{result:boolean}>`
+### `openStore({database:"fooDB",table:"fooTable",encrypted:true,mode:"encryption"}) => Promise<{result:boolean}>`
 
-Encrypt an existing store with a secret key and open the store with given database and table names
-
-#### Returns
-
-Type: `Promise<{result:boolean}>`
-
-### `openStore({database:"fooDB",table:"fooTable",encrypted:true,secret:'test secret'}) => Promise<{result:boolean}>`
-
-Open an encrypted store with given database and table names and secret key
+Encrypt an existing store with a secret key and open the store with given database and table names. 
+The secret key is set in the Global.swift file for IOS and in Global.java file for Android. Set your own before building your app.
 
 #### Returns
 
 Type: `Promise<{result:boolean}>`
 
-### `openStore({database:"fooDB",table:"fooTable",encrypted:true,secret:'test secret',newsecret:'test new secret'}) => Promise<{result:boolean}>`
+### `openStore({database:"fooDB",table:"fooTable",encrypted:true,mode:"secret"}) => Promise<{result:boolean}>`
 
-Modify the secret key with the newsecret key of an encrypted store and open it with given database and table names and newsecret key
+Open an encrypted store with given database and table names and secret key.
+The secret key is set in the Global.swift file for IOS and in Global.java file for Android. Set your own before building your app.
+
+#### Returns
+
+Type: `Promise<{result:boolean}>`
+
+### `openStore({database:"fooDB",table:"fooTable",encrypted:true,mode:"newsecret"}) => Promise<{result:boolean}>`
+
+Modify the secret key with the newsecret key of an encrypted store and open it with given database and table names and newsecret key.
+The secret key and newsecret key are set in the Global.swift file for IOS and in Global.java file for Android. Set your own before building your app.
 
 #### Returns
 
@@ -313,7 +316,7 @@ PWA App showing an integration of
 
 
 ## Remarks
-This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.2.1
+This release of the plugin includes the Native IOS code (Objective-C/Swift),the Native Android code (Java) and the Web code (Typescript) using Capacitor v1.4.0-dev.6
 
 ## Dependencies
 The IOS  and Android codes are using SQLCipher allowing for database encryption, the Web code has been implemented with localforage  as wrapper for indexDB.

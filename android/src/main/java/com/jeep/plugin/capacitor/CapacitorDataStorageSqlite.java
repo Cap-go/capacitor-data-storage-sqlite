@@ -12,10 +12,13 @@ import org.json.JSONException;
 
 import com.jeep.plugin.capacitor.cdssUtils.StorageDatabaseHelper;
 import com.jeep.plugin.capacitor.cdssUtils.Data;
+import com.jeep.plugin.capacitor.cdssUtils.Global;
 
 @NativePlugin()
 public class CapacitorDataStorageSqlite extends Plugin {
     private StorageDatabaseHelper mDb;
+    private Global globalData = new Global();
+
     private  Context context;
 
     public void load() {
@@ -34,11 +37,15 @@ public class CapacitorDataStorageSqlite extends Plugin {
     }
     @PluginMethod()
     public void openStore(PluginCall call) {
+
         String dbName = null;
         String tableName = null;
         Boolean encrypted = null;
         String secret = null;
         String newsecret = null;
+        String inMode = null;
+        JSObject ret = new JSObject();
+
 
         dbName = call.getString("database");
         if (dbName == null) {
@@ -48,24 +55,39 @@ public class CapacitorDataStorageSqlite extends Plugin {
         if (tableName == null) {
             tableName = "storage_table";
         }
-        encrypted = call.getBoolean("encrypted");
-        if(encrypted == null) {
-            encrypted = false;
-        }
-        secret = call.getString("secret");
-        if (secret == null) {
-            secret = "";
-        }
-        newsecret = call.getString("newsecret");
-        if (newsecret == null) {
-            newsecret = "";
+        encrypted = call.getBoolean("encrypted", false);
+        if (encrypted) {
+            inMode = call.getString("mode","no-encryption");
+            if (!inMode.equals("no-encryption") && !inMode.equals("encryption") &&
+                    !inMode.equals("secret") && !inMode.equals("newsecret") &&
+                    !inMode.equals("wrongsecret")) {
+                ret.put("result", false);
+                ret.put("message", "OpenStore: Error inMode must be in ['encryption','secret','newsecret']");
+                call.resolve(ret);
+            }
+            if (inMode.equals("encryption")  || inMode.equals("secret")) {
+                secret = globalData.secret;
+
+            } else if (inMode.equals("newsecret")) {
+                secret = globalData.secret;
+                newsecret = globalData.newsecret;
+                globalData.secret = newsecret;
+            } else if (inMode.equals("wrongsecret")) {
+                secret = "wrongsecret";
+                inMode = "secret";
+            } else {
+                secret = "";
+                newsecret = "";
+            }
+
+        } else {
+            inMode = "no-encryption";
         }
 
 //        mDb = StorageDatabaseHelper.getInstance(context,dbName+"SQLite.db",tableName,1);
 
         mDb = new StorageDatabaseHelper(context,dbName+"SQLite.db",tableName,encrypted,
-                secret,newsecret,1);
-        JSObject ret = new JSObject();
+                inMode,secret,newsecret,1);
         if (!mDb.isOpen) {
             ret.put("result", false);
         } else {
@@ -174,8 +196,8 @@ public class CapacitorDataStorageSqlite extends Plugin {
         try {
             ret.put("keys", new JSArray(keyArray));
         } catch (JSONException ex) {
-        call.reject("Unable to create key array.");
-        return;
+            call.reject("Unable to create key array.");
+            return;
         }
         call.resolve(ret);
     }
@@ -189,12 +211,12 @@ public class CapacitorDataStorageSqlite extends Plugin {
         try {
             ret.put("values", new JSArray(valueArray));
         } catch (JSONException ex) {
-        call.reject("Unable to create value array.");
-        return;
+            call.reject("Unable to create value array.");
+            return;
         }
         call.resolve(ret);
     }
-    
+
     @PluginMethod()
     public void keysvalues(PluginCall call) {
         List<Data> resKeysValues = mDb.keysvalues();

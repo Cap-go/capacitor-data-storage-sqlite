@@ -79,14 +79,11 @@ export interface capOpenStorageOptions {
      * Set to true for database encryption
      */
     encrypted?: boolean;
-    /**
-     * The secret key for database encryption
+    /***
+     * Set the mode for database ancryption
+     * ["encryption", "secret","newsecret"]
      */
-    secret?: string;
-    /**
-     * The new secret key for database encryption
-     */
-    newsecret?: string;
+    mode?: string;
 }
 export interface capDataStorageOptions {
     /**

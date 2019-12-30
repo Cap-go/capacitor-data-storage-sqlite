@@ -1,3 +1,8 @@
+## 1.4.0-dev.6 (2019-12-30)
+### Added Features
+
+* set the secret natively in OPS and Android
+
 ## 1.4.0-dev.5 (2019-12-28)
 ### Added Features
 

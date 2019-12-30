@@ -14,7 +14,8 @@ import Capacitor
 @objc(CapacitorDataStorageSqlite)
 public class CapacitorDataStorageSqlite: CAPPlugin {
     var mDb: StorageDatabaseHelper?
-    
+    var globalData: Global = Global()
+
     @objc func echo(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? ""
         call.success([
@@ -24,16 +25,42 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
     @objc func openStore(_ call: CAPPluginCall) {
         let dbName = call.options["database"] as? String ?? "storage"
         let tableName = call.options["table"] as? String ?? "storage_table"
-        let secretKey = call.options["secret"] as? String ?? ""
-        let newsecretKey = call.options["newsecret"] as? String ?? ""
         let encrypted = call.options["encrypted"] as? Bool ?? false
+        var inMode: String = ""
+        var secretKey:String = ""
+        var newsecretKey: String = ""
+        if encrypted {
+            inMode = call.options["mode"] as? String ?? "no-encryption"
+            if inMode != "no-encryption" && inMode != "encryption" && inMode != "secret" && inMode != "newsecret" && inMode != "wrongsecret" {
+                call.resolve([
+                    "result": false,
+                    "message": "OpenStore: Error inMode must be in ['encryption','secret','newsecret'])"
+                ])
+            }
+            if inMode == "encryption" || inMode == "secret" {
+                secretKey = globalData.secret
+            } else if inMode == "newsecret" {
+                secretKey = globalData.secret
+                newsecretKey = globalData.newsecret
+                globalData.secret = newsecretKey
+            } else if inMode == "wrongsecret" {
+                secretKey = "wrongsecret"
+                inMode = "secret"
+            } else {
+                secretKey = ""
+                newsecretKey = ""
+            }
+        } else {
+            inMode = "no-encryption"
+        }
+        
         print("in openStore: dbName \(dbName)")
         print("in openStore: tableName \(tableName)")
-        print("in openStore: secretKey \(secretKey)")
-        print("in openStore: newsecretKey \(newsecretKey)")
         print("in openStore: encrypted \(encrypted)")
+        print("in openStore: mode \(inMode)")
+        
         do {
-            mDb = try StorageDatabaseHelper(databaseName:"\(dbName)SQLite.db",tableName:tableName, encrypted: encrypted,secret:secretKey,newsecret:newsecretKey)
+            mDb = try StorageDatabaseHelper(databaseName:"\(dbName)SQLite.db",tableName:tableName, encrypted: encrypted, mode: inMode, secret:secretKey,newsecret:newsecretKey)
         } catch let error {
             call.resolve([
                 "result": false,

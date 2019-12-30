@@ -40,6 +40,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     private String tableName;
     private String dbName;
     private Boolean encrypted;
+    private String mode;
     private String secret;
     private final String newsecret;
     private final int dbVersion;
@@ -71,8 +72,8 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     */
 
     public StorageDatabaseHelper(Context context, String _dbName, String _tableName,
-                                 Boolean _encrypted, String _secret, String _newsecret,
-                                 int _vNumber) {
+                                 Boolean _encrypted, String _mode, String _secret,
+                                 String _newsecret, int _vNumber) {
         super(context, _dbName, null, _vNumber);
         dbName = _dbName;
         tableName = _tableName;
@@ -80,6 +81,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         encrypted = _encrypted;
         secret = _secret;
         newsecret = _newsecret;
+        mode = _mode;
 
         InitializeSQLCipher(context);
 
@@ -90,76 +92,17 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase database;
         File databaseFile;
         File tempFile;
-        if(!encrypted) {
 
-            if(secret.length() > 0) {
-                // Encrypt an existing non-encrypted database
-                // get the db  and rename it
-                File oriDBFile = context.getDatabasePath(dbName);
-                if (oriDBFile.exists()) {
-                    tempFile = context.getDatabasePath("temp.db");
-                    oriDBFile.renameTo(tempFile);
-                } else {
-                    tempFile = null;
-                }
-                databaseFile = context.getDatabasePath(dbName);
-                database = SQLiteDatabase.openOrCreateDatabase(databaseFile, secret, null);
+        if(!encrypted && mode.equals("no-encryption")) {
 
-                if (tempFile.exists()) {
-                    SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(tempFile,
-                            null, null);
-
-                    // create tables
-                    List<String> tables = getTables(tempDB);
-                    String currentTable = tableName;
-                    for (String table : tables) {
-                        System.out.println(table);
-                        tableName = table;
-                        List<Data> rawData = getKeysValues(tempDB);
-
-                        Boolean res = createTable(database,table,true);
-                        if (res) {
-
-                            database.beginTransaction();
-                            try {
-                                ContentValues values = new ContentValues();
-                                for (Data row  : rawData) {
-                                    values.put(COL_NAME, row.name);
-                                    values.put(COL_VALUE, row.value);
-                                    database.insertOrThrow(table, null, values);
-                                }
-                                database.setTransactionSuccessful();
-                            } catch (Exception e) {
-                                Log.d(TAG, "InitializeSQLCipher: Error while trying to add data " +
-                                        "in table " + table + "of the encryptedDB");
-                            } finally {
-                                database.endTransaction();
-                                Boolean resIndex = createIndex(database,table,IDX_COL_NAME,true);
-                                if (!resIndex) {
-                                    Log.d(TAG, "InitializeSQLCipher: Error while trying to index table "
-                                            + table + "of the encryptedDB");
-                                }
-                            }
-                        } else {
-                            Log.d(TAG,"InitializeSQLCipher: create Table failed during encryption process");
-                        }
-
-                    }
-                    tempFile.delete();
-                    tableName = currentTable;
-                    encrypted = true;
-                    isOpen = true;
-                }
-            } else {
-                databaseFile = context.getDatabasePath(dbName);
-                try {
-                    database = SQLiteDatabase.openOrCreateDatabase(databaseFile, "", null);
-                    isOpen = true;
-                } catch (Exception e) {
-                    database = null;
-                }
+            databaseFile = context.getDatabasePath(dbName);
+            try {
+                database = SQLiteDatabase.openOrCreateDatabase(databaseFile, "", null);
+                isOpen = true;
+            } catch (Exception e) {
+                database = null;
             }
-        } else if (encrypted && secret.length() > 0 && newsecret.length() == 0) {
+        } else if (encrypted && mode.equals("secret") && secret.length() > 0) {
             databaseFile = context.getDatabasePath(dbName);
             try {
                 database = SQLiteDatabase.openOrCreateDatabase(databaseFile, secret, null);
@@ -168,7 +111,9 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 Log.d(TAG, "InitializeSQLCipher: Wrong Secret " );
                 database = null;
             }
-        } else if(encrypted && secret.length() > 0 && newsecret.length() > 0) {
+        } else if(encrypted && mode.equals("newsecret") && secret.length() > 0
+                && newsecret.length() > 0) {
+
             databaseFile = context.getDatabasePath(dbName);
             try {
                 database = SQLiteDatabase.openOrCreateDatabase(databaseFile, secret, null);
@@ -181,6 +126,66 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 database = null;
             }
 
+        } else if (encrypted && mode.equals("encryption") && secret.length() > 0) {
+
+            // Encrypt an existing non-encrypted database
+            // get the db  and rename it
+            File oriDBFile = context.getDatabasePath(dbName);
+            if (oriDBFile.exists()) {
+                tempFile = context.getDatabasePath("temp.db");
+                oriDBFile.renameTo(tempFile);
+            } else {
+                tempFile = null;
+            }
+
+            databaseFile = context.getDatabasePath(dbName);
+            database = SQLiteDatabase.openOrCreateDatabase(databaseFile, secret, null);
+
+            if (tempFile.exists()) {
+                SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(tempFile,
+                        null, null);
+
+                // create tables
+                List<String> tables = getTables(tempDB);
+                String currentTable = tableName;
+                for (String table : tables) {
+                    System.out.println(table);
+                    tableName = table;
+                    List<Data> rawData = getKeysValues(tempDB);
+
+                    Boolean res = createTable(database,table,true);
+                    if (res) {
+
+                        database.beginTransaction();
+                        try {
+                            ContentValues values = new ContentValues();
+                            for (Data row  : rawData) {
+                                values.put(COL_NAME, row.name);
+                                values.put(COL_VALUE, row.value);
+                                database.insertOrThrow(table, null, values);
+                            }
+                            database.setTransactionSuccessful();
+                        } catch (Exception e) {
+                            Log.d(TAG, "InitializeSQLCipher: Error while trying to add data " +
+                                    "in table " + table + "of the encryptedDB");
+                        } finally {
+                            database.endTransaction();
+                            Boolean resIndex = createIndex(database,table,IDX_COL_NAME,true);
+                            if (!resIndex) {
+                                Log.d(TAG, "InitializeSQLCipher: Error while trying to index table "
+                                        + table + "of the encryptedDB");
+                            }
+                        }
+                    } else {
+                        Log.d(TAG,"InitializeSQLCipher: create Table failed during encryption process");
+                    }
+
+                }
+                tempFile.delete();
+                tableName = currentTable;
+                encrypted = true;
+                isOpen = true;
+            }
         }
     }
 
