@@ -1,3 +1,8 @@
+## 1.4.0-dev.7 (2020-01-08)
+### Bug Fixes
+
+* typo in readme found by rjayaswal
+
 ## 1.4.0-dev.6 (2019-12-30)
 ### Added Features
 
