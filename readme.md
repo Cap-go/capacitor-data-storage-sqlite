@@ -17,3 +17,12 @@ Capacitor Data Storage SQlite  Plugin is a custom Native Capacitor plugin to sto
 ```
 
  - [capacitor-data-storage-sqlite](https://github.com/jepiqueau/jeep/blob/master/capacitor/plugins-library/docs/DataStorage.md)
+
+ - [github](https://github.com/jepiqueau/jeep/tree/master/capacitor/plugins-library)
+
+ - to install it in your app
+ ```bash
+ npm install --save @jeepq/capacitor@latest
+ ``` 
+
+
