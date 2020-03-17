@@ -151,6 +151,8 @@ Type: `Promise<{result:boolean}>`
 ### Ionic/Angular
   - [data-storage-sqlite-app-starter] (https://github.com/jepiqueau/angular-data-storage-sqlite-app-starter)
 
+  - [test-angular-jeep-capacitor-plugins] (https://github.com/jepiqueau/capacitor-apps/IonicAngular/jeep-test-app)
+
 ### Ionic/React
 
 ### React
