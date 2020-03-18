@@ -181,14 +181,16 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                     }
 
                 }
+                tempDB.close();
                 tempFile.delete();
                 tableName = currentTable;
                 encrypted = true;
                 isOpen = true;
             }
         }
-        if(database != null && isOpen) {
-            boolean isTable = checkForTableExists(database, tableName);
+        if(database != null) database.close();
+        if(isOpen) {
+            boolean isTable = checkForTableExists(tableName);
             if(!isTable ) {
                 isOpen = setTable(tableName);
             }
@@ -234,18 +236,22 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 ret = true;
             }
         }
+        db.close();
         return ret;
     }
 
     // Insert a data into the database
     public boolean set(Data data) {
         boolean ret = false;
+        // Check if data.name does not exist otherwise update it
+
+        Data res = this.get(data.name);
         // Create and/or open the database for writing
         SQLiteDatabase db = this.getWritableDatabase(secret);
-        // Check if data.name does not exist otherwise update it
-        Data res = this.get(data.name);
+
         if (res.id != null) {
             // exists so update it
+            db.close();
             return this.update(data);
 
         } else {
@@ -266,6 +272,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 Log.d(TAG, "set: Error while trying to add data to database");
             } finally {
                 db.endTransaction();
+                db.close();
                 return ret;
             }
         }
@@ -289,6 +296,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             Log.d(TAG, "update: Error while trying to update " + data.name);
         } finally {
             db.endTransaction();
+            db.close();
             return ret;
         }
 
@@ -308,6 +316,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             Log.d(TAG, "remove: Error while trying to delete " + name);
         } finally {
             db.endTransaction();
+            db.close();
             return ret;
         }
     }
@@ -315,12 +324,12 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     // delete a all data into the database
     public boolean clear() {
         boolean ret = false;
-        SQLiteDatabase db = this.getWritableDatabase(secret);
         // check if the table exists
-        boolean isTable = checkForTableExists(db, tableName);
+        boolean isTable = checkForTableExists(tableName);
 
         if( isTable ) {
-            // wrap our delete in a transaction.
+             // wrap our delete in a transaction.
+            SQLiteDatabase db = this.getWritableDatabase(secret);
 
             db.beginTransaction();
             try {
@@ -337,6 +346,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 Log.d(TAG, "Clear: Error while trying to delete all data" + e);
             } finally {
                 db.endTransaction();
+                db.close();
                 return ret;
             }
         } else {
@@ -359,7 +369,8 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName +
                 " WHERE " + COL_NAME + " = '" + name + "'";
         SQLiteDatabase db = this.getReadableDatabase(secret);
-        Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
+        Cursor cursor = null;
+        cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
             try {
                 if (cursor.moveToFirst()) {
@@ -382,6 +393,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+        db.close();
         return data;
     }
 
@@ -391,7 +403,8 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
 
         String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
         SQLiteDatabase db = this.getReadableDatabase(secret);
-        Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
+        Cursor cursor = null;
+        cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
             try {
                 if (cursor.moveToFirst()) {
@@ -414,6 +427,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+        db.close();
         return data;
     }
 
@@ -423,7 +437,8 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
 
         String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
         SQLiteDatabase db = this.getReadableDatabase(secret);
-        Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
+        Cursor cursor = null;
+        cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
             try {
                 if (cursor.moveToFirst()) {
@@ -446,6 +461,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+        db.close();
         return data;
     }
 
@@ -456,13 +472,15 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase(secret);
         data = getKeysValues(db);
+        db.close();
         return data;
     }
     private List<String> getTables(SQLiteDatabase db) {
         List<String> data = new ArrayList<>();
 
         String DATA_SELECT_QUERY = "SELECT * FROM sqlite_master WHERE TYPE ='table'";
-        Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
+        Cursor cursor = null;
+        cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
             try {
                 if (cursor.moveToFirst()) {
@@ -536,7 +554,8 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     private List<Data> getKeysValues(SQLiteDatabase db) {
         List<Data> data = new ArrayList<>();
         String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
-        Cursor cursor = db.rawQuery(DATA_SELECT_QUERY, null);
+        Cursor cursor = null;
+        cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
             try {
                 if (cursor.moveToFirst()) {
@@ -562,14 +581,17 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         }
         return data;
     }
-    private boolean checkForTableExists(SQLiteDatabase db, String table){
+    private boolean checkForTableExists(String table){
+        Boolean ret =false;
+        SQLiteDatabase db = this.getWritableDatabase(secret);
         String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+table+"'";
-        Cursor mCursor = db.rawQuery(sql, null);
+        Cursor mCursor = null;
+        mCursor = db.rawQuery(sql, null);
         if (mCursor.getCount() > 0) {
-            return true;
+            ret = true;
         }
         mCursor.close();
-        return false;
+        return ret;
     }
 
 }
