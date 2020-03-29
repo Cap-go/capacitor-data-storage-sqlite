@@ -17,9 +17,10 @@
     "jeep-localforage": "^1.7.5-4"
   },
   "devDependencies": {
-    "typescript": "^3.2.4",
+    "@capacitor/android": "latest",
     "@capacitor/ios": "latest",
-    "@capacitor/android": "latest"
+    "jetifier": "^1.6.5",
+    "typescript": "^3.2.4"
   },
   "files": [
     "dist/",
