@@ -13,7 +13,7 @@
   "author": "Jean Pierre Quéau",
   "license": "MIT",
   "dependencies": {
-    "@capacitor/core": "latest",
+    "@capacitor/core": "^2.0.0-beta.1",
     "jeep-localforage": "^1.7.5-4"
   },
   "devDependencies": {
