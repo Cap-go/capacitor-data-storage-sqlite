@@ -107,5 +107,7 @@
     <orderEntry type="library" name="Gradle: net.zetetic:android-database-sqlcipher:4.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.sqlite:sqlite:2.0.1@aar" level="project" />
     <orderEntry type="module" module-name="capacitor-android" />
+    <orderEntry type="module" module-name="capacitor-android" />
+    <orderEntry type="module" module-name="capacitor-android" />
   </component>
 </module>
