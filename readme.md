@@ -189,7 +189,7 @@ Type: `Promise<{result:boolean}>`
       if (info.platform === "ios" || info.platform === "android") {
         this._storage = CapacitorDataStorageSqlite;
       } else if(this.platform === "electron") {
-      t his.store = CDSSPlugin.CapacitorDataStorageSqliteElectron;
+        this.store = CDSSPlugin.CapacitorDataStorageSqliteElectron;
       } else {
         this._storage = CDSSPlugin.CapacitorDataStorageSqlite
       }
