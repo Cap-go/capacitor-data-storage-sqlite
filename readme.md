@@ -123,7 +123,7 @@ Encrypt an existing store with a secret key and open the store with given databa
 
 To define your own "secret" and "newsecret" keys: 
  - in IOS, go to the Pod/Development Pods/jeepqCapacitor/DataStorageSQLite/Global.swift file 
- - in Android, go to jeepq-capacitor/java/com.jeep.plugins.capacitor/cdssUtils/Global.java
+ - in Android, go to jeepq-capacitor/java/com.jeep.plugin.capacitor/cdssUtils/Global.java
 and update the default values before building your app.
 
 #### Returns
@@ -219,7 +219,7 @@ Type: `Promise<{result:boolean}>`
 
  ```java 
   ...
- import com.jeep.plugins.capacitor.CapacitorDataStorageSqlite;
+ import com.jeep.plugin.capacitor.CapacitorDataStorageSqlite;
 
   ...
 
