@@ -1,5 +1,8 @@
 # Capacitor Data Storage SQLite Plugin
-Capacitor Data Storage SQlite  Plugin is a custom Native Capacitor plugin to store permanently data to SQLite on IOS and Android platforms and to IndexDB for the Web and Electron platforms.
+Capacitor Data Storage SQlite  Plugin is a custom Native Capacitor plugin to store permanently data to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.
+
+  **A pre-release is now available for Electron platform with no datastore encryption**
+
 
 Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of type string only, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
 
@@ -172,7 +175,7 @@ Type: `Promise<{result:boolean}>`
 
  ```ts
   import { Plugins } from '@capacitor/core';
-  import * as PluginsLibrary from 'capacitor-data-storage-sqlite';
+  import * as CDSSPlugin from 'capacitor-data-storage-sqlite';
   const { CapacitorDataStorageSqlite,Device } = Plugins;
 
   @Component( ... )
@@ -185,8 +188,10 @@ Type: `Promise<{result:boolean}>`
       const info = await Device.getInfo();
       if (info.platform === "ios" || info.platform === "android") {
         this._storage = CapacitorDataStorageSqlite;
+      } else if(this.platform === "electron") {
+      t his.store = CDSSPlugin.CapacitorDataStorageSqliteElectron;
       } else {
-        this._storage = PluginsLibrary.CapacitorDataStorageSqlite
+        this._storage = CDSSPlugin.CapacitorDataStorageSqlite
       }
 
     }
@@ -219,7 +224,7 @@ Type: `Promise<{result:boolean}>`
 
  ```java 
   ...
- import com.jeep.plugins.capacitor.CapacitorDataStorageSqlite;
+ import com.jeep.plugin.capacitor.CapacitorDataStorageSqlite;
 
   ...
 
@@ -273,13 +278,63 @@ Type: `Promise<{result:boolean}>`
 
 ### Running on Electron
 
- ```bash
+In your application folder add the Electron platform
+
+```bash
+npx cap add electron
+```
+
+In the Electron folder of your application
+
+```bash
+npm install --save sqlite3
+npm install --save-dev @types/sqlite3
+npm install --save-dev electron-rebuild
+```
+
+Modify the Electron package.json file by adding a script "postinstall"
+
+```json
+  "scripts": {
+    "electron:start": "electron ./",
+    "postinstall": "electron-rebuild -f -w sqlite3"
+  },
+```
+
+Execute the postinstall script
+
+```bash
+npm run postinstall
+```
+Go back in the main folder of your application
+Add a script in the index.html file of your application in the body tag
+
+```html
+<body>
+  <app-root></app-root>
+  <script>
+    if (typeof (process.versions.electron) === 'string' && process.versions.hasOwnProperty('electron')) {
+      const sqlite3 = require('sqlite3');
+      const fs = require('fs');
+      const path = require('path');
+      window.sqlite3 = sqlite3;
+      window.fs = fs;
+      window.path = path;
+    }
+  </script>
+</body>
+```
+an then build the apllication
+
+```bash
  npx cap update
  npm run build
  npx cap copy
- npx cap copy web
  npx cap open electron
- ``` 
+```
+
+The datastores created are under **YourApplication/Electron/DataStorage**
+
 
 ### Running on PWA
 
