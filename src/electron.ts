@@ -10,6 +10,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin implemen
         name: 'CapacitorDataStorageSqlite',
         platforms: ['electron']
       });
+      this.mDb = new StorageDatabaseHelper();
     }
     async echo(options: { value: string }): Promise<{value: string}> {
         console.log('ECHO in Electron Plugin', options);
@@ -19,8 +20,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin implemen
         let ret: boolean = false;
         let dbName = options.database ? `${options.database}SQLite.db` : "storageSQLite.db";
         let tableName = options.table ? options.table : "storage_store";
-        this.mDb = new StorageDatabaseHelper(dbName,tableName);
-        if(this.mDb) ret = true;
+        ret = await this.mDb.openStore(dbName,tableName);
         return Promise.resolve({result:ret});
     }
     
@@ -125,7 +125,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin implemen
           return Promise.reject({result:false,message:"Must provide a Database Name"});
         }
         dbName = `${options.database}SQLite.db`;
-        if(typeof this.mDb === 'undefined' || this.mDb === null) this.mDb = new StorageDatabaseHelper(dbName);
+        if(typeof this.mDb === 'undefined' || this.mDb === null) this.mDb = new StorageDatabaseHelper();
         const ret = await this.mDb.deleteStore(dbName);
         this.mDb = null;
         return Promise.resolve({result:ret});

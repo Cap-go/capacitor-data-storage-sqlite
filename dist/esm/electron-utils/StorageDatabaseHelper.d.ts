@@ -4,7 +4,7 @@ export declare class StorageDatabaseHelper {
     private _dbName;
     private _tableName;
     private _utils;
-    constructor(dbName: string, tableName?: string);
+    constructor();
     openStore(dbName: string, tableName: string): Promise<boolean>;
     private _createTable;
     private _createIndex;

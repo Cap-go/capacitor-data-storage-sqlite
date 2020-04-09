@@ -16,11 +16,8 @@ const COL_VALUE = "value";
 const fs = window['fs'];
 const path = window['path'];
 export class StorageDatabaseHelper {
-    constructor(dbName, tableName) {
+    constructor() {
         this._utils = new UtilsSQLite();
-        if (typeof tableName === 'undefined')
-            return;
-        this.openStore(dbName, tableName);
     }
     openStore(dbName, tableName) {
         return new Promise((resolve) => {

@@ -16,6 +16,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             name: 'CapacitorDataStorageSqlite',
             platforms: ['electron']
         });
+        this.mDb = new StorageDatabaseHelper();
     }
     echo(options) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -28,9 +29,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             let ret = false;
             let dbName = options.database ? `${options.database}SQLite.db` : "storageSQLite.db";
             let tableName = options.table ? options.table : "storage_store";
-            this.mDb = new StorageDatabaseHelper(dbName, tableName);
-            if (this.mDb)
-                ret = true;
+            ret = yield this.mDb.openStore(dbName, tableName);
             return Promise.resolve({ result: ret });
         });
     }
@@ -149,7 +148,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             }
             dbName = `${options.database}SQLite.db`;
             if (typeof this.mDb === 'undefined' || this.mDb === null)
-                this.mDb = new StorageDatabaseHelper(dbName);
+                this.mDb = new StorageDatabaseHelper();
             const ret = yield this.mDb.deleteStore(dbName);
             this.mDb = null;
             return Promise.resolve({ result: ret });

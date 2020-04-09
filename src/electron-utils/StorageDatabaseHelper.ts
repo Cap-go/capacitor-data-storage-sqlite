@@ -15,10 +15,8 @@ export class StorageDatabaseHelper {
 //    private _secret: string = "";
     private _utils: UtilsSQLite;
 
-    constructor(dbName: string, tableName?: string) {
+    constructor() {
         this._utils = new UtilsSQLite();
-        if(typeof tableName === 'undefined') return;
-        this.openStore(dbName, tableName);
     }
 
     public openStore(dbName:string,tableName:string): Promise<boolean> {
