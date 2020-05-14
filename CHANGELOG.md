@@ -1,3 +1,10 @@
+## 2.1.0 (2020-05-14)
+
+### Chores
+
+* capacitor: update to capacitor 2.1.0
+* SQLCipher: update to 4.4.0
+
 ## 2.0.0-1 (2020-04-09)
 
 ### Chores

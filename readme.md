@@ -1,10 +1,9 @@
 # Capacitor Data Storage SQLite Plugin
 Capacitor Data Storage SQlite  Plugin is a custom Native Capacitor plugin to store permanently data to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.
 
-  **A pre-release is now available for Electron platform with no datastore encryption**
+Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of `**type string only**`, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
 
-
-Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of type string only, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
+For both IOS and Android platforms, the store can be encrypted. The plugin uses SQLCipher for encryption with a `**passphrase**`.
 
 ## Methods available
 
@@ -154,7 +153,7 @@ Type: `Promise<{result:boolean}>`
 ### Ionic/Angular
   - [data-storage-sqlite-app-starter] (https://github.com/jepiqueau/angular-data-storage-sqlite-app-starter)
 
-  - [test-angular-jeep-capacitor-plugins] (https://github.com/jepiqueau/capacitor-apps/IonicAngular/jeep-test-app)
+  - [test-angular-jeep-capacitor-plugins] (https://github.com/jepiqueau/capacitor-apps/tree/master/IonicAngular/jeep-test-app)
 
 ### Ionic/React
 
