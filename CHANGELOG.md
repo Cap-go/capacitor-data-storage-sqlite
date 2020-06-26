@@ -1,3 +1,9 @@
+## 2.2.0 (2020-06-26)
+
+### Chores
+
+* capacitor: update to capacitor 2.2.0
+
 ## 2.1.0 (2020-05-14)
 
 ### Chores
