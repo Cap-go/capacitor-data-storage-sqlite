@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Capacitor Data Storage SQLite Plugin",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -13,12 +13,12 @@
   "author": "Jean Pierre Quéau",
   "license": "MIT",
   "dependencies": {
-    "@capacitor/core": "^2.1.0",
+    "@capacitor/core": "^2.2.0",
     "jeep-localforage": "^1.7.5-4"
   },
   "devDependencies": {
-    "@capacitor/android": "^2.1.0",
-    "@capacitor/ios": "^2.1.0",
+    "@capacitor/android": "^2.2.0",
+    "@capacitor/ios": "^2.2.0",
     "@types/sqlite3": "^3.1.6",
     "typescript": "^3.2.4"
   },
