@@ -1,10 +1,20 @@
-# Capacitor Data Storage SQLite Plugin
+<p align="center"><br><img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" /></p>
+<h3 align="center">DATA STORAGE SQLITE</h3>
+<p align="center"><strong><code>capacitor-data-storage-sqlite</code></strong></p>
+<p align="center">
+  Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of `**type string only**` to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
 
-Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin to store permanently data to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.
-
-Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of `**type string only**`, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
-
-For both IOS and Android platforms, the store can be encrypted. The plugin uses SQLCipher for encryption with a `**passphrase**`.
+<p align="center">
+  <img src="https://img.shields.io/maintenance/yes/2020?style=flat-square" />
+  <a href="https://github.com/jepiqueau/capacitor-data-storage-sqlite/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/workflow/status/jepiqueau/capacitor-data-storage-sqlite/CI?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/jepiqueau/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/l/jepiqueau/capacitor-data-storage-sqlite?style=flat-square" /></a>
+<br>
+  <a href="https://www.npmjs.com/package/jepiqueau/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/dw/jepiqueau/capacitor-data-storage-sqlite?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/jepiqueau/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/v/jepiqueau/capacitor-data-storage-sqlite?style=flat-square" /></a>
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-1-orange?style=flat-square" /></a>
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+</p>
 
 ## Maintainers
 

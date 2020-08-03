@@ -1,5 +1,9 @@
 # API Documentation
 
+Capacitor Data Storage SQlite Plugin provides a key-value store for simple data of `**type string only**`, so JSON object can be stored, you should manage conversion through JSON.stringify before storing and JSON.parse when retrieving the data, use the same procedure for number through number.toString() and Number().
+
+For both IOS and Android platforms, the store can be encrypted. The plugin uses SQLCipher for encryption with a `**passphrase**`.
+
 ## Databases Location
 
 ### Android
