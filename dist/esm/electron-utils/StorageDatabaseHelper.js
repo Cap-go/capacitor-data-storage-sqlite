@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 //import * as sqlite3 from 'sqlite3';
 import { Data } from './Data';
 import { UtilsSQLite } from './UtilsSQLite';
-const COL_ID = "id";
-const COL_NAME = "name";
-const COL_VALUE = "value";
+const COL_ID = 'id';
+const COL_NAME = 'name';
+const COL_VALUE = 'value';
 const fs = window['fs'];
 const path = window['path'];
 export class StorageDatabaseHelper {
@@ -20,7 +20,7 @@ export class StorageDatabaseHelper {
         this._utils = new UtilsSQLite();
     }
     openStore(dbName, tableName) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             let ret = false;
             this._db = this._utils.connection(dbName, false /*,this._secret*/);
             if (this._db !== null) {
@@ -33,12 +33,16 @@ export class StorageDatabaseHelper {
         });
     }
     _createTable(tableName) {
-        const CREATE_STORAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + tableName +
-            "(" +
-            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + // Define a primary key
-            COL_NAME + " TEXT NOT NULL UNIQUE," +
-            COL_VALUE + " TEXT" +
-            ")";
+        const CREATE_STORAGE_TABLE = 'CREATE TABLE IF NOT EXISTS ' +
+            tableName +
+            '(' +
+            COL_ID +
+            ' INTEGER PRIMARY KEY AUTOINCREMENT,' + // Define a primary key
+            COL_NAME +
+            ' TEXT NOT NULL UNIQUE,' +
+            COL_VALUE +
+            ' TEXT' +
+            ')';
         try {
             this._db.run(CREATE_STORAGE_TABLE, this._createIndex.bind(this, tableName));
         }
@@ -48,8 +52,13 @@ export class StorageDatabaseHelper {
     }
     _createIndex(tableName) {
         const idx = `index_${tableName}_on_${COL_NAME}`;
-        const CREATE_INDEX_NAME = "CREATE INDEX IF NOT EXISTS " + idx + " ON " + tableName +
-            " (" + COL_NAME + ")";
+        const CREATE_INDEX_NAME = 'CREATE INDEX IF NOT EXISTS ' +
+            idx +
+            ' ON ' +
+            tableName +
+            ' (' +
+            COL_NAME +
+            ')';
         try {
             this._db.run(CREATE_INDEX_NAME);
         }
@@ -109,11 +118,16 @@ export class StorageDatabaseHelper {
     }
     // get a Data
     get(name) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             let data = null;
             const db = this._utils.getReadableDatabase(this._dbName /*,this._secret*/);
-            const DATA_SELECT_QUERY = "SELECT * FROM " + this._tableName +
-                " WHERE " + COL_NAME + " = '" + name + "'";
+            const DATA_SELECT_QUERY = 'SELECT * FROM ' +
+                this._tableName +
+                ' WHERE ' +
+                COL_NAME +
+                " = '" +
+                name +
+                "'";
             db.all(DATA_SELECT_QUERY, (err, rows) => {
                 if (err) {
                     data = new Data();
@@ -137,7 +151,7 @@ export class StorageDatabaseHelper {
     }
     // update a Data
     update(data) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             const db = this._utils.getWritableDatabase(this._dbName /*,this._secret*/);
             const DATA_UPDATE = `UPDATE "${this._tableName}" 
             SET "${COL_VALUE}" = ? WHERE "${COL_NAME}" = ?`;
@@ -192,7 +206,7 @@ export class StorageDatabaseHelper {
             }
         }));
     }
-    // remove all keys 
+    // remove all keys
     clear() {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
             const db = this._utils.getWritableDatabase(this._dbName /*,this._secret*/);
@@ -223,7 +237,7 @@ export class StorageDatabaseHelper {
         }));
     }
     keys() {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             const db = this._utils.getReadableDatabase(this._dbName /*,this._secret*/);
             const DATA_SELECT_KEYS = `SELECT "${COL_NAME}" FROM "${this._tableName}"`;
             db.all(DATA_SELECT_KEYS, (err, rows) => {
@@ -245,7 +259,7 @@ export class StorageDatabaseHelper {
         });
     }
     values() {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             const db = this._utils.getReadableDatabase(this._dbName /*,this._secret*/);
             const DATA_SELECT_VALUES = `SELECT "${COL_VALUE}" FROM "${this._tableName}"`;
             db.all(DATA_SELECT_VALUES, (err, rows) => {
@@ -267,7 +281,7 @@ export class StorageDatabaseHelper {
         });
     }
     keysvalues() {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             const db = this._utils.getReadableDatabase(this._dbName /*,this._secret*/);
             const DATA_SELECT_KEYSVALUES = `SELECT "${COL_NAME}" , "${COL_VALUE}" FROM "${this._tableName}"`;
             db.all(DATA_SELECT_KEYSVALUES, (err, rows) => {
@@ -283,7 +297,7 @@ export class StorageDatabaseHelper {
         });
     }
     deleteStore(dbName) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             let ret = false;
             const dbPath = path.join(this._utils.pathDB, dbName);
             try {
@@ -292,7 +306,7 @@ export class StorageDatabaseHelper {
                 ret = true;
             }
             catch (e) {
-                console.log("Error: in deleteStore");
+                console.log('Error: in deleteStore');
             }
             resolve(ret);
         });

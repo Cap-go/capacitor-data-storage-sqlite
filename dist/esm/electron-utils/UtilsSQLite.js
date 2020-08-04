@@ -6,10 +6,12 @@ const fs = window['fs'];
 const path = window['path'];
 export class UtilsSQLite {
     constructor() {
-        this.pathDB = "./DataStorage";
+        this.pathDB = './DataStorage';
     }
     connection(dbName, readOnly /*,key?:string*/) {
-        const flags = readOnly ? sqlite3.OPEN_READONLY : sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE;
+        const flags = readOnly
+            ? sqlite3.OPEN_READONLY
+            : sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE;
         console.log('in UtilsSQLite.connection flags ', flags);
         // get the path for the database
         const dbPath = this._getDBPath(dbName);
@@ -20,7 +22,7 @@ export class UtilsSQLite {
                 return dbOpen;
             }
             catch (e) {
-                console.log("Error: in UtilsSQLite.connection ", e);
+                console.log('Error: in UtilsSQLite.connection ', e);
                 return null;
             }
         }
@@ -51,7 +53,9 @@ export class UtilsSQLite {
         var path = directory.replace(/\/$/, '').split('/');
         for (var i = 1; i <= path.length; i++) {
             var segment = path.slice(0, i).join('/');
-            segment.length > 0 && !fs.existsSync(segment) ? fs.mkdirSync(segment) : null;
+            segment.length > 0 && !fs.existsSync(segment)
+                ? fs.mkdirSync(segment)
+                : null;
         }
         return;
     }

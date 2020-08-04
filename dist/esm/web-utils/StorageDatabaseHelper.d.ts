@@ -1,4 +1,4 @@
-import { Data } from "./Data";
+import { Data } from './Data';
 export declare class StorageDatabaseHelper {
     private _db;
     private _dbName;

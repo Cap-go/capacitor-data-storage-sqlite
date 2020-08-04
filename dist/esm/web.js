@@ -14,7 +14,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     constructor() {
         super({
             name: 'CapacitorDataStorageSqlite',
-            platforms: ['web']
+            platforms: ['web'],
         });
     }
     echo(options) {
@@ -26,8 +26,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     openStore(options) {
         return __awaiter(this, void 0, void 0, function* () {
             let ret = false;
-            let dbName = options.database ? `${options.database}IDB` : "storageIDB";
-            let tableName = options.table ? options.table : "storage_store";
+            let dbName = options.database ? `${options.database}IDB` : 'storageIDB';
+            let tableName = options.table ? options.table : 'storage_store';
             this.mDb = new StorageDatabaseHelper(dbName, tableName);
             if (this.mDb)
                 ret = true;
@@ -38,21 +38,27 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let tableName = options.table;
             if (tableName == null) {
-                return Promise.reject("Must provide a table name");
+                return Promise.reject('Must provide a table name');
             }
             let ret = false;
-            let message = "";
+            let message = '';
             if (this.mDb) {
                 ret = yield this.mDb.setTable(tableName);
                 if (ret) {
                     return Promise.resolve({ result: ret, message: message });
                 }
                 else {
-                    return Promise.resolve({ result: ret, message: "failed in adding table" });
+                    return Promise.resolve({
+                        result: ret,
+                        message: 'failed in adding table',
+                    });
                 }
             }
             else {
-                return Promise.resolve({ result: ret, message: "Must open a store first" });
+                return Promise.resolve({
+                    result: ret,
+                    message: 'Must open a store first',
+                });
             }
         });
     }
@@ -60,12 +66,12 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let ret;
             let key = options.key;
-            if (key == null || typeof key != "string") {
-                return Promise.reject("Must provide key as string");
+            if (key == null || typeof key != 'string') {
+                return Promise.reject('Must provide key as string');
             }
             let value = options.value;
-            if (value == null || typeof value != "string") {
-                return Promise.reject("Must provide value as string");
+            if (value == null || typeof value != 'string') {
+                return Promise.reject('Must provide value as string');
             }
             let data = new Data();
             data.name = key;
@@ -78,8 +84,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let ret;
             let key = options.key;
-            if (key == null || typeof key != "string") {
-                return Promise.reject("Must provide key as string");
+            if (key == null || typeof key != 'string') {
+                return Promise.reject('Must provide key as string');
             }
             let data = yield this.mDb.get(key);
             ret = data != null ? data.value : null;
@@ -90,8 +96,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let ret;
             let key = options.key;
-            if (key == null || typeof key != "string") {
-                return Promise.reject("Must provide key as string");
+            if (key == null || typeof key != 'string') {
+                return Promise.reject('Must provide key as string');
             }
             ret = yield this.mDb.remove(key);
             return Promise.resolve({ result: ret });
@@ -108,8 +114,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let ret;
             let key = options.key;
-            if (key == null || typeof key != "string") {
-                return Promise.reject("Must provide key as string");
+            if (key == null || typeof key != 'string') {
+                return Promise.reject('Must provide key as string');
             }
             ret = yield this.mDb.iskey(key);
             return Promise.resolve({ result: ret });
@@ -135,7 +141,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
             let results;
             results = yield this.mDb.keysvalues();
             for (let i = 0; i < results.length; i++) {
-                let res = { "key": results[i].name, "value": results[i].value };
+                let res = { key: results[i].name, value: results[i].value };
                 ret.push(res);
             }
             return Promise.resolve({ keysvalues: ret });
@@ -144,7 +150,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     deleteStore(options) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('deleteStore', options);
-            return Promise.reject("Not implemented");
+            return Promise.reject('Not implemented');
         });
     }
 }

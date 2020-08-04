@@ -27,7 +27,7 @@ public struct Blob {
 
 }
 
-extension Blob : CustomStringConvertible {
+extension Blob: CustomStringConvertible {
 
     public var description: String {
         return "x'\(toHex())'"
@@ -35,6 +35,6 @@ extension Blob : CustomStringConvertible {
 
 }
 
-public func ==(lhs: Blob, rhs: Blob) -> Bool {
+public func == (lhs: Blob, rhs: Blob) -> Bool {
     return lhs.bytes == rhs.bytes
 }

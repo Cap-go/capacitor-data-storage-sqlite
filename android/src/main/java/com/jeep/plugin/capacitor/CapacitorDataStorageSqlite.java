@@ -7,28 +7,27 @@ import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
-import java.util.List;
-import org.json.JSONException;
-import java.io.File;
-
-import com.jeep.plugin.capacitor.cdssUtils.StorageDatabaseHelper;
 import com.jeep.plugin.capacitor.cdssUtils.Data;
 import com.jeep.plugin.capacitor.cdssUtils.Global;
+import com.jeep.plugin.capacitor.cdssUtils.StorageDatabaseHelper;
+import java.io.File;
+import java.util.List;
+import org.json.JSONException;
 
-@NativePlugin()
+@NativePlugin
 public class CapacitorDataStorageSqlite extends Plugin {
     private StorageDatabaseHelper mDb;
     private Global globalData = new Global();
 
-    private  Context context;
+    private Context context;
 
     public void load() {
         // Get singleton instance of database
         context = getContext();
-//        mDb = StorageDatabaseHelper.getInstance(context);
+        //        mDb = StorageDatabaseHelper.getInstance(context);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void echo(PluginCall call) {
         String value = call.getString("value");
 
@@ -36,9 +35,9 @@ public class CapacitorDataStorageSqlite extends Plugin {
         ret.put("value", value);
         call.success(ret);
     }
-    @PluginMethod()
-    public void openStore(PluginCall call) {
 
+    @PluginMethod
+    public void openStore(PluginCall call) {
         String dbName = null;
         String tableName = null;
         Boolean encrypted = null;
@@ -46,7 +45,6 @@ public class CapacitorDataStorageSqlite extends Plugin {
         String newsecret = null;
         String inMode = null;
         JSObject ret = new JSObject();
-
 
         dbName = call.getString("database");
         if (dbName == null) {
@@ -58,17 +56,20 @@ public class CapacitorDataStorageSqlite extends Plugin {
         }
         encrypted = call.getBoolean("encrypted", false);
         if (encrypted) {
-            inMode = call.getString("mode","no-encryption");
-            if (!inMode.equals("no-encryption") && !inMode.equals("encryption") &&
-                    !inMode.equals("secret") && !inMode.equals("newsecret") &&
-                    !inMode.equals("wrongsecret")) {
+            inMode = call.getString("mode", "no-encryption");
+            if (
+                !inMode.equals("no-encryption") &&
+                !inMode.equals("encryption") &&
+                !inMode.equals("secret") &&
+                !inMode.equals("newsecret") &&
+                !inMode.equals("wrongsecret")
+            ) {
                 ret.put("result", false);
                 ret.put("message", "OpenStore: Error inMode must be in ['encryption','secret','newsecret']");
                 call.resolve(ret);
             }
-            if (inMode.equals("encryption")  || inMode.equals("secret")) {
+            if (inMode.equals("encryption") || inMode.equals("secret")) {
                 secret = globalData.secret;
-
             } else if (inMode.equals("newsecret")) {
                 secret = globalData.secret;
                 newsecret = globalData.newsecret;
@@ -81,15 +82,13 @@ public class CapacitorDataStorageSqlite extends Plugin {
                 secret = "";
                 newsecret = "";
             }
-
         } else {
             inMode = "no-encryption";
         }
 
-//        mDb = StorageDatabaseHelper.getInstance(context,dbName+"SQLite.db",tableName,1);
+        //        mDb = StorageDatabaseHelper.getInstance(context,dbName+"SQLite.db",tableName,1);
 
-        mDb = new StorageDatabaseHelper(context,dbName+"SQLite.db",tableName,encrypted,
-                inMode,secret,newsecret,1);
+        mDb = new StorageDatabaseHelper(context, dbName + "SQLite.db", tableName, encrypted, inMode, secret, newsecret, 1);
         if (!mDb.isOpen) {
             ret.put("result", false);
         } else {
@@ -97,7 +96,8 @@ public class CapacitorDataStorageSqlite extends Plugin {
         }
         call.resolve(ret);
     }
-    @PluginMethod()
+
+    @PluginMethod
     public void setTable(PluginCall call) {
         String tableName = null;
         String message = "";
@@ -107,7 +107,7 @@ public class CapacitorDataStorageSqlite extends Plugin {
             call.reject("Must provide a table name");
             return;
         }
-        if(mDb != null) {
+        if (mDb != null) {
             res = mDb.setTable(tableName);
             if (!res) {
                 message = "failed in adding table";
@@ -116,12 +116,12 @@ public class CapacitorDataStorageSqlite extends Plugin {
             message = "Must open a store first";
         }
         JSObject ret = new JSObject();
-        ret.put("result",res);
-        ret.put("message",message);
+        ret.put("result", res);
+        ret.put("message", message);
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void set(PluginCall call) {
         String key = call.getString("key");
         if (key == null) {
@@ -134,11 +134,11 @@ public class CapacitorDataStorageSqlite extends Plugin {
         data.value = value;
         Boolean res = mDb.set(data);
         JSObject ret = new JSObject();
-        ret.put("result",res);
+        ret.put("result", res);
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void get(PluginCall call) {
         String key = call.getString("key");
         if (key == null) {
@@ -152,7 +152,7 @@ public class CapacitorDataStorageSqlite extends Plugin {
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void iskey(PluginCall call) {
         String key = call.getString("key");
         if (key == null) {
@@ -162,11 +162,11 @@ public class CapacitorDataStorageSqlite extends Plugin {
         boolean res = mDb.iskey(key);
 
         JSObject ret = new JSObject();
-        ret.put("result",res);
+        ret.put("result", res);
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void remove(PluginCall call) {
         String key = call.getString("key");
         if (key == null) {
@@ -176,20 +176,20 @@ public class CapacitorDataStorageSqlite extends Plugin {
         boolean res = mDb.remove(key);
 
         JSObject ret = new JSObject();
-        ret.put("result",res);
+        ret.put("result", res);
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void clear(PluginCall call) {
         boolean res = mDb.clear();
 
         JSObject ret = new JSObject();
-        ret.put("result",res);
+        ret.put("result", res);
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void keys(PluginCall call) {
         List<String> resKeys = mDb.keys();
         String[] keyArray = resKeys.toArray(new String[resKeys.size()]);
@@ -204,7 +204,7 @@ public class CapacitorDataStorageSqlite extends Plugin {
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void values(PluginCall call) {
         List<String> resValues = mDb.values();
         String[] valueArray = resValues.toArray(new String[resValues.size()]);
@@ -219,15 +219,15 @@ public class CapacitorDataStorageSqlite extends Plugin {
         call.resolve(ret);
     }
 
-    @PluginMethod()
+    @PluginMethod
     public void keysvalues(PluginCall call) {
         List<Data> resKeysValues = mDb.keysvalues();
-        JSObject[] jsObjArray = new JSObject[resKeysValues.size()] ;
+        JSObject[] jsObjArray = new JSObject[resKeysValues.size()];
 
         for (int i = 0; i < resKeysValues.size(); i++) {
             JSObject res = new JSObject();
-            res.put("key",resKeysValues.get(i).name);
-            res.put("value",resKeysValues.get(i).value);
+            res.put("key", resKeysValues.get(i).name);
+            res.put("value", resKeysValues.get(i).value);
             jsObjArray[i] = res;
         }
 
@@ -240,7 +240,8 @@ public class CapacitorDataStorageSqlite extends Plugin {
         }
         call.resolve(ret);
     }
-    @PluginMethod()
+
+    @PluginMethod
     public void deleteStore(PluginCall call) {
         String dbName = null;
         dbName = call.getString("database");
@@ -253,11 +254,10 @@ public class CapacitorDataStorageSqlite extends Plugin {
         context.deleteFile(dbName + "SQLite.db");
         File databaseFile = context.getDatabasePath(dbName + "SQLite.db");
         if (databaseFile.exists()) {
-            ret.put("result",false);
+            ret.put("result", false);
         } else {
-            ret.put("result",true);
+            ret.put("result", true);
         }
         call.resolve(ret);
     }
-
 }
