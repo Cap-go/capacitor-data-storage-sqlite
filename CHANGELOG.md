@@ -1,3 +1,9 @@
+## 2.3.0 (2020-08-05)
+
+### Bug Fixes
+
+- Fix the CHANGELOG.md
+
 ## 2.3.0-beta.2 (2020-08-05)
 
 ### Bug Fixes
