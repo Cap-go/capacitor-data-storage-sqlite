@@ -1,3 +1,15 @@
+## 2.3.0-beta.2 (2020-08-05)
+
+### Bug Fixes
+
+- Fix the CHANGELOG.md
+
+## 2.3.0-beta.1 (2020-08-04)
+
+### Bug Fixes
+
+- Fix all changes required to pass lint and swiftlint
+
 ## 2.3.0-1 (2020-07-27)
 
 ### Chores
