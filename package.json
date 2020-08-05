@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "2.3.0-beta.2",
+  "version": "2.3.0",
   "description": "Capacitor Data Storage SQLite Plugin",
   "homepage": "https://github.com/jepiqueau/capacitor-data-storage-sqlite",
   "main": "dist/esm/index.js",
