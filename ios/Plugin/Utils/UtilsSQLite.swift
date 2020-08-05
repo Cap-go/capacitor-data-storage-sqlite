@@ -18,22 +18,163 @@ enum UtilsSQLiteError: Error {
     case encryptionFailed
     case filePathFailed
     case renameFileFailed
+    case createStoreTableIndexes(message: String)
 }
 
-let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-
-
+let SQLITETRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 class UtilsSQLite {
-    class func connection(filename: String, readonly: Bool = false, key: String = "") throws -> OpaquePointer {
+
+    // MARK: - CreateConnection
+
+    class func createConnection(dbHelper: StorageDatabaseHelper, data: [String: String], encrypted: Bool,
+                                secret: String, newsecret: String) -> String {
+        var message: String = ""
+        guard let path = data["path"] else {
+            message = "init - createConnection: path not defined"
+            return message
+        }
+        guard let tableName = data["tablename"] else {
+            message = "init - createConnection: tableName not defined"
+            return message
+        }
+         guard let IDXCOLNAME = data["idxcolname"] else {
+             message = "init - createConnection: IDXCOLNAME not defined"
+             return message
+         }
+        if !encrypted && data["mode"] == "no-encryption" {
+            message = UtilsSQLite.createConnectionNoEncryption(dbHelper: dbHelper, path: path,
+                        tableName: tableName, IDXCOLNAME: IDXCOLNAME)
+        } else if encrypted && data["mode"] == "secret" && secret.count > 0 {
+            message =
+                UtilsSQLite.createConnectionEncryptedWithSecret(dbHelper: dbHelper, path: path, secret: secret,
+                                                                newsecret: newsecret, tableName: tableName,
+                                                                IDXCOLNAME: IDXCOLNAME)
+        } else if encrypted && data["mode"] == "newsecret" && secret.count > 0 && newsecret.count > 0 {
+            message =
+                UtilsSQLite.createConnectionEncryptedWithNewSecret(dbHelper: dbHelper, path: path, secret: secret,
+                                                                   newsecret: newsecret, tableName: tableName,
+                                                                   IDXCOLNAME: IDXCOLNAME)
+        } else if encrypted && data["mode"] == "encryption" && secret.count > 0 {
+            message = UtilsSQLite.makeEncryption(dbHelper: dbHelper, path: path,
+                                                 secret: secret, tableName: tableName, IDXCOLNAME: IDXCOLNAME)
+        }
+        return message
+    }
+
+    // MARK: - CreateConnectionNoEncryption
+
+    class func createConnectionNoEncryption(dbHelper: StorageDatabaseHelper, path: String, tableName: String,
+                                            IDXCOLNAME: String) -> String {
+        var message: String = ""
+        var mDB: OpaquePointer?
+        do {
+            try mDB = UtilsSQLite.connection(filename: path)
+            message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB, tableName: tableName,
+                                              IDXCOLNAME: IDXCOLNAME)
+        } catch {
+            message = "init: Error Database connection failed"
+            return message
+        }
+        dbHelper.closeDB(mDB: mDB, method: "init")
+        return message
+    }
+
+    // MARK: - CreateConnectionEncryptedWithSecret
+
+    // swiftlint:disable function_parameter_count
+    class func createConnectionEncryptedWithSecret(dbHelper: StorageDatabaseHelper, path: String, secret: String,
+                                                   newsecret: String, tableName: String, IDXCOLNAME: String) -> String {
+        var message: String = ""
+        var mDB: OpaquePointer?
+        do {
+            try mDB = UtilsSQLite.connection(filename: path, readonly: false, key: secret)
+            message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB, tableName: tableName,
+                                              IDXCOLNAME: IDXCOLNAME)
+        } catch {
+            message = "init: Error Database connection failed wrong secret"
+            return message
+        }
+        dbHelper.closeDB(mDB: mDB, method: "init")
+        return message
+    }
+
+    // MARK: - CreateConnectionEncryptedWithNewSecret
+
+    class func createConnectionEncryptedWithNewSecret(dbHelper: StorageDatabaseHelper,
+                                                      path: String, secret: String, newsecret: String,
+                                                      tableName: String, IDXCOLNAME: String) -> String {
+        var message: String = ""
+        var mDB: OpaquePointer?
+        do {
+            try mDB = UtilsSQLite.connection(filename: path, readonly: false, key: secret)
+
+            let keyStatementString = """
+            PRAGMA rekey = '\(newsecret)';
+            """
+            if sqlite3_exec(mDB, keyStatementString, nil, nil, nil) != SQLITE_OK {
+                message = "connection: Unable to open a connection to database at \(path))"
+                return message
+            }
+            /* this should work but does not sqlite3_rekey_v2 is not known
+            if sqlite3_rekey_v2(db!, "\(path)", newsecret, Int32(newsecret.count)) == SQLITE_OK {
+                self.isOpen = true
+            } else {
+                print("Unable to open a connection to database at \(path)")
+                throw StorageDatabaseHelperError.wrongNewSecret
+            }
+            */
+            message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB, tableName: tableName,
+                                              IDXCOLNAME: IDXCOLNAME)
+            if message.count == 0 {
+                message = "swap newsecret"
+            }
+        } catch {
+            message = "init: Error Database connection failed wrong secret"
+        }
+        dbHelper.closeDB(mDB: mDB, method: "init")
+        return message
+    }
+    // swiftlint:enable function_parameter_count
+
+    // MARK: - MakeEncryption
+
+    class func makeEncryption(dbHelper: StorageDatabaseHelper, path: String, secret: String,
+                              tableName: String, IDXCOLNAME: String) -> String {
+        var retMessage: String = ""
+        var res: Bool = false
+        do {
+            try res =
+                UtilsSQLite.encryptDatabase(dbHelper: dbHelper, filePath: path, secret: secret,
+                                            tableName: tableName, IDXCOLNAME: IDXCOLNAME)
+            if res {
+                    retMessage = "success encryption"
+            }
+        } catch UtilsSQLiteError.encryptionFailed {
+            retMessage = "init: Error Database Encryption failed"
+        } catch UtilsSQLiteError.filePathFailed {
+            retMessage = "init: Error Database file not found"
+        } catch UtilsSQLiteError.createStoreTableIndexes(let message) {
+            retMessage = message
+        } catch let error {
+            retMessage = "init: Encryption \(error)"
+        }
+        return retMessage
+    }
+
+    // MARK: - Connection
+
+    class func connection(filename: String, readonly: Bool = false, key: String = "") throws -> OpaquePointer? {
         let flags = readonly ? SQLITE_OPEN_READONLY : SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE
-        var db: OpaquePointer? = nil
-        if sqlite3_open_v2(filename, &db, flags | SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
+        var mDB: OpaquePointer?
+        if sqlite3_open_v2(filename, &mDB, flags | SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
             if key.count > 0 {
                 let keyStatementString = """
                 PRAGMA key = '\(key)';
                 """
-                if sqlite3_exec(db, keyStatementString, nil,nil,nil) == SQLITE_OK  {
-                    if (sqlite3_exec(db!, "SELECT count(*) FROM sqlite_master;", nil, nil, nil) != SQLITE_OK) {
+                if sqlite3_exec(mDB, keyStatementString, nil, nil, nil) == SQLITE_OK {
+                    if sqlite3_exec(mDB, "SELECT count(*) FROM sqlite_master;", nil, nil, nil) != SQLITE_OK {
                         print("Unable to open a connection to database at \(filename)")
                         throw UtilsSQLiteError.wrongSecret
                     }
@@ -57,64 +198,79 @@ class UtilsSQLite {
             }
             print("Successfully opened connection to database at \(filename)")
             */
-            return db!
+            return mDB
         } else {
             print("connection: Unable to open a connection to database at \(filename)")
             throw UtilsSQLiteError.connectionFailed
         }
     }
-        
+
+    // MARK: - GetWritableDatabase
+
     class func getWritableDatabase(filename: String, secret: String) throws -> OpaquePointer? {
-        guard let db = try? connection(filename: filename,readonly: false,key: secret) else {
+        guard let mDB = try? connection(filename: filename, readonly: false, key: secret) else {
             throw UtilsSQLiteError.connectionFailed
         }
-        return db
+        return mDB
     }
+
+    // MARK: - GetReadableDatabase
+
     class func getReadableDatabase(filename: String, secret: String) throws -> OpaquePointer? {
-        guard let db = try? connection(filename:filename, readonly: true,key: secret) else {
+        guard let mDB = try? connection(filename: filename, readonly: true, key: secret) else {
             throw UtilsSQLiteError.connectionFailed
         }
-        return db
+        return mDB
     }
-    class func bind( handle: OpaquePointer, value: Any?, idx:Int) throws {
+
+    // MARK: - Bind
+
+    class func bind( handle: OpaquePointer, value: Any?, idx: Int) throws {
 
         if value == nil {
             sqlite3_bind_null(handle, Int32(idx))
         } else if let value = value as? Blob {
-            sqlite3_bind_blob(handle, Int32(idx), value.bytes, Int32(value.bytes.count), SQLITE_TRANSIENT)
+            sqlite3_bind_blob(handle, Int32(idx), value.bytes, Int32(value.bytes.count), SQLITETRANSIENT)
         } else if let value = value as? Double {
             sqlite3_bind_double(handle, Int32(idx), value)
         } else if let value = value as? Int64 {
             sqlite3_bind_int64(handle, Int32(idx), value)
         } else if let value = value as? String {
-            sqlite3_bind_text(handle, Int32(idx), value, -1, SQLITE_TRANSIENT)
+            sqlite3_bind_text(handle, Int32(idx), value, -1, SQLITETRANSIENT)
         } else if let value = value as? Int {
-            sqlite3_bind_int(handle,Int32(idx), Int32(value))
+            sqlite3_bind_int(handle, Int32(idx), Int32(value))
          } else if let value = value as? Bool {
             var bInt: Int = 0
-            if(value) {bInt = 1}
-            sqlite3_bind_int(handle,Int32(idx), Int32(bInt))
+            if value {bInt = 1}
+            sqlite3_bind_int(handle, Int32(idx), Int32(bInt))
         } else {
             throw UtilsSQLiteError.bindFailed
         }
 
     }
-    class func getColumnType(index:Int32, stmt:OpaquePointer) -> Int32 {
-        var type:Int32 = 0
+
+    // MARK: - GetColumnType
+
+    class func getColumnType(index: Int32, stmt: OpaquePointer) -> Int32 {
+        var type: Int32 = 0
 
         // Column types - http://www.sqlite.org/datatype3.html (section 2.2 table column 1)
         let blobTypes = ["BINARY", "BLOB", "VARBINARY"]
-        let textTypes = ["CHAR", "CHARACTER", "CLOB", "NATIONAL VARYING CHARACTER", "NATIVE CHARACTER", "NCHAR", "NVARCHAR", "TEXT", "VARCHAR", "VARIANT", "VARYING CHARACTER"]
+        var textTypes: [String] = ["CHAR", "CHARACTER", "CLOB", "NATIONAL VARYING CHARACTER", "NATIVE CHARACTER"]
+        let textTypes1: [String] = ["NCHAR", "NVARCHAR", "TEXT", "VARCHAR", "VARIANT", "VARYING CHARACTER"]
+        textTypes.append(contentsOf: textTypes1)
         let dateTypes = ["DATE", "DATETIME", "TIME", "TIMESTAMP"]
-        let intTypes  = ["BIGINT", "BIT", "BOOL", "BOOLEAN", "INT", "INT2", "INT8", "INTEGER", "MEDIUMINT", "SMALLINT", "TINYINT"]
+        var intTypes  = ["BIGINT", "BIT", "BOOL", "BOOLEAN", "INT", "INT2", "INT8", "INTEGER", "MEDIUMINT"]
+        let intTypes1: [String] = ["SMALLINT", "TINYINT"]
+        intTypes.append(contentsOf: intTypes1)
         let nullTypes = ["NULL"]
         let realTypes = ["DECIMAL", "DOUBLE", "DOUBLE PRECISION", "FLOAT", "NUMERIC", "REAL"]
 
         // Determine type of column - http://www.sqlite.org/c3ref/c_blob.html
         let declaredType = sqlite3_column_decltype(stmt, index)
 
-        if (declaredType != nil) {
-            var declaredType = String(cString:declaredType!).uppercased()
+           if let dclType = declaredType {
+            var declaredType = String(cString: dclType).uppercased()
 
             if let index = declaredType.firstIndex(of: "(" ) {
                 declaredType = String(declaredType[..<index])
@@ -139,14 +295,14 @@ class UtilsSQLite {
                 return SQLITE_NULL
             }
             return SQLITE_NULL
-        }
-        else {
+        } else {
             type = sqlite3_column_type(stmt, index)
             return type
         }
     }
 
-    
+    // MARK: - GetColumnValue
+
     class func getColumnValue(index: Int32, type: Int32, stmt: OpaquePointer) -> Any? {
         switch type {
         case SQLITE_INTEGER:
@@ -158,17 +314,23 @@ class UtilsSQLite {
         case SQLITE_BLOB:
             let data = sqlite3_column_blob(stmt, index)
             let size = sqlite3_column_bytes(stmt, index)
-            let val = NSData(bytes:data, length: Int(size))
+            let val = NSData(bytes: data, length: Int(size))
             return val
         case SQLITE_TEXT:
             let buffer = sqlite3_column_text(stmt, index)
-            let val = String(cString:buffer!)
+            var val: String
+            if let mBuffer = buffer {
+                val = String(cString: mBuffer)
+            } else {
+                val = "NULL"
+            }
             return val
         default:
             return nil
         }
     }
 
+    // MARK: - IsFileExist
 
     class func isFileExist(filePath: String) -> Bool {
         var ret: Bool = false
@@ -178,22 +340,29 @@ class UtilsSQLite {
          }
         return ret
     }
-    
+
+    // MARK: - GetFilePath
+
     class func getFilePath(fileName: String) throws -> String {
-        let path: String = NSSearchPathForDirectoriesInDomains(
-           .documentDirectory, .userDomainMask, true
-           ).first!
-        let url = NSURL(fileURLWithPath: path)
-        if let pathComponent = url.appendingPathComponent("\(fileName)") {
-           return pathComponent.path
+        if let path: String = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+        ).first {
+            let url = NSURL(fileURLWithPath: path)
+            if let pathComponent = url.appendingPathComponent("\(fileName)") {
+                return pathComponent.path
+            } else {
+                throw UtilsSQLiteError.filePathFailed
+            }
         } else {
             throw UtilsSQLiteError.filePathFailed
         }
     }
 
+    // MARK: - DeleteFile
+
     class func deleteFile(fileName: String) throws -> Bool {
         var ret: Bool = false
-        
+
         do {
             let filePath: String = try getFilePath(fileName: fileName)
             if isFileExist(filePath: filePath) {
@@ -212,7 +381,9 @@ class UtilsSQLite {
         }
         return ret
     }
-    
+
+    // MARK: - RenameFile
+
     class func renameFile (filePath: String, toFilePath: String) throws {
          let fileManager = FileManager.default
          do {
@@ -222,46 +393,72 @@ class UtilsSQLite {
             }
 
              try fileManager.moveItem(atPath: filePath, toPath: toFilePath)
-         }
-         catch let error {
+         } catch let error {
             print("Error: \(error)")
              throw UtilsSQLiteError.renameFileFailed
          }
     }
-       
-    class func encryptDatabase(fileName: String, secret: String) throws -> Bool {
+
+    // MARK: - EncryptDatabase
+
+    class func encryptDatabase(dbHelper: StorageDatabaseHelper, filePath: String, secret: String,
+                               tableName: String, IDXCOLNAME: String) throws -> Bool {
         var ret: Bool = false
-        var db: OpaquePointer?
+        var mDB: OpaquePointer?
         do {
-            let filePath: String = try getFilePath(fileName: fileName)
             if isFileExist(filePath: filePath) {
                 do {
-                    let tempPath: String = try getFilePath(fileName:"temp.db")
+                    let tempPath: String = try getFilePath(fileName: "temp.db")
                     try renameFile(filePath: filePath, toFilePath: tempPath)
-
-                    try db = UtilsSQLite.connection(filename: tempPath)
-                    try _ = UtilsSQLite.connection(filename: filePath,readonly: false,key: secret)
+                    try mDB = UtilsSQLite.connection(filename: tempPath)
+                    try _ = UtilsSQLite.connection(filename: filePath, readonly: false, key: secret)
                     let stmt: String = """
                     ATTACH DATABASE '\(filePath)' AS encrypted KEY '\(secret)';
                     SELECT sqlcipher_export('encrypted');
                     DETACH DATABASE encrypted;
                     """
-                    if sqlite3_exec(db,stmt, nil, nil, nil) == SQLITE_OK  {
+                    if sqlite3_exec(mDB, stmt, nil, nil, nil) == SQLITE_OK {
                         try _ = deleteFile(fileName: "temp.db")
+                        let message: String =
+                            createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB, tableName: tableName,
+                                                    IDXCOLNAME: IDXCOLNAME)
+                        if message.count > 0 {
+                            throw UtilsSQLiteError.createStoreTableIndexes(message: message)
+                        }
                         ret = true
                     }
-
                 } catch let error {
                     print("Error: \(error)")
                     throw UtilsSQLiteError.encryptionFailed
                 }
-                
             }
         } catch let error {
             print("Error: \(error)")
             throw UtilsSQLiteError.filePathFailed
         }
+        dbHelper.closeDB(mDB: mDB, method: "init")
         return ret
     }
-        
+
+    // MARK: - CreateStoreTableIndexes
+
+    class func createStoreTableIndexes(dbHelper: StorageDatabaseHelper, mDB: OpaquePointer?,
+                                       tableName: String, IDXCOLNAME: String) -> String {
+        var message = ""
+        // create table
+        var res: Bool = dbHelper.createTable(mDB: mDB, tableName: tableName, ifNotExists: true)
+        if !res {
+            message = "createStoreTableIndexes: table creation failed"
+            return message
+        }
+        // create index
+        res = dbHelper.createIndex(mDB: mDB, tableName: tableName, colName: IDXCOLNAME, ifNotExists: true)
+        if !res {
+            message = "createStoreTableIndexes: index creation failed"
+            return message
+        }
+        return message
+    }
 }
+// swiftlint:enable type_body_length
+// swiftlint:enable file_length

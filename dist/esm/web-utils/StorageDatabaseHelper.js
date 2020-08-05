@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import LocalForage from 'jeep-localforage';
-import { Data } from "./Data";
+import { Data } from './Data';
 //const DATABASE: string = "storageIDB";
 //const STORAGESTORE: string = "storage_store";
 export class StorageDatabaseHelper {
@@ -31,7 +31,7 @@ export class StorageDatabaseHelper {
             name: dbName,
             storeName: tableName,
             driver: [LocalForage.INDEXEDDB, LocalForage.WEBSQL],
-            version: 1
+            version: 1,
         };
         return config;
     }
@@ -42,7 +42,9 @@ export class StorageDatabaseHelper {
     }
     set(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this._db.setItem(data.name, data.value).then(() => {
+            return this._db
+                .setItem(data.name, data.value)
+                .then(() => {
                 return Promise.resolve(true);
             })
                 .catch((error) => {
@@ -53,7 +55,9 @@ export class StorageDatabaseHelper {
     }
     get(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this._db.getItem(name).then((value) => {
+            return this._db
+                .getItem(name)
+                .then((value) => {
                 let data = new Data();
                 data.name = name;
                 data.value = value;
@@ -67,7 +71,9 @@ export class StorageDatabaseHelper {
     }
     remove(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this._db.removeItem(name).then(() => {
+            return this._db
+                .removeItem(name)
+                .then(() => {
                 return Promise.resolve(true);
             })
                 .catch((error) => {
@@ -78,7 +84,9 @@ export class StorageDatabaseHelper {
     }
     clear() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this._db.clear().then(() => {
+            return this._db
+                .clear()
+                .then(() => {
                 return Promise.resolve(true);
             })
                 .catch((error) => {
@@ -89,7 +97,9 @@ export class StorageDatabaseHelper {
     }
     keys() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this._db.keys().then((keys) => {
+            return this._db
+                .keys()
+                .then((keys) => {
                 return Promise.resolve(keys);
             })
                 .catch((error) => {
@@ -101,9 +111,11 @@ export class StorageDatabaseHelper {
     values() {
         return __awaiter(this, void 0, void 0, function* () {
             let values = [];
-            return this._db.iterate(((value) => {
+            return this._db
+                .iterate((value) => {
                 values.push(value);
-            })).then(() => {
+            })
+                .then(() => {
                 return Promise.resolve(values);
             })
                 .catch((error) => {
@@ -115,12 +127,14 @@ export class StorageDatabaseHelper {
     keysvalues() {
         return __awaiter(this, void 0, void 0, function* () {
             let keysvalues = [];
-            return this._db.iterate(((value, key) => {
+            return this._db
+                .iterate((value, key) => {
                 let data = new Data();
                 data.name = key;
                 data.value = value;
                 keysvalues.push(data);
-            })).then(() => {
+            })
+                .then(() => {
                 return Promise.resolve(keysvalues);
             })
                 .catch((error) => {
@@ -131,7 +145,8 @@ export class StorageDatabaseHelper {
     }
     iskey(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.get(name).then((data) => {
+            return this.get(name)
+                .then(data => {
                 if (data.value != null) {
                     return Promise.resolve(true);
                 }

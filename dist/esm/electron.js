@@ -14,7 +14,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
     constructor() {
         super({
             name: 'CapacitorDataStorageSqlite',
-            platforms: ['electron']
+            platforms: ['electron'],
         });
         this.mDb = new StorageDatabaseHelper();
     }
@@ -27,8 +27,10 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
     openStore(options) {
         return __awaiter(this, void 0, void 0, function* () {
             let ret = false;
-            let dbName = options.database ? `${options.database}SQLite.db` : "storageSQLite.db";
-            let tableName = options.table ? options.table : "storage_store";
+            let dbName = options.database
+                ? `${options.database}SQLite.db`
+                : 'storageSQLite.db';
+            let tableName = options.table ? options.table : 'storage_store';
             ret = yield this.mDb.openStore(dbName, tableName);
             return Promise.resolve({ result: ret });
         });
@@ -37,21 +39,30 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let tableName = options.table;
             if (tableName == null) {
-                return Promise.reject({ result: false, message: "Must provide a table name" });
+                return Promise.reject({
+                    result: false,
+                    message: 'Must provide a table name',
+                });
             }
             let ret = false;
-            let message = "";
+            let message = '';
             if (this.mDb) {
                 ret = yield this.mDb.setTable(tableName);
                 if (ret) {
                     return Promise.resolve({ result: ret, message: message });
                 }
                 else {
-                    return Promise.reject({ result: ret, message: "failed in adding table" });
+                    return Promise.reject({
+                        result: ret,
+                        message: 'failed in adding table',
+                    });
                 }
             }
             else {
-                return Promise.reject({ result: ret, message: "Must open a store first" });
+                return Promise.reject({
+                    result: ret,
+                    message: 'Must open a store first',
+                });
             }
         });
     }
@@ -60,11 +71,11 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             let ret;
             let key = options.key;
             if (key == null) {
-                return Promise.reject({ result: false, message: "Must provide key" });
+                return Promise.reject({ result: false, message: 'Must provide key' });
             }
             let value = options.value;
             if (value == null) {
-                return Promise.reject({ result: false, message: "Must provide value" });
+                return Promise.reject({ result: false, message: 'Must provide value' });
             }
             let data = new Data();
             data.name = key;
@@ -78,7 +89,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             let ret;
             let key = options.key;
             if (key == null) {
-                return Promise.reject({ result: false, message: "Must provide key" });
+                return Promise.reject({ result: false, message: 'Must provide key' });
             }
             let data = yield this.mDb.get(key);
             ret = data != null && data.id != null ? data.value : null;
@@ -90,7 +101,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             let ret;
             let key = options.key;
             if (key == null) {
-                return Promise.reject({ result: false, message: "Must provide key" });
+                return Promise.reject({ result: false, message: 'Must provide key' });
             }
             ret = yield this.mDb.remove(key);
             return Promise.resolve({ result: ret });
@@ -108,7 +119,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             let ret;
             let key = options.key;
             if (key == null) {
-                return Promise.reject({ result: false, message: "Must provide key" });
+                return Promise.reject({ result: false, message: 'Must provide key' });
             }
             ret = yield this.mDb.iskey(key);
             return Promise.resolve({ result: ret });
@@ -134,7 +145,7 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
             let results;
             results = yield this.mDb.keysvalues();
             for (let i = 0; i < results.length; i++) {
-                let res = { "key": results[i].name, "value": results[i].value };
+                let res = { key: results[i].name, value: results[i].value };
                 ret.push(res);
             }
             return Promise.resolve({ keysvalues: ret });
@@ -144,7 +155,10 @@ export class CapacitorDataStorageSqlitePluginElectron extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let dbName = options.database;
             if (dbName == null) {
-                return Promise.reject({ result: false, message: "Must provide a Database Name" });
+                return Promise.reject({
+                    result: false,
+                    message: 'Must provide a Database Name',
+                });
             }
             dbName = `${options.database}SQLite.db`;
             if (typeof this.mDb === 'undefined' || this.mDb === null)

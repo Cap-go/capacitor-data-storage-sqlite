@@ -10,27 +10,23 @@ package com.jeep.plugin.capacitor.cdssUtils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteOpenHelper;
 //import android.database.sqlite.SQLiteDatabase;
 //import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import com.jeep.plugin.capacitor.cdssUtils.Data;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
 
 public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public Boolean isOpen = false;
     private static final String TAG = "StorageDatabaseHelper";
-//    private static StorageDatabaseHelper sInstance;
+    //    private static StorageDatabaseHelper sInstance;
     // Database Info
-/*    private static final String DATABASE_NAME = "storageSQLite.db";
+    /*    private static final String DATABASE_NAME = "storageSQLite.db";
     private static final int DATABASE_VERSION = 1;
 
     // Table Names
@@ -50,7 +46,8 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_NAME = "name";
     private static final String COL_VALUE = "value";
     private static final String IDX_COL_NAME = "name";
-/*
+
+    /*
     public static synchronized StorageDatabaseHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
@@ -71,9 +68,16 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     }
     */
 
-    public StorageDatabaseHelper(Context context, String _dbName, String _tableName,
-                                 Boolean _encrypted, String _mode, String _secret,
-                                 String _newsecret, int _vNumber) {
+    public StorageDatabaseHelper(
+        Context context,
+        String _dbName,
+        String _tableName,
+        Boolean _encrypted,
+        String _mode,
+        String _secret,
+        String _newsecret,
+        int _vNumber
+    ) {
         super(context, _dbName, null, _vNumber);
         dbName = _dbName;
         tableName = _tableName;
@@ -84,17 +88,15 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         mode = _mode;
 
         InitializeSQLCipher(context);
-
-
     }
+
     private void InitializeSQLCipher(Context context) {
         SQLiteDatabase.loadLibs(context);
         SQLiteDatabase database = null;
         File databaseFile;
         File tempFile;
 
-        if(!encrypted && mode.equals("no-encryption")) {
-
+        if (!encrypted && mode.equals("no-encryption")) {
             databaseFile = context.getDatabasePath(dbName);
             try {
                 database = SQLiteDatabase.openOrCreateDatabase(databaseFile, "", null);
@@ -108,12 +110,10 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 database = SQLiteDatabase.openOrCreateDatabase(databaseFile, secret, null);
                 isOpen = true;
             } catch (Exception e) {
-                Log.d(TAG, "InitializeSQLCipher: Wrong Secret " );
+                Log.d(TAG, "InitializeSQLCipher: Wrong Secret ");
                 database = null;
             }
-        } else if(encrypted && mode.equals("newsecret") && secret.length() > 0
-                && newsecret.length() > 0) {
-
+        } else if (encrypted && mode.equals("newsecret") && secret.length() > 0 && newsecret.length() > 0) {
             databaseFile = context.getDatabasePath(dbName);
             try {
                 database = SQLiteDatabase.openOrCreateDatabase(databaseFile, secret, null);
@@ -122,12 +122,10 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 secret = newsecret;
                 isOpen = true;
             } catch (Exception e) {
-                Log.d(TAG, "InitializeSQLCipher: " + e );
+                Log.d(TAG, "InitializeSQLCipher: " + e);
                 database = null;
             }
-
         } else if (encrypted && mode.equals("encryption") && secret.length() > 0) {
-
             // Encrypt an existing non-encrypted database
             // get the db  and rename it
             File oriDBFile = context.getDatabasePath(dbName);
@@ -142,8 +140,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             database = SQLiteDatabase.openOrCreateDatabase(databaseFile, secret, null);
 
             if (tempFile.exists()) {
-                SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(tempFile,
-                        null, null);
+                SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(tempFile, null, null);
 
                 // create tables
                 List<String> tables = getTables(tempDB);
@@ -153,33 +150,29 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                     tableName = table;
                     List<Data> rawData = getKeysValues(tempDB);
 
-                    Boolean res = createTable(database,table,true);
+                    Boolean res = createTable(database, table, true);
                     if (res) {
-
                         database.beginTransaction();
                         try {
                             ContentValues values = new ContentValues();
-                            for (Data row  : rawData) {
+                            for (Data row : rawData) {
                                 values.put(COL_NAME, row.name);
                                 values.put(COL_VALUE, row.value);
                                 database.insertOrThrow(table, null, values);
                             }
                             database.setTransactionSuccessful();
                         } catch (Exception e) {
-                            Log.d(TAG, "InitializeSQLCipher: Error while trying to add data " +
-                                    "in table " + table + "of the encryptedDB");
+                            Log.d(TAG, "InitializeSQLCipher: Error while trying to add data " + "in table " + table + "of the encryptedDB");
                         } finally {
                             database.endTransaction();
-                            Boolean resIndex = createIndex(database,table,IDX_COL_NAME,true);
+                            Boolean resIndex = createIndex(database, table, IDX_COL_NAME, true);
                             if (!resIndex) {
-                                Log.d(TAG, "InitializeSQLCipher: Error while trying to index table "
-                                        + table + "of the encryptedDB");
+                                Log.d(TAG, "InitializeSQLCipher: Error while trying to index table " + table + "of the encryptedDB");
                             }
                         }
                     } else {
-                        Log.d(TAG,"InitializeSQLCipher: create Table failed during encryption process");
+                        Log.d(TAG, "InitializeSQLCipher: create Table failed during encryption process");
                     }
-
                 }
                 tempDB.close();
                 tempFile.delete();
@@ -188,10 +181,10 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
                 isOpen = true;
             }
         }
-        if(database != null) database.close();
-        if(isOpen) {
+        if (database != null) database.close();
+        if (isOpen) {
             boolean isTable = checkForTableExists(tableName);
-            if(!isTable ) {
+            if (!isTable) {
                 isOpen = setTable(tableName);
             }
         }
@@ -200,18 +193,15 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "******* onCreate: in ");
-        Boolean res = createTable(db,tableName,true);
-        if(res) {
+        Boolean res = createTable(db, tableName, true);
+        if (res) {
             Log.d(TAG, "onCreate: table " + tableName + " created");
-            Boolean resIndex = createIndex(db,tableName,IDX_COL_NAME,true);
+            Boolean resIndex = createIndex(db, tableName, IDX_COL_NAME, true);
             if (!resIndex) {
-                Log.d(TAG, "onCreate: index table "
-                        + tableName + " not created");
+                Log.d(TAG, "onCreate: index table " + tableName + " not created");
             } else {
-                Log.d(TAG, "onCreate: index table "
-                        + tableName + " created");
+                Log.d(TAG, "onCreate: index table " + tableName + " created");
             }
-
         } else {
             Log.d(TAG, "onCreate: table " + tableName + " not created");
         }
@@ -228,10 +218,10 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public boolean setTable(String _tableName) {
         Boolean ret = false;
         SQLiteDatabase db = getWritableDatabase(secret);
-        boolean res = createTable(db,_tableName,true);
+        boolean res = createTable(db, _tableName, true);
         if (res) {
             tableName = _tableName;
-            Boolean resIndex = createIndex(db,_tableName,IDX_COL_NAME,true);
+            Boolean resIndex = createIndex(db, _tableName, IDX_COL_NAME, true);
             if (resIndex) {
                 ret = true;
             }
@@ -253,13 +243,11 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             // exists so update it
             db.close();
             return this.update(data);
-
         } else {
             // does not exist add it
             // wrap our insert in a transaction.
             db.beginTransaction();
             try {
-
                 ContentValues values = new ContentValues();
                 values.put(COL_NAME, data.name);
                 values.put(COL_VALUE, data.value);
@@ -288,8 +276,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         // wrap our update in a transaction.
         db.beginTransaction();
         try {
-            db.update(tableName, values, COL_NAME + " = ?",
-                    new String[] { String.valueOf(data.name) });
+            db.update(tableName, values, COL_NAME + " = ?", new String[] { String.valueOf(data.name) });
             db.setTransactionSuccessful();
             ret = true;
         } catch (Exception e) {
@@ -299,7 +286,6 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             db.close();
             return ret;
         }
-
     }
 
     // delete a data into the database
@@ -327,8 +313,8 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         // check if the table exists
         boolean isTable = checkForTableExists(tableName);
 
-        if( isTable ) {
-             // wrap our delete in a transaction.
+        if (isTable) {
+            // wrap our delete in a transaction.
             SQLiteDatabase db = this.getWritableDatabase(secret);
 
             db.beginTransaction();
@@ -358,7 +344,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public boolean iskey(String name) {
         boolean ret = false;
         Data data = get(name);
-        if(data.id != null) ret =true;
+        if (data.id != null) ret = true;
         return ret;
     }
 
@@ -366,8 +352,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public Data get(String name) {
         Data data = null;
 
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName +
-                " WHERE " + COL_NAME + " = '" + name + "'";
+        String DATA_SELECT_QUERY = "SELECT * FROM " + tableName + " WHERE " + COL_NAME + " = '" + name + "'";
         SQLiteDatabase db = this.getReadableDatabase(secret);
         Cursor cursor = null;
         cursor = db.rawQuery(DATA_SELECT_QUERY, null);
@@ -401,7 +386,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public List<String> keys() {
         List<String> data = new ArrayList<>();
 
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
+        String DATA_SELECT_QUERY = "SELECT * FROM " + tableName;
         SQLiteDatabase db = this.getReadableDatabase(secret);
         Cursor cursor = null;
         cursor = db.rawQuery(DATA_SELECT_QUERY, null);
@@ -409,10 +394,9 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             try {
                 if (cursor.moveToFirst()) {
                     do {
-
                         String key = cursor.getString(cursor.getColumnIndex(COL_NAME));
                         data.add(key);
-                    } while(cursor.moveToNext());
+                    } while (cursor.moveToNext());
                 }
             } catch (Exception e) {
                 Log.d(TAG, "keys: Error while trying to get all keys from storage database");
@@ -435,7 +419,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
     public List<String> values() {
         List<String> data = new ArrayList<>();
 
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
+        String DATA_SELECT_QUERY = "SELECT * FROM " + tableName;
         SQLiteDatabase db = this.getReadableDatabase(secret);
         Cursor cursor = null;
         cursor = db.rawQuery(DATA_SELECT_QUERY, null);
@@ -443,10 +427,9 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             try {
                 if (cursor.moveToFirst()) {
                     do {
-
                         String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
                         data.add(value);
-                    } while(cursor.moveToNext());
+                    } while (cursor.moveToNext());
                 }
             } catch (Exception e) {
                 Log.d(TAG, "values: Error while trying to get all values from storage database");
@@ -465,7 +448,6 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-
     // get All Data
     public List<Data> keysvalues() {
         List<Data> data = new ArrayList<>();
@@ -475,6 +457,7 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return data;
     }
+
     private List<String> getTables(SQLiteDatabase db) {
         List<String> data = new ArrayList<>();
 
@@ -485,13 +468,12 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
             try {
                 if (cursor.moveToFirst()) {
                     do {
-
                         String key = cursor.getString(cursor.getColumnIndex("name"));
 
-                        if(!"sqlite_sequence".equals(key)) {
+                        if (!"sqlite_sequence".equals(key)) {
                             data.add(key);
                         }
-                    } while(cursor.moveToNext());
+                    } while (cursor.moveToNext());
                 }
             } catch (Exception e) {
                 Log.d(TAG, "keys: Error while trying to get all keys from storage database");
@@ -508,23 +490,31 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         }
         return data;
     }
-    private Boolean createTable (SQLiteDatabase db, String tableName, Boolean ifNotExists ) {
+
+    private Boolean createTable(SQLiteDatabase db, String tableName, Boolean ifNotExists) {
         boolean ret = false;
         String exist = ifNotExists ? "IF NOT EXISTS" : "";
 
         db.beginTransaction();
         try {
-            String CREATE_STORAGE_TABLE = "CREATE TABLE " + exist + " " + tableName +
-                    "(" +
-                    COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + // Define a primary key
-                    COL_NAME + " TEXT," +
-                    COL_VALUE + " TEXT" +
-                    ")";
+            String CREATE_STORAGE_TABLE =
+                "CREATE TABLE " +
+                exist +
+                " " +
+                tableName +
+                "(" +
+                COL_ID +
+                " INTEGER PRIMARY KEY AUTOINCREMENT," + // Define a primary key
+                COL_NAME +
+                " TEXT," +
+                COL_VALUE +
+                " TEXT" +
+                ")";
             db.execSQL(CREATE_STORAGE_TABLE);
             db.setTransactionSuccessful();
             ret = true;
         } catch (Exception e) {
-            Log.d(TAG, "createTable: Error while creating table: " + tableName );
+            Log.d(TAG, "createTable: Error while creating table: " + tableName);
         } finally {
             db.endTransaction();
             return ret;
@@ -533,27 +523,25 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
 
     private Boolean createIndex(SQLiteDatabase db, String tableName, String colName, Boolean ifNotExists) {
         Boolean ret = false;
-        String exist= ifNotExists ? "IF NOT EXISTS" : "";
-        String idx  = "index_" + tableName + "_on_" + colName;
-        String CREATE_INDEX_NAME = "CREATE INDEX " + exist + " " + idx +
-                " ON " + tableName + " (" + colName + ");";
+        String exist = ifNotExists ? "IF NOT EXISTS" : "";
+        String idx = "index_" + tableName + "_on_" + colName;
+        String CREATE_INDEX_NAME = "CREATE INDEX " + exist + " " + idx + " ON " + tableName + " (" + colName + ");";
         db.beginTransaction();
         try {
             db.execSQL(CREATE_INDEX_NAME);
             db.setTransactionSuccessful();
             ret = true;
         } catch (Exception e) {
-            Log.d(TAG, "createIndex: Error Index (idx) on table (tableName) could not be created." );
+            Log.d(TAG, "createIndex: Error Index (idx) on table (tableName) could not be created.");
         } finally {
             db.endTransaction();
             return ret;
         }
-
     }
 
     private List<Data> getKeysValues(SQLiteDatabase db) {
         List<Data> data = new ArrayList<>();
-        String DATA_SELECT_QUERY = "SELECT * FROM "+ tableName;
+        String DATA_SELECT_QUERY = "SELECT * FROM " + tableName;
         Cursor cursor = null;
         cursor = db.rawQuery(DATA_SELECT_QUERY, null);
         if (cursor.getCount() > 0) {
@@ -581,10 +569,11 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         }
         return data;
     }
-    private boolean checkForTableExists(String table){
-        Boolean ret =false;
+
+    private boolean checkForTableExists(String table) {
+        Boolean ret = false;
         SQLiteDatabase db = this.getWritableDatabase(secret);
-        String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+table+"'";
+        String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + table + "'";
         Cursor mCursor = null;
         mCursor = db.rawQuery(sql, null);
         if (mCursor.getCount() > 0) {
@@ -593,5 +582,4 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         mCursor.close();
         return ret;
     }
-
 }
