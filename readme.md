@@ -27,6 +27,7 @@
 ```bash
 npm install capacitor-data-storage-sqlite
 npx cap sync
+npx cap sync @capacitor-community/electron
 ```
 
 - On iOS, no further steps are needed.
@@ -56,6 +57,7 @@ npx cap sync
         );
     }
   }
+
   ```
 
 - On Electron, go to the Electron folder of YOUR_APPLICATION
@@ -81,32 +83,7 @@ npx cap sync
   npm run postinstall
   ```
 
-  Go back in the main folder of your application
-  Add a script in the index.html file of your application in the body tag
-
-  ```html
-  <body>
-    <app-root></app-root>
-    <script>
-      try {
-        if (
-          process &&
-          typeof process.versions.electron === 'string' &&
-          process.versions.hasOwnProperty('electron')
-        ) {
-          const sqlite3 = require('sqlite3');
-          const fs = require('fs');
-          const path = require('path');
-          window.sqlite3 = sqlite3;
-          window.fs = fs;
-          window.path = path;
-        }
-      } catch {
-        console.log("process doesn't exists");
-      }
-    </script>
-  </body>
-  ```
+Go back in the main folder of your application
 
 The datastores created are under **YourApplication/Electron/DataStorage**
 
@@ -116,9 +93,10 @@ Then build YOUR_APPLICATION
 npm run build
 npx cap copy
 npx cap copy web
+npx cap copy @capacitor-community/electron
 npx cap open android
 npx cap open ios
-npx cap open electron
+npx cap open @capacitor-community/electron
 npx cap serve
 ```
 
@@ -169,8 +147,8 @@ No configuration required for this plugin
 
   ```ts
   import { Plugins } from '@capacitor/core';
-  import * as CDSSPlugin from 'capacitor-data-storage-sqlite';
-  const { CapacitorDataStorageSqlite,Device } = Plugins;
+  import 'capacitor-data-storage-sqlite';
+  const { CapacitorDataStorageSqlite } = Plugins;
 
   @Component( ... )
   export class MyPage {
@@ -179,15 +157,7 @@ No configuration required for this plugin
     ...
 
     async ngAfterViewInit()() {
-      const info = await Device.getInfo();
-      if (info.platform === "ios" || info.platform === "android") {
-        this._storage = CapacitorDataStorageSqlite;
-      } else if(this.platform === "electron") {
-        this.store = CDSSPlugin.CapacitorDataStorageSqliteElectron;
-      } else {
-        this._storage = CDSSPlugin.CapacitorDataStorageSqlite
-      }
-
+      this._storage = CapacitorDataStorageSqlite;
     }
 
     async testStoragePlugin() {
@@ -302,20 +272,14 @@ export const StorageAPIWrapper = (storage: any) => {
 
 ```typescript
 import { Plugins } from '@capacitor/core';
-import * as CapacitorSQLPlugin from 'capacitor-data-storage-sqlite';
-const { CapacitorDataStorageSqlite, Device } = Plugins;
+import 'capacitor-data-storage-sqlite';
+const { CapacitorDataStorageSqlite } = Plugins;
 
 export class StorageAPIWrapper {
   public storage: any = {};
   constructor() {}
   async init(): Promise<void> {
-    const info = await Device.getInfo();
-    console.log('platform ', info.platform);
-    if (info.platform === 'ios' || info.platform === 'android') {
-      this.storage = CapacitorDataStorageSqlite;
-    } else {
-      this.storage = CapacitorSQLPlugin.CapacitorDataStorageSqlite;
-    }
+    this.storage = CapacitorDataStorageSqlite;
   }
   public async openStore(options: any): Promise<boolean> {
     await this.init();

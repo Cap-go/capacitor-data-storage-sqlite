@@ -1,3 +1,13 @@
+## 2.4.2-1 (2020-10-02)
+
+### Chores
+
+- capacitor: update to capacitor 2.4.2
+
+### ### Added Features
+
+- The electron plugin is now compatible with @capacitor-community/electron
+
 ## 2.3.0 (2020-08-05)
 
 ### Bug Fixes
