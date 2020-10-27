@@ -1,3 +1,9 @@
+## 2.4.2-2 (2020-10-27)
+
+### Bug Fixes
+
+- Fix issue#31 in Electron
+
 ## 2.4.2-1 (2020-10-02)
 
 ### Chores

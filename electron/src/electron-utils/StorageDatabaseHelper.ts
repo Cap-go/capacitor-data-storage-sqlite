@@ -24,80 +24,101 @@ export class StorageDatabaseHelper {
   }
 
   public openStore(dbName: string, tableName: string): Promise<boolean> {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
       let ret: boolean = false;
-      this._db = this._utils.connection(dbName, false /*,this._secret*/);
+      this._db = await this._utils.connection(
+        dbName,
+        false,
+        /*,this._secret*/
+      );
       if (this._db !== null) {
-        this._createTable(tableName);
-        this._dbName = dbName;
-        this._tableName = tableName;
-        ret = true;
+        const bRet: boolean = await this._createTable(tableName);
+        if (bRet) {
+          this._dbName = dbName;
+          this._tableName = tableName;
+          console.log('** OpenStore this._tableName ' + this._tableName);
+          ret = true;
+        } else {
+          this._dbName = '';
+          this._tableName = '';
+          console.log(
+            '** OpenStore this._tableName ' + this._tableName + ' failed',
+          );
+        }
       }
       resolve(ret);
     });
   }
-  private _createTable(tableName: string) {
-    const CREATE_STORAGE_TABLE =
-      'CREATE TABLE IF NOT EXISTS ' +
-      tableName +
-      '(' +
-      COL_ID +
-      ' INTEGER PRIMARY KEY AUTOINCREMENT,' + // Define a primary key
-      COL_NAME +
-      ' TEXT NOT NULL UNIQUE,' +
-      COL_VALUE +
-      ' TEXT' +
-      ')';
-    try {
-      this._db.run(
-        CREATE_STORAGE_TABLE,
-        this._createIndex.bind(this, tableName),
-      );
-    } catch (e) {
-      console.log('Error: in createTable ', e);
-    }
+  private async _createTable(tableName: string): Promise<boolean> {
+    return new Promise(async resolve => {
+      let ret: boolean = false;
+      const CREATE_STORAGE_TABLE =
+        'CREATE TABLE IF NOT EXISTS ' +
+        tableName +
+        '(' +
+        COL_ID +
+        ' INTEGER PRIMARY KEY AUTOINCREMENT,' + // Define a primary key
+        COL_NAME +
+        ' TEXT NOT NULL UNIQUE,' +
+        COL_VALUE +
+        ' TEXT' +
+        ')';
+      this._db.run(CREATE_STORAGE_TABLE, async (err: Error) => {
+        if (err) {
+          console.log('Error: in createTable ', err.message);
+          resolve(ret);
+        } else {
+          ret = await this._createIndex(tableName);
+          resolve(ret);
+        }
+      });
+    });
   }
-  private _createIndex(tableName: string) {
-    const idx: string = `index_${tableName}_on_${COL_NAME}`;
-    const CREATE_INDEX_NAME =
-      'CREATE INDEX IF NOT EXISTS ' +
-      idx +
-      ' ON ' +
-      tableName +
-      ' (' +
-      COL_NAME +
-      ')';
-    try {
-      this._db.run(CREATE_INDEX_NAME);
-    } catch (e) {
-      console.log('Error: in createIndex ', e);
-    }
+  private async _createIndex(tableName: string): Promise<boolean> {
+    return new Promise(async resolve => {
+      const idx: string = `index_${tableName}_on_${COL_NAME}`;
+      const CREATE_INDEX_NAME =
+        'CREATE INDEX IF NOT EXISTS ' +
+        idx +
+        ' ON ' +
+        tableName +
+        ' (' +
+        COL_NAME +
+        ')';
+      this._db.run(CREATE_INDEX_NAME, async (err: Error) => {
+        if (err) {
+          console.log('Error: in createIndex ', err.message);
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    });
   }
 
   public setTable(tableName: string): Promise<boolean> {
     return new Promise(async resolve => {
       let ret: boolean = false;
-      this._db = this._utils.getWritableDatabase(
+      this._db = await this._utils.getWritableDatabase(
         this._dbName /*,this._secret*/,
       );
-      try {
-        this._createTable(tableName);
+      const bRet: boolean = await this._createTable(tableName);
+      if (bRet) {
         this._tableName = tableName;
         ret = true;
-        console.log('create table successfull ', this._tableName);
-      } catch (e) {
-        console.log('Error: in createTable ', e);
-      } finally {
-        this._db.close();
-        resolve(ret);
+      } else {
+        this._tableName = '';
+        ret = false;
       }
+      this._db.close();
+      resolve(ret);
     });
   }
   // Insert a data into the database
 
   public set(data: Data): Promise<boolean> {
     return new Promise(async resolve => {
-      const db: any = this._utils.getWritableDatabase(
+      const db: any = await this._utils.getWritableDatabase(
         this._dbName /*,this._secret*/,
       );
       // Check if data.name does not exist otherwise update it
@@ -128,9 +149,9 @@ export class StorageDatabaseHelper {
 
   // get a Data
   public get(name: string): Promise<Data> {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
       let data: Data = null;
-      const db: any = this._utils.getReadableDatabase(
+      const db: any = await this._utils.getReadableDatabase(
         this._dbName /*,this._secret*/,
       );
       const DATA_SELECT_QUERY: string =
@@ -162,8 +183,8 @@ export class StorageDatabaseHelper {
   }
   // update a Data
   public update(data: Data): Promise<boolean> {
-    return new Promise(resolve => {
-      const db: any = this._utils.getWritableDatabase(
+    return new Promise(async resolve => {
+      const db: any = await this._utils.getWritableDatabase(
         this._dbName /*,this._secret*/,
       );
       const DATA_UPDATE: string = `UPDATE "${this._tableName}" 
@@ -196,7 +217,7 @@ export class StorageDatabaseHelper {
     return new Promise(async resolve => {
       const res: Data = await this.get(name);
       if (res.id != null) {
-        const db: any = this._utils.getWritableDatabase(
+        const db: any = await this._utils.getWritableDatabase(
           this._dbName /*,this._secret*/,
         );
         const DATA_DELETE: string = `DELETE FROM "${this._tableName}" 
@@ -220,7 +241,7 @@ export class StorageDatabaseHelper {
   // remove all keys
   public clear(): Promise<boolean> {
     return new Promise(async resolve => {
-      const db: any = this._utils.getWritableDatabase(
+      const db: any = await this._utils.getWritableDatabase(
         this._dbName /*,this._secret*/,
       );
       const DATA_DELETE: string = `DELETE FROM "${this._tableName}"`;
@@ -248,8 +269,8 @@ export class StorageDatabaseHelper {
     });
   }
   public keys(): Promise<Array<string>> {
-    return new Promise(resolve => {
-      const db: any = this._utils.getReadableDatabase(
+    return new Promise(async resolve => {
+      const db: any = await this._utils.getReadableDatabase(
         this._dbName /*,this._secret*/,
       );
       const DATA_SELECT_KEYS: string = `SELECT "${COL_NAME}" FROM "${this._tableName}"`;
@@ -271,8 +292,8 @@ export class StorageDatabaseHelper {
     });
   }
   public values(): Promise<Array<string>> {
-    return new Promise(resolve => {
-      const db: any = this._utils.getReadableDatabase(
+    return new Promise(async resolve => {
+      const db: any = await this._utils.getReadableDatabase(
         this._dbName /*,this._secret*/,
       );
       const DATA_SELECT_VALUES: string = `SELECT "${COL_VALUE}" FROM "${this._tableName}"`;
@@ -294,8 +315,8 @@ export class StorageDatabaseHelper {
     });
   }
   public keysvalues(): Promise<Array<Data>> {
-    return new Promise(resolve => {
-      const db: any = this._utils.getReadableDatabase(
+    return new Promise(async resolve => {
+      const db: any = await this._utils.getReadableDatabase(
         this._dbName /*,this._secret*/,
       );
       const DATA_SELECT_KEYSVALUES: string = `SELECT "${COL_NAME}" , "${COL_VALUE}" FROM "${this._tableName}"`;
