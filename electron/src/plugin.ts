@@ -4,8 +4,16 @@ import { Data } from './electron-utils/Data';
 import {
   CapacitorDataStorageSqlitePlugin,
   capDataStorageOptions,
-  capDataStorageResult,
+  capFilterStorageOptions,
   capOpenStorageOptions,
+  capTableStorageOptions,
+  capEchoOptions,
+  capEchoResult,
+  capDataStorageResult,
+  capValueResult,
+  capKeysResult,
+  capValuesResult,
+  capKeysValuesResult,
 } from './definitions';
 
 const { remote } = require('electron');
@@ -23,9 +31,9 @@ export class CapacitorDataStorageSqliteElectronWeb
     this.RemoteRef = remote;
     this.mDb = new StorageDatabaseHelper();
   }
-  async echo(options: { value: string }): Promise<{ value: string }> {
+  async echo(options: capEchoOptions): Promise<capEchoResult> {
     console.log('ECHO in Electron Plugin', options);
-    return options;
+    return { value: options.value };
   }
   async openStore(
     options: capOpenStorageOptions,
@@ -40,7 +48,7 @@ export class CapacitorDataStorageSqliteElectronWeb
   }
 
   async setTable(
-    options: capOpenStorageOptions,
+    options: capTableStorageOptions,
   ): Promise<capDataStorageResult> {
     let tableName = options.table;
     if (tableName == null) {
@@ -86,7 +94,7 @@ export class CapacitorDataStorageSqliteElectronWeb
     return Promise.resolve({ result: ret });
   }
 
-  async get(options: capDataStorageOptions): Promise<capDataStorageResult> {
+  async get(options: capDataStorageOptions): Promise<capValueResult> {
     let ret: string;
     let key: string = options.key;
     if (key == null) {
@@ -123,19 +131,33 @@ export class CapacitorDataStorageSqliteElectronWeb
     return Promise.resolve({ result: ret });
   }
 
-  async keys(): Promise<capDataStorageResult> {
+  async keys(): Promise<capKeysResult> {
     let ret: Array<string>;
     ret = await this.mDb.keys();
     return Promise.resolve({ keys: ret });
   }
 
-  async values(): Promise<capDataStorageResult> {
+  async values(): Promise<capValuesResult> {
     let ret: Array<string>;
     ret = await this.mDb.values();
     return Promise.resolve({ values: ret });
   }
 
-  async keysvalues(): Promise<capDataStorageResult> {
+  async filtervalues(
+    options: capFilterStorageOptions,
+  ): Promise<capValuesResult> {
+    let filter: string = options.filter;
+    if (filter == null || typeof filter != 'string') {
+      return Promise.reject({
+        result: false,
+        message: 'Must Must provide filter as string',
+      });
+    }
+    let ret: Array<string>;
+    ret = await this.mDb.filtervalues(filter);
+    return Promise.resolve({ values: ret });
+  }
+  async keysvalues(): Promise<capKeysValuesResult> {
     let ret: Array<any> = [];
     let results: Array<Data>;
     results = await this.mDb.keysvalues();
@@ -145,6 +167,7 @@ export class CapacitorDataStorageSqliteElectronWeb
     }
     return Promise.resolve({ keysvalues: ret });
   }
+
   async deleteStore(
     options: capOpenStorageOptions,
   ): Promise<capDataStorageResult> {

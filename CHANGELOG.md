@@ -1,3 +1,18 @@
+## 2.4.2 (2020-11-07)
+
+### ### Added Features
+
+- add filtervalues to get all values for filter keys
+- add Ionic/Vue app starter
+- add Vue app demonstrating the use of the plugin in Vue3.0
+- add USAGE documentation
+
+### Bug Fixes
+
+- Fix issue#28
+- Clean the readme file
+- Clean the API documentation
+
 ## 2.4.2-2 (2020-10-27)
 
 ### Bug Fixes

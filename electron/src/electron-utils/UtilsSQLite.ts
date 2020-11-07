@@ -18,11 +18,9 @@ export class UtilsSQLite {
       const flags = readOnly
         ? this.SQLite3.OPEN_READONLY
         : this.SQLite3.OPEN_CREATE | this.SQLite3.OPEN_READWRITE;
-      console.log('in UtilsSQLite.connection flags ', flags);
 
       // get the path for the database
       const dbPath = await this._getDBPath(dbName);
-      console.log('#### dbPath ' + dbPath);
       let dbOpen: any;
 
       if (dbPath != null) {

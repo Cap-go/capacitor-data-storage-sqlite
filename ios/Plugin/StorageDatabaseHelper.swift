@@ -318,6 +318,43 @@ class StorageDatabaseHelper {
         return retArray
     }
 
+    // MARK: - FilterValues
+
+    func filtervalues(filter: String) -> [String] {
+        var retArray: [String] = [String]()
+        let mDB: OpaquePointer?
+        do {
+            try mDB = UtilsSQLite.getReadableDatabase(filename: self.path, secret: self.secret)
+        } catch let error {
+           print("filtervalues: \(error)")
+           return [String]()
+        }
+        var inFilter: String = filter
+        if inFilter.prefix(1) != "%" && inFilter.suffix(1) != "%" {
+            inFilter = "%" + inFilter + "%"
+        }
+        var getValuesString: String = "SELECT \(COLVALUE) FROM \(tableName) "
+        getValuesString.append(" WHERE \(COLNAME) LIKE '\(inFilter)';")
+        var getValuesStatement: OpaquePointer?
+        if sqlite3_prepare_v2(mDB, getValuesString, -1, &getValuesStatement, nil) == SQLITE_OK {
+            while sqlite3_step(getValuesStatement) == SQLITE_ROW {
+                let queryResultCol0 = sqlite3_column_text(getValuesStatement, 0)
+                if let mQueryResultCol0 = queryResultCol0 {
+                    retArray.append(String(cString: mQueryResultCol0))
+                } else {
+                    print("filtervalues: Error in sqlite3_column_text")
+                    return [String]()
+                }
+            }
+        } else {
+            print("filtervalues: Error statement could not be prepared.")
+            return [String]()
+        }
+        sqlite3_finalize(getValuesStatement)
+        closeDB(mDB: mDB, method: "filtervalues")
+        return retArray
+    }
+
     // MARK: - KeysValues
 
     func keysvalues() -> [Data]? {

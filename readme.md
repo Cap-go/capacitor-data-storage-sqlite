@@ -116,6 +116,7 @@ No configuration required for this plugin
 | iskey                        | ✅      | ✅  | ✅       | ✅  |
 | keys                         | ✅      | ✅  | ✅       | ✅  |
 | values                       | ✅      | ✅  | ✅       | ✅  |
+| filtervalues                 | ✅      | ✅  | ✅       | ✅  |
 | keysvalues                   | ✅      | ✅  | ✅       | ✅  |
 | remove                       | ✅      | ✅  | ✅       | ✅  |
 | clear                        | ✅      | ✅  | ✅       | ✅  |
@@ -123,241 +124,53 @@ No configuration required for this plugin
 
 ## Documentation
 
-[API_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/APIdocumentation.md)
+- [API_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/API.md)
+
+- [USAGE_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/USAGE.md)
 
 ## Applications demonstrating the use of the plugin
 
 ### Ionic/Angular
 
-- [data-storage-sqlite-app-starter](https://github.com/jepiqueau/angular-data-storage-sqlite-app-starter)
+- [angular-data-storage-sqlite-app-starter](https://github.com/jepiqueau/angular-data-storage-sqlite-app-starter)
 
 - [test-angular-jeep-capacitor-plugins](https://github.com/jepiqueau/capacitor-apps/tree/master/IonicAngular/jeep-test-app)
 
 ### Ionic/React
 
+- [react-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
+
 ### React
 
 - [react-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
+
+### Ionic/Vue
+
+- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
+
+### Vue
+
+- [vue-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
 
 ## Usage
 
 - [see capacitor documentation](https://capacitor.ionicframework.com/docs/getting-started/with-ionic)
 
-- In your code
+- [see USAGE_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/USAGE.md)
 
-  ```ts
-  import { Plugins } from '@capacitor/core';
-  import 'capacitor-data-storage-sqlite';
-  const { CapacitorDataStorageSqlite } = Plugins;
+**Since 2.4.2**, a new method `filtervalues` has been added to get the values for filtered keys.
 
-  @Component( ... )
-  export class MyPage {
-    _storage: any;
+- to return all values for keys starting with `session`
 
-    ...
+  `const stValues: string[] = await getFilterValues({filter:"%session"});`
 
-    async ngAfterViewInit()() {
-      this._storage = CapacitorDataStorageSqlite;
-    }
+- to return all values for keys containing `session`
 
-    async testStoragePlugin() {
-      const result:any = await this._storage.openStore({});
-      if (result.result) {
-        let ret:any;
-        ret = await this._storage.set({key:"session",value:"Session Opened"});
-        console.log("Save Data : " + ret.result);
-        ret = await this._storage.get({key:"session"})
-        console.log("Get Data : " + ret.value);
+  `const stValues: string[] = await getFilterValues({filter:"session"});`
 
-        ...
-      }
-    }
-    ...
-  }
-  ```
+- to return all values for keys ending with `session`
 
-````
-
-## Usage on PWA
-
-- in your code
-```ts
-import {  CapacitorDataStorageSqlite } from 'capacitor-data-storage-sqlite';
-  @Component( ... )
-  export class MyApp {
-    componentDidLoad() {
-    const storage: any = CapacitorDataStorageSqlite;
-    // Open the Store
-    let resOpen:any = await storage.openStore({});
-    if(resOpen) {
-      // Store Data
-      let result:any = await storage.set({key:"session", value:"Session Opened"});
-      console.log("Save Data : " + result.result);
-      // Retrieve Data
-      result = await storage.get({key:"session"})
-      console.log("Get Data : " + result.value);
-    }
-  }
-````
-
-```bash
-npm run build
-npx cap copy
-npx cap copy web
-npm start
-```
-
-## Using a wrapper to adhere to the Storage API
-
-(https://developer.mozilla.org/de/docs/Web/API/Storage)
-
-- Javascript wrapper
-
-```javascript
-export const StorageAPIWrapper = (storage: any) => {
-  return {
-    openStore: (options, cb) => {
-      storage
-        .openStore(options)
-        .then(({ result }) => cb(null, result))
-        .catch(cb);
-    },
-    setTable: (table, cb) => {
-      storage
-        .setTable(table)
-        .then(({ result, message }) => cb(null, result, message))
-        .catch(cb);
-    },
-    getAllKeys: cb => {
-      storage
-        .keys()
-        .then(({ keys }) => cb(null, keys))
-        .catch(cb);
-    },
-    getItem: (key, cb) => {
-      storage
-        .get({ key })
-        .then(({ value }) => cb(null, value))
-        .catch(cb);
-    },
-    setItem: (key, value, cb) => {
-      storage
-        .set({ key, value })
-        .then(() => cb())
-        .catch(cb);
-    },
-    removeItem: (key, cb) => {
-      storage
-        .remove({ key })
-        .then(() => cb())
-        .catch(cb);
-    },
-    clear: cb => {
-      storage
-        .clear()
-        .then(() => cb())
-        .catch(cb);
-    },
-    deleteStore: (options, cb) => {
-      storage
-        .deleteStore(options)
-        .then(({ result }) => cb(null, result))
-        .catch(cb);
-    },
-  };
-};
-```
-
-- Typescript wrapper class
-
-```typescript
-import { Plugins } from '@capacitor/core';
-import 'capacitor-data-storage-sqlite';
-const { CapacitorDataStorageSqlite } = Plugins;
-
-export class StorageAPIWrapper {
-  public storage: any = {};
-  constructor() {}
-  async init(): Promise<void> {
-    this.storage = CapacitorDataStorageSqlite;
-  }
-  public async openStore(options: any): Promise<boolean> {
-    await this.init();
-    const { result } = await this.storage.openStore(options);
-    return result;
-  }
-  public async setTable(table: any): Promise<any> {
-    const { result, message } = await this.storage.setTable(table);
-    return Promise.resolve([result, message]);
-  }
-  public async setItem(key: string, value: string): Promise<void> {
-    await this.storage.set({ key, value });
-    return;
-  }
-  public async getItem(key: string): Promise<string> {
-    const { value } = await this.storage.get({ key });
-    return value;
-  }
-  public async getAllKeys(): Promise<Array<string>> {
-    const { keys } = await this.storage.keys();
-    return keys;
-  }
-  public async removeItem(key: string): Promise<void> {
-    await this.storage.remove({ key });
-    return;
-  }
-  public async clear(): Promise<void> {
-    await this.storage.clear();
-    return;
-  }
-  public async deleteStore(options: any): Promise<boolean> {
-    await this.init();
-    const { result } = await this.storage.deleteStore(options);
-    return result;
-  }
-}
-```
-
-and in your typescript app file
-
-```typescript
-  async testPluginWithWrapper() {
-    this.storage = new StorageAPIWrapper();
-    let ret1: boolean = false;
-    let ret2: boolean = false;
-    let ret3: boolean = false;
-    let ret4: boolean = false;
-    let ret5: boolean = false;
-    let ret6: boolean = false;
-    let result: boolean = await this.storage.openStore({});
-    if(result){
-      await this.storage.clear();
-      await this.storage.setItem("key-test", "This is a test");
-      let value:string = await this.storage.getItem("key-test")
-      if (value === "This is a test") ret1 = true;
-      let keys:Array<string> = await this.storage.getAllKeys();
-      if (keys[0] === "key-test") ret2 = true;
-      await this.storage.removeItem("key-test");
-      keys = await this.storage.getAllKeys();
-      if (keys.length === 0) ret3 = true;
-      result = await this.storage.openStore({database:"testStore",table:"table1"});
-      if(result) {
-        await this.storage.clear();
-        await this.storage.setItem("key1-test", "This is a new store");
-        value = await this.storage.getItem("key1-test")
-        if (value === "This is a new store") ret4 = true;
-        let statusTable: any = await this.storage.setTable({table:"table2"});if(statusTable[0]) ret5 = true;
-        await this.storage.clear();
-        await this.storage.setItem("key2-test", "This is a second table");
-        value = await this.storage.getItem("key2-test")
-        if (value === "This is a second table") ret6 = true;
-      }
-    }
-    if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6) {
-      console.log('testPlugin2 is successful');
-    }
-  }
-```
+  `const stValues: string[] = await getFilterValues({filter:"session%"});`
 
 ## Dependencies
 

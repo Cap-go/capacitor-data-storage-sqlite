@@ -20,7 +20,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     echo(options) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('ECHO', options);
-            return options;
+            return { value: options.value };
         });
     }
     openStore(options) {
@@ -132,6 +132,33 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         return __awaiter(this, void 0, void 0, function* () {
             let ret;
             ret = yield this.mDb.values();
+            return Promise.resolve({ values: ret });
+        });
+    }
+    filtervalues(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let filter = options.filter;
+            if (filter == null || typeof filter != 'string') {
+                return Promise.reject('Must provide filter as string');
+            }
+            let regFilter;
+            if (filter.startsWith("%")) {
+                regFilter = new RegExp('^' + filter.substring(1), 'i');
+            }
+            else if (filter.endsWith("%")) {
+                regFilter = new RegExp(filter.slice(0, -1) + '$', 'i');
+            }
+            else {
+                regFilter = new RegExp(filter, 'i');
+            }
+            let ret = [];
+            let results;
+            results = yield this.mDb.keysvalues();
+            for (let i = 0; i < results.length; i++) {
+                if (regFilter.test(results[i].name)) {
+                    ret.push(results[i].value);
+                }
+            }
             return Promise.resolve({ values: ret });
         });
     }

@@ -273,8 +273,9 @@ export class StorageDatabaseHelper {
       const db: any = await this._utils.getReadableDatabase(
         this._dbName /*,this._secret*/,
       );
-      const DATA_SELECT_KEYS: string = `SELECT "${COL_NAME}" FROM "${this._tableName}"`;
-      db.all(DATA_SELECT_KEYS, (err: Error, rows: any) => {
+      let SELECT_KEYS: string = `SELECT "${COL_NAME}" FROM `;
+      SELECT_KEYS += `"${this._tableName}"`;
+      db.all(SELECT_KEYS, (err: Error, rows: any) => {
         if (err) {
           db.close();
           resolve([]);
@@ -296,8 +297,9 @@ export class StorageDatabaseHelper {
       const db: any = await this._utils.getReadableDatabase(
         this._dbName /*,this._secret*/,
       );
-      const DATA_SELECT_VALUES: string = `SELECT "${COL_VALUE}" FROM "${this._tableName}"`;
-      db.all(DATA_SELECT_VALUES, (err: Error, rows: any) => {
+      let SELECT_VALUES: string = `SELECT "${COL_VALUE}" FROM `;
+      SELECT_VALUES += `"${this._tableName}"`;
+      db.all(SELECT_VALUES, (err: Error, rows: any) => {
         if (err) {
           db.close();
           resolve([]);
@@ -314,13 +316,44 @@ export class StorageDatabaseHelper {
       });
     });
   }
+
+  public filtervalues(filter: string): Promise<Array<string>> {
+    return new Promise(async resolve => {
+      if (!filter.startsWith('%') && !filter.endsWith('%')) {
+        filter = '%' + filter + '%';
+      }
+      const db: any = await this._utils.getReadableDatabase(
+        this._dbName /*,this._secret*/,
+      );
+      let SELECT_VALUES = `SELECT "${COL_VALUE}" FROM `;
+      SELECT_VALUES += `"${this._tableName}" WHERE name `;
+      SELECT_VALUES += `LIKE "${filter}"`;
+      db.all(SELECT_VALUES, (err: Error, rows: any) => {
+        if (err) {
+          db.close();
+          resolve([]);
+        } else {
+          let arValues: Array<string> = [];
+          for (let i: number = 0; i < rows.length; i++) {
+            arValues = [...arValues, rows[i].value];
+            if (i === rows.length - 1) {
+              db.close();
+              resolve(arValues);
+            }
+          }
+        }
+      });
+    });
+  }
+
   public keysvalues(): Promise<Array<Data>> {
     return new Promise(async resolve => {
       const db: any = await this._utils.getReadableDatabase(
         this._dbName /*,this._secret*/,
       );
-      const DATA_SELECT_KEYSVALUES: string = `SELECT "${COL_NAME}" , "${COL_VALUE}" FROM "${this._tableName}"`;
-      db.all(DATA_SELECT_KEYSVALUES, (err: Error, rows: any) => {
+      let SELECT_KEYSVALUES: string = `SELECT "${COL_NAME}" , `;
+      SELECT_KEYSVALUES += `"${COL_VALUE}" FROM "${this._tableName}"`;
+      db.all(SELECT_KEYSVALUES, (err: Error, rows: any) => {
         if (err) {
           db.close();
           resolve([]);

@@ -4,73 +4,98 @@ declare module '@capacitor/core' {
     }
 }
 export interface CapacitorDataStorageSqlitePlugin {
-    echo(options: {
-        value: string;
-    }): Promise<{
-        value: string;
-    }>;
+    /**
+     *
+     * @param options: capEchoOptions
+     * @return Promise<capEchoResult>
+     * @since 0.0.1
+     */
+    echo(options: capEchoOptions): Promise<capEchoResult>;
     /**
      * Open a store
-     * @param {capOpenStorageOptions} options {database: string, table: string}
-     * @returns {Promise<capDataStorageResult>} {result:boolean}
+     * @param options: capOpenStorageOptions
+     * @returns Promise<capDataStorageResult>
+     * @since 0.0.1
      */
     openStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
     /**
      * Set or Add a table to an existing store
-     * @param {capOpenStorageOptions} options {table: string}
-     * @returns {Promise<capDataStorageResult>} {result:boolean}
+     * @param options: capTableStorageOptions
+     * @returns Promise<capDataStorageResult>
+     * @since 0.0.1
      */
-    setTable(options: capOpenStorageOptions): Promise<capDataStorageResult>;
+    setTable(options: capTableStorageOptions): Promise<capDataStorageResult>;
     /**
      * Store a data with given key and value
-     * @param {capDataStorageOptions} options {key: string, value: string}
-     * @returns {Promise<capDataStorageResult>} {result:boolean}
+     * @param options: capDataStorageOptions
+     * @returns Promise<capDataStorageResult>
+     * @since 0.0.1
      */
     set(options: capDataStorageOptions): Promise<capDataStorageResult>;
     /**
      * Retrieve a data value for a given data key
-     * @param {capDataStorageOptions} options {key:"foo",value:"foovalue"}
-     * @returns {Promise<capDataStorageResult>} {value:string}
+     * @param options: capDataStorageOptions
+     * @returns Promise<capValueResult>
+     * @since 0.0.1
      */
-    get(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    get(options: capDataStorageOptions): Promise<capValueResult>;
     /**
      * Remove a data with given key
-     * @param {capDataStorageOptions} options {key:"foo"}
-     * @returns {Promise<capDataStorageResult>} {result:boolean}
+     * @param options: capDataStorageOptions
+     * @returns Promise<capDataStorageResult>
+     * @since 0.0.1
      */
     remove(options: capDataStorageOptions): Promise<capDataStorageResult>;
     /**
      * Clear the Data Store (delete all keys)
-     * @returns {Promise<capDataStorageResult>} {result:boolean}
+     * @returns Promise<capDataStorageResult>
+     * @since 0.0.1
      */
     clear(): Promise<capDataStorageResult>;
     /**
      * Check if a data key exists
-     * @param {capDataStorageOptions} options {key:"foo"}
-     * @returns {Promise<capDataStorageResult>} {result:boolean}
+     * @param options: capDataStorageOptions
+     * @returns Promise<capDataStorageResult>
+     * @since 0.0.1
      */
     iskey(options: capDataStorageOptions): Promise<capDataStorageResult>;
     /**
      * Get the data key list
-     * @returns {Promise<capDataStorageResult>} {keys:Array<string>}
+     * @returns Promise<capKeysResult>
+     * @since 0.0.1
      */
-    keys(): Promise<capDataStorageResult>;
+    keys(): Promise<capKeysResult>;
     /**
      * Get the data value list
-     * @returns {Promise<capDataStorageResult>} {values:Array<string>}
+     * @returns Promise<capValuesResult>
+     * @since 0.0.1
      */
-    values(): Promise<capDataStorageResult>;
+    values(): Promise<capValuesResult>;
+    /**
+     * Get the data value list for filter keys
+     * @param options: capFilterStorageOptions
+     * @returns Promise<capValuesResult>
+     * @since 2.4.2
+     */
+    filtervalues(options: capFilterStorageOptions): Promise<capValuesResult>;
     /**
      * Get the data key/value pair list
-     * @returns {Promise<capDataStorageResult>} {keysvalues:Array<{key:string,value:string}>}
+     * @returns Promise<capKeysValuesResult>
+     * @since 0.0.1
      */
-    keysvalues(): Promise<capDataStorageResult>;
+    keysvalues(): Promise<capKeysValuesResult>;
     /**
      * Delete a store
-     * @param {capOpenStorageOptions} options {database: string}
-     * @returns {Promise<capDataStorageResult>} {result:boolean}
+     * @param options: capOpenStorageOptions
+     * @returns Promise<capDataStorageResult>
      */
     deleteStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
+}
+export interface capEchoOptions {
+    /**
+     *  String to be echoed
+     */
+    value?: string;
 }
 export interface capOpenStorageOptions {
     /**
@@ -101,29 +126,58 @@ export interface capDataStorageOptions {
      */
     value?: string;
 }
+export interface capTableStorageOptions {
+    /**
+     * The storage table name
+     */
+    table: string;
+}
+export interface capFilterStorageOptions {
+    /**
+     * The filter data for filtering keys
+     *
+     * ['%filter', 'filter', 'filter%'] for
+     * [starts with filter, contains filter, ends with filter]
+     */
+    filter: string;
+}
+export interface capEchoResult {
+    /**
+     * String returned
+     */
+    value: string;
+}
 export interface capDataStorageResult {
     /**
      * result set to true when successful else false
      */
     result?: boolean;
     /**
+     * a returned message
+     */
+    message?: string;
+}
+export interface capValueResult {
+    /**
      * the data value for a given data key
      */
-    value?: string;
+    value: string;
+}
+export interface capKeysResult {
     /**
      * the data key list as an Array
      */
-    keys?: Array<string>;
+    keys: string[];
+}
+export interface capValuesResult {
     /**
      * the data values list as an Array
      */
-    values?: Array<string>;
+    values: string[];
+}
+export interface capKeysValuesResult {
     /**
      * the data keys/values list as an Array of {key:string,value:string}
      */
-    keysvalues?: Array<any>;
-    /**
-     * a message
-     */
-    message?: string;
+    keysvalues: any[];
 }

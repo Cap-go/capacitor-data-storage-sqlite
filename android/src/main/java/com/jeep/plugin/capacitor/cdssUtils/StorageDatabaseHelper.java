@@ -448,6 +448,44 @@ public class StorageDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    // get Filter Values
+    public List<String> filtervalues(String filter) {
+        String inFilter = filter;
+        if (!inFilter.startsWith("%") && !inFilter.endsWith("%")) {
+            inFilter = "%" + inFilter + "%";
+        }
+
+        List<String> data = new ArrayList<>();
+
+        String DATA_SELECT_QUERY = "SELECT " + COL_VALUE + " FROM " + tableName + " WHERE " + COL_NAME + " LIKE '" + inFilter + "';";
+        SQLiteDatabase db = this.getReadableDatabase(secret);
+        Cursor cursor = null;
+        cursor = db.rawQuery(DATA_SELECT_QUERY, null);
+        if (cursor.getCount() > 0) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
+                        data.add(value);
+                    } while (cursor.moveToNext());
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "values: Error while trying to get all values from storage database");
+            } finally {
+                if (cursor != null && !cursor.isClosed()) {
+                    cursor.close();
+                }
+            }
+        } else {
+            data = Collections.emptyList();
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        db.close();
+        return data;
+    }
+
     // get All Data
     public List<Data> keysvalues() {
         List<Data> data = new ArrayList<>();

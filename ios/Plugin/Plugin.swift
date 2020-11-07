@@ -193,6 +193,22 @@ public class CapacitorDataStorageSqlite: CAPPlugin {
         call.resolve(["values": result])
     }
 
+    // MARK: - FilterValues
+
+    @objc func filtervalues(_ call: CAPPluginCall) {
+        guard let filter = call.options["filter"] as? String else {
+            call.reject("Must provide a filter")
+            return
+        }
+        guard let result = mDb?.filtervalues(filter: filter) else {
+            var ret: Int? = 1
+            ret = nil
+            call.resolve(["values": ret as Any])
+            return
+        }
+        call.resolve(["values": result])
+    }
+
     // MARK: - KeyValues
 
     @objc func keysvalues(_ call: CAPPluginCall) {

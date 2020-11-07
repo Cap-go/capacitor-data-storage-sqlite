@@ -220,6 +220,27 @@ public class CapacitorDataStorageSqlite extends Plugin {
     }
 
     @PluginMethod
+    public void filtervalues(PluginCall call) {
+        String filter = call.getString("filter");
+        if (filter == null) {
+            call.reject("Must provide a filter");
+            return;
+        }
+
+        List<String> resValues = mDb.filtervalues(filter);
+        String[] valueArray = resValues.toArray(new String[resValues.size()]);
+
+        JSObject ret = new JSObject();
+        try {
+            ret.put("values", new JSArray(valueArray));
+        } catch (JSONException ex) {
+            call.reject("Unable to create value array.");
+            return;
+        }
+        call.resolve(ret);
+    }
+
+    @PluginMethod
     public void keysvalues(PluginCall call) {
         List<Data> resKeysValues = mDb.keysvalues();
         JSObject[] jsObjArray = new JSObject[resKeysValues.size()];

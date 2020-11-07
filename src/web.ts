@@ -4,11 +4,20 @@ import { Data } from './web-utils/Data';
 import {
   CapacitorDataStorageSqlitePlugin,
   capDataStorageOptions,
-  capDataStorageResult,
+  capFilterStorageOptions,
   capOpenStorageOptions,
+  capTableStorageOptions,
+  capEchoOptions,
+  capEchoResult,
+  capDataStorageResult,
+  capValueResult,
+  capKeysResult,
+  capValuesResult,
+  capKeysValuesResult,
 } from './definitions';
 
-export class CapacitorDataStorageSqliteWeb extends WebPlugin
+export class CapacitorDataStorageSqliteWeb
+  extends WebPlugin
   implements CapacitorDataStorageSqlitePlugin {
   mDb: StorageDatabaseHelper;
   constructor() {
@@ -18,9 +27,9 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin
     });
   }
 
-  async echo(options: { value: string }): Promise<{ value: string }> {
+  async echo(options: capEchoOptions): Promise<capEchoResult> {
     console.log('ECHO', options);
-    return options;
+    return { value: options.value };
   }
   async openStore(
     options: capOpenStorageOptions,
@@ -34,7 +43,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin
   }
 
   async setTable(
-    options: capOpenStorageOptions,
+    options: capTableStorageOptions,
   ): Promise<capDataStorageResult> {
     let tableName = options.table;
     if (tableName == null) {
@@ -77,7 +86,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin
     return Promise.resolve({ result: ret });
   }
 
-  async get(options: capDataStorageOptions): Promise<capDataStorageResult> {
+  async get(options: capDataStorageOptions): Promise<capValueResult> {
     let ret: string;
     let key: string = options.key;
     if (key == null || typeof key != 'string') {
@@ -114,19 +123,45 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin
     return Promise.resolve({ result: ret });
   }
 
-  async keys(): Promise<capDataStorageResult> {
+  async keys(): Promise<capKeysResult> {
     let ret: Array<string>;
     ret = await this.mDb.keys();
     return Promise.resolve({ keys: ret });
   }
 
-  async values(): Promise<capDataStorageResult> {
+  async values(): Promise<capValuesResult> {
     let ret: Array<string>;
     ret = await this.mDb.values();
     return Promise.resolve({ values: ret });
   }
 
-  async keysvalues(): Promise<capDataStorageResult> {
+  async filtervalues(
+    options: capFilterStorageOptions,
+  ): Promise<capValuesResult> {
+    let filter: string = options.filter;
+    if (filter == null || typeof filter != 'string') {
+      return Promise.reject('Must provide filter as string');
+    }
+    let regFilter: RegExp;
+    if (filter.startsWith('%')) {
+      regFilter = new RegExp('^' + filter.substring(1), 'i');
+    } else if (filter.endsWith('%')) {
+      regFilter = new RegExp(filter.slice(0, -1) + '$', 'i');
+    } else {
+      regFilter = new RegExp(filter, 'i');
+    }
+    let ret: Array<string> = [];
+    let results: Array<Data>;
+    results = await this.mDb.keysvalues();
+    for (let i: number = 0; i < results.length; i++) {
+      if (regFilter.test(results[i].name)) {
+        ret.push(results[i].value);
+      }
+    }
+    return Promise.resolve({ values: ret });
+  }
+
+  async keysvalues(): Promise<capKeysValuesResult> {
     let ret: Array<any> = [];
     let results: Array<Data>;
     results = await this.mDb.keysvalues();
