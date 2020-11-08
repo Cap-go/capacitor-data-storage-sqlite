@@ -6,13 +6,13 @@
 
 ## Frameworks Index
 
-- [`javascript`](#Javascript)
-- [`Stencil`](#Stencil)
-- [`React`](#React)
-- [`Vue`](#Vue)
-- [`Ionic/Angular`](#Ionic/Angular)
-- [`Ionic/React`](#Ionic/React)
-- [`Ionic/Vue`](#Ionic/Vue)
+- [`javascript`](#javascript)
+- [`Stencil`](#stencil)
+- [`React`](#react)
+- [`Vue`](#vue)
+- [`Ionic/Angular`](#ionicangular)
+- [`Ionic/React`](#ionicreact)
+- [`Ionic/Vue`](#ionicvue)
 
 ## Usage
 

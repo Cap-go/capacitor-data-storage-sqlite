@@ -142,10 +142,10 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
                 return Promise.reject('Must provide filter as string');
             }
             let regFilter;
-            if (filter.startsWith("%")) {
+            if (filter.startsWith('%')) {
                 regFilter = new RegExp('^' + filter.substring(1), 'i');
             }
-            else if (filter.endsWith("%")) {
+            else if (filter.endsWith('%')) {
                 regFilter = new RegExp(filter.slice(0, -1) + '$', 'i');
             }
             else {
