@@ -1,3 +1,13 @@
+## 2.4.5 (2021-01-06)
+
+### Chores
+
+- capacitor: update to capacitor 2.4.5
+
+### Bug Fixes
+
+- Fix issue#34 by adding chapter ## Browser Support in the readme file
+
 ## 2.4.2 (2020-11-07)
 
 ### ### Added Features

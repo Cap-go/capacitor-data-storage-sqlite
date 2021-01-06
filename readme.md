@@ -5,7 +5,7 @@
   Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of <strong>type string only</strong> to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
 
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2020?style=flat-square" />
+  <img src="https://img.shields.io/maintenance/yes/2021?style=flat-square" />
   <a href="https://github.com/jepiqueau/capacitor-data-storage-sqlite/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/workflow/status/jepiqueau/capacitor-data-storage-sqlite/CI?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/jepiqueau/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/l/capacitor-data-storage-sqlite.svg?style=flat-square" /></a>
 <br>
@@ -21,6 +21,14 @@
 | Maintainer        | GitHub                                    | Social |
 | ----------------- | ----------------------------------------- | ------ |
 | Quéau Jean Pierre | [jepiqueau](https://github.com/jepiqueau) |        |
+
+## Browser Support
+
+The plugin follows the guidelines from the `Capacitor Team`,
+
+- [Capacitor Browser Support](https://capacitorjs.com/docs/v3/web#browser-support)
+
+meaning that it will not work in IE11 without additional JavaScript transformations, e.g. with [Babel](https://babeljs.io/).
 
 ## Installation
 
@@ -47,7 +55,6 @@ npx cap sync @capacitor-community/electron
       this.init(
           savedInstanceState,
           new ArrayList<Class<? extends Plugin>>() {
-
             {
               // Additional plugins you've installed go here
               // Ex: add(TotallyAwesomePlugin.class);
