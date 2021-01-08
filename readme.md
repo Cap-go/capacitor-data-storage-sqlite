@@ -153,11 +153,11 @@ No configuration required for this plugin
 
 ### Ionic/Vue
 
-- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
+- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/vue-data-storage-sqlite-app-starter)
 
 ### Vue
 
-- [vue-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
+- [vue-datastoragesqlite-app](https://github.com/jepiqueau/vue-datastoragesqlite-app)
 
 ## Usage
 
