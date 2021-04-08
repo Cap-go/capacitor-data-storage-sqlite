@@ -2,8 +2,8 @@
 //  Data.swift
 //  Plugin
 //
-//  Created by  Quéau Jean Pierre on 15/03/2020.
-//  Copyright © 2020 Max Lynch. All rights reserved.
+//  Created by  Quéau Jean Pierre on 08/04/2021.
+//  Copyright © 2021 Max Lynch. All rights reserved.
 //
 
 import Foundation

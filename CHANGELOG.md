@@ -1,3 +1,15 @@
+## 3.0.0-alpha.0 (2021-04-08)
+
+### Chores
+
+- capacitor: update to capacitor 3.0.0-rc.0
+
+## 2.4.7 (2021-04-04)
+
+### Chores
+
+- capacitor: update to capacitor 2.4.7
+
 ## 2.4.5 (2021-01-06)
 
 ### Chores

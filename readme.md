@@ -1,6 +1,10 @@
 <p align="center"><br><img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" /></p>
 <h3 align="center">DATA STORAGE SQLITE</h3>
 <p align="center"><strong><code>capacitor-data-storage-sqlite</code></strong></p>
+<br>
+<p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3 🚧</strong></p><br>
+<p align="center">
+  iOS for testing only</p>
 <p align="center">
   Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of <strong>type string only</strong> to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
 
@@ -33,9 +37,8 @@ meaning that it will not work in IE11 without additional JavaScript transformati
 ## Installation
 
 ```bash
-npm install capacitor-data-storage-sqlite
+npm install capacitor-data-storage-sqlite@next
 npx cap sync
-npx cap sync @capacitor-community/electron
 ```
 
 - On iOS, no further steps are needed.
@@ -67,44 +70,13 @@ npx cap sync @capacitor-community/electron
 
   ```
 
-- On Electron, go to the Electron folder of YOUR_APPLICATION
-
-  ```bash
-  npm install --save sqlite3
-  npm install --save-dev @types/sqlite3
-  npm install --save-dev electron-rebuild
-  ```
-
-  Modify the Electron package.json file by adding a script "postinstall"
-
-  ```json
-    "scripts": {
-      "electron:start": "electron ./",
-      "postinstall": "electron-rebuild -f -w sqlite3"
-    },
-  ```
-
-  Execute the postinstall script
-
-  ```bash
-  npm run postinstall
-  ```
-
-Go back in the main folder of your application
-
-The datastores created are under **YourApplication/Electron/DataStorage**
-
 Then build YOUR_APPLICATION
 
 ```
 npm run build
 npx cap copy
 npx cap copy web
-npx cap copy @capacitor-community/electron
-npx cap open android
 npx cap open ios
-npx cap open @capacitor-community/electron
-npx cap serve
 ```
 
 ## Configuration
@@ -115,19 +87,19 @@ No configuration required for this plugin
 
 | Name                         | Android | iOS | Electron | Web |
 | :--------------------------- | :------ | :-- | :------- | :-- |
-| openStore (non-encrypted DB) | ✅      | ✅  | ✅       | ✅  |
-| openStore (encrypted DB)     | ✅      | ✅  | ❌       | ❌  |
-| setTable                     | ✅      | ✅  | ✅       | ✅  |
-| set                          | ✅      | ✅  | ✅       | ✅  |
-| get                          | ✅      | ✅  | ✅       | ✅  |
-| iskey                        | ✅      | ✅  | ✅       | ✅  |
-| keys                         | ✅      | ✅  | ✅       | ✅  |
-| values                       | ✅      | ✅  | ✅       | ✅  |
-| filtervalues                 | ✅      | ✅  | ✅       | ✅  |
-| keysvalues                   | ✅      | ✅  | ✅       | ✅  |
-| remove                       | ✅      | ✅  | ✅       | ✅  |
-| clear                        | ✅      | ✅  | ✅       | ✅  |
-| deleteStore                  | ✅      | ✅  | ✅       | ❌  |
+| openStore (non-encrypted DB) | ❌      | ✅  | ❌       | ❌  |
+| openStore (encrypted DB)     | ❌      | ✅  | ❌       | ❌  |
+| setTable                     | ❌      | ✅  | ❌       | ❌  |
+| set                          | ❌      | ✅  | ❌       | ❌  |
+| get                          | ❌      | ✅  | ❌       | ❌  |
+| iskey                        | ❌      | ❌  | ❌       | ❌  |
+| keys                         | ❌      | ❌  | ❌       | ❌  |
+| values                       | ❌      | ❌  | ❌       | ❌  |
+| filtervalues                 | ❌      | ❌  | ❌       | ❌  |
+| keysvalues                   | ❌      | ❌  | ❌       | ❌  |
+| remove                       | ❌      | ✅  | ❌       | ❌  |
+| clear                        | ❌      | ✅  | ❌       | ❌  |
+| deleteStore                  | ❌      | ❌  | ❌       | ❌  |
 
 ## Documentation
 
@@ -141,23 +113,18 @@ No configuration required for this plugin
 
 - [angular-data-storage-sqlite-app-starter](https://github.com/jepiqueau/angular-data-storage-sqlite-app-starter)
 
-- [test-angular-jeep-capacitor-plugins](https://github.com/jepiqueau/capacitor-apps/tree/master/IonicAngular/jeep-test-app)
 
 ### Ionic/React
 
-- [react-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
 
 ### React
 
-- [react-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
 
 ### Ionic/Vue
 
-- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/vue-data-storage-sqlite-app-starter)
 
 ### Vue
 
-- [vue-datastoragesqlite-app](https://github.com/jepiqueau/vue-datastoragesqlite-app)
 
 ## Usage
 
@@ -165,25 +132,9 @@ No configuration required for this plugin
 
 - [see USAGE_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/USAGE.md)
 
-**Since 2.4.2**, a new method `filtervalues` has been added to get the values for filtered keys.
-
-- to return all values for keys starting with `session`
-
-  `const stValues: string[] = await getFilterValues({filter:"%session"});`
-
-- to return all values for keys containing `session`
-
-  `const stValues: string[] = await getFilterValues({filter:"session"});`
-
-- to return all values for keys ending with `session`
-
-  `const stValues: string[] = await getFilterValues({filter:"session%"});`
-
 ## Dependencies
 
-The IOS and Android codes are using SQLCipher allowing for database encryption. The Electron code use sqlite3.
-The Web code has been implemented with localforage as wrapper for indexDB.
-
+The IOS code is using SQLCipher allowing for database encryption. 
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

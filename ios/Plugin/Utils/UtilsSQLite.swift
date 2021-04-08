@@ -2,11 +2,12 @@
 //  UtilsSQLite.swift
 //  Plugin
 //
-//  Created by  Quéau Jean Pierre on 15/03/2020.
-//  Copyright © 2020 Max Lynch. All rights reserved.
+//  Created by  Quéau Jean Pierre on 08/04/2021.
+//  Copyright © 2021 Max Lynch. All rights reserved.
 //
 
 import Foundation
+
 import SQLCipher
 
 enum UtilsSQLiteError: Error {
@@ -71,14 +72,17 @@ class UtilsSQLite {
         var mDB: OpaquePointer?
         do {
             try mDB = UtilsSQLite.connection(filename: path)
-            message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB, tableName: tableName,
+            message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB,
+                                              tableName: tableName,
                                               IDXCOLNAME: IDXCOLNAME)
+            try dbHelper.closeDB(mDB: mDB, method: "init")
+            return message
+        } catch StorageHelperError.closeDB(let message) {
+            return message
         } catch {
             message = "init: Error Database connection failed"
             return message
         }
-        dbHelper.closeDB(mDB: mDB, method: "init")
-        return message
     }
 
     // MARK: - CreateConnectionEncryptedWithSecret
@@ -89,15 +93,19 @@ class UtilsSQLite {
         var message: String = ""
         var mDB: OpaquePointer?
         do {
-            try mDB = UtilsSQLite.connection(filename: path, readonly: false, key: secret)
-            message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB, tableName: tableName,
+            try mDB = UtilsSQLite.connection(filename: path, readonly: false,
+                                             key: secret)
+            message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB,
+                                              tableName: tableName,
                                               IDXCOLNAME: IDXCOLNAME)
+            try dbHelper.closeDB(mDB: mDB, method: "init")
+            return message
+        } catch StorageHelperError.closeDB(let message) {
+            return message
         } catch {
             message = "init: Error Database connection failed wrong secret"
             return message
         }
-        dbHelper.closeDB(mDB: mDB, method: "init")
-        return message
     }
 
     // MARK: - CreateConnectionEncryptedWithNewSecret
@@ -130,10 +138,12 @@ class UtilsSQLite {
             if message.count == 0 {
                 message = "swap newsecret"
             }
+            try dbHelper.closeDB(mDB: mDB, method: "init")
+        } catch StorageHelperError.closeDB(let message) {
+            return message
         } catch {
             message = "init: Error Database connection failed wrong secret"
         }
-        dbHelper.closeDB(mDB: mDB, method: "init")
         return message
     }
     // swiftlint:enable function_parameter_count
@@ -432,30 +442,35 @@ class UtilsSQLite {
                     throw UtilsSQLiteError.encryptionFailed
                 }
             }
+            try dbHelper.closeDB(mDB: mDB, method: "init")
+            return ret
+        } catch StorageHelperError.closeDB(let message) {
+            print("Error: \(message)")
+            throw UtilsSQLiteError.encryptionFailed
         } catch let error {
             print("Error: \(error)")
             throw UtilsSQLiteError.filePathFailed
         }
-        dbHelper.closeDB(mDB: mDB, method: "init")
-        return ret
     }
 
     // MARK: - CreateStoreTableIndexes
 
     class func createStoreTableIndexes(dbHelper: StorageDatabaseHelper, mDB: OpaquePointer?,
                                        tableName: String, IDXCOLNAME: String) -> String {
-        var message = ""
-        // create table
-        var res: Bool = dbHelper.createTable(mDB: mDB, tableName: tableName, ifNotExists: true)
-        if !res {
-            message = "createStoreTableIndexes: table creation failed"
+        let message = ""
+        do {
+            // create table
+            try dbHelper.createTable(mDB: mDB, tableName: tableName,
+                                     ifNotExists: true)
+            // create index
+            try dbHelper.createIndex(mDB: mDB, tableName: tableName,
+                                     colName: IDXCOLNAME, ifNotExists: true)
+        } catch StorageHelperError.creationIndex(let message) {
             return message
-        }
-        // create index
-        res = dbHelper.createIndex(mDB: mDB, tableName: tableName, colName: IDXCOLNAME, ifNotExists: true)
-        if !res {
-            message = "createStoreTableIndexes: index creation failed"
+        } catch StorageHelperError.creationTable(let message) {
             return message
+        } catch let error {
+            return error.localizedDescription
         }
         return message
     }

@@ -1,187 +1,71 @@
 import { WebPlugin } from '@capacitor/core';
-import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
-import { Data } from './web-utils/Data';
-import {
-  CapacitorDataStorageSqlitePlugin,
-  capDataStorageOptions,
-  capFilterStorageOptions,
-  capOpenStorageOptions,
-  capTableStorageOptions,
-  capEchoOptions,
-  capEchoResult,
-  capDataStorageResult,
-  capValueResult,
-  capKeysResult,
-  capValuesResult,
-  capKeysValuesResult,
-} from './definitions';
+
+import type { CapacitorDataStorageSqlitePlugin,
+              capEchoOptions, 
+              capEchoResult,
+              capDataStorageOptions,
+              capDataStorageResult,
+              capFilterStorageOptions,
+              capKeysResult,
+              capKeysValuesResult,
+              capOpenStorageOptions,
+              capTableStorageOptions,
+              capValueResult,
+              capValuesResult } from './definitions';
 
 export class CapacitorDataStorageSqliteWeb
   extends WebPlugin
   implements CapacitorDataStorageSqlitePlugin {
-  mDb: StorageDatabaseHelper;
-  constructor() {
-    super({
-      name: 'CapacitorDataStorageSqlite',
-      platforms: ['web'],
-    });
-  }
 
   async echo(options: capEchoOptions): Promise<capEchoResult> {
     console.log('ECHO', options);
-    return { value: options.value };
+    const ret: capEchoResult = {} as capEchoResult;
+    ret.value = options.value ? options.value : "";
+    return ret;
   }
-  async openStore(
-    options: capOpenStorageOptions,
-  ): Promise<capDataStorageResult> {
-    let ret: boolean = false;
-    let dbName = options.database ? `${options.database}IDB` : 'storageIDB';
-    let tableName = options.table ? options.table : 'storage_store';
-    this.mDb = new StorageDatabaseHelper(dbName, tableName);
-    if (this.mDb) ret = true;
-    return Promise.resolve({ result: ret });
+  
+  async openStore(options: capOpenStorageOptions): Promise<void> {
+    console.log('openStore', options);
+    throw new Error('Method not implemented.');
   }
-
-  async setTable(
-    options: capTableStorageOptions,
-  ): Promise<capDataStorageResult> {
-    let tableName = options.table;
-    if (tableName == null) {
-      return Promise.reject('Must provide a table name');
-    }
-    let ret: boolean = false;
-    let message: string = '';
-    if (this.mDb) {
-      ret = await this.mDb.setTable(tableName);
-      if (ret) {
-        return Promise.resolve({ result: ret, message: message });
-      } else {
-        return Promise.resolve({
-          result: ret,
-          message: 'failed in adding table',
-        });
-      }
-    } else {
-      return Promise.resolve({
-        result: ret,
-        message: 'Must open a store first',
-      });
-    }
+  async setTable(options: capTableStorageOptions): Promise<void> {
+    console.log('setTable', options);
+    throw new Error('Method not implemented.');
   }
-  async set(options: capDataStorageOptions): Promise<capDataStorageResult> {
-    let ret: boolean;
-    let key: string = options.key;
-    if (key == null || typeof key != 'string') {
-      return Promise.reject('Must provide key as string');
-    }
-
-    let value: string = options.value;
-    if (value == null || typeof value != 'string') {
-      return Promise.reject('Must provide value as string');
-    }
-    let data: Data = new Data();
-    data.name = key;
-    data.value = value;
-    ret = await this.mDb.set(data);
-    return Promise.resolve({ result: ret });
+  async set(options: capDataStorageOptions): Promise<void> {
+    console.log('set', options);
+    throw new Error('Method not implemented.');
   }
-
   async get(options: capDataStorageOptions): Promise<capValueResult> {
-    let ret: string;
-    let key: string = options.key;
-    if (key == null || typeof key != 'string') {
-      return Promise.reject('Must provide key as string');
-    }
-    let data: Data = await this.mDb.get(key);
-    ret = data != null ? data.value : null;
-    return Promise.resolve({ value: ret });
+    console.log('get', options);
+    throw new Error('Method not implemented.');
   }
-
   async remove(options: capDataStorageOptions): Promise<capDataStorageResult> {
-    let ret: boolean;
-    let key: string = options.key;
-    if (key == null || typeof key != 'string') {
-      return Promise.reject('Must provide key as string');
-    }
-    ret = await this.mDb.remove(key);
-    return Promise.resolve({ result: ret });
+    console.log('remove', options);
+    throw new Error('Method not implemented.');
   }
-
-  async clear(): Promise<capDataStorageResult> {
-    let ret: boolean;
-    ret = await this.mDb.clear();
-    return Promise.resolve({ result: ret });
+  async clear(): Promise<void> {
+    throw new Error('Method not implemented.');
   }
-
   async iskey(options: capDataStorageOptions): Promise<capDataStorageResult> {
-    let ret: boolean;
-    let key: string = options.key;
-    if (key == null || typeof key != 'string') {
-      return Promise.reject('Must provide key as string');
-    }
-    ret = await this.mDb.iskey(key);
-    return Promise.resolve({ result: ret });
+    console.log('iskey', options);
+    throw new Error('Method not implemented.');
   }
-
   async keys(): Promise<capKeysResult> {
-    let ret: Array<string>;
-    ret = await this.mDb.keys();
-    return Promise.resolve({ keys: ret });
+    throw new Error('Method not implemented.');
   }
-
   async values(): Promise<capValuesResult> {
-    let ret: Array<string>;
-    ret = await this.mDb.values();
-    return Promise.resolve({ values: ret });
+    throw new Error('Method not implemented.');
   }
-
-  async filtervalues(
-    options: capFilterStorageOptions,
-  ): Promise<capValuesResult> {
-    let filter: string = options.filter;
-    if (filter == null || typeof filter != 'string') {
-      return Promise.reject('Must provide filter as string');
-    }
-    let regFilter: RegExp;
-    if (filter.startsWith('%')) {
-      regFilter = new RegExp('^' + filter.substring(1), 'i');
-    } else if (filter.endsWith('%')) {
-      regFilter = new RegExp(filter.slice(0, -1) + '$', 'i');
-    } else {
-      regFilter = new RegExp(filter, 'i');
-    }
-    let ret: Array<string> = [];
-    let results: Array<Data>;
-    results = await this.mDb.keysvalues();
-    for (let i: number = 0; i < results.length; i++) {
-      if (regFilter.test(results[i].name)) {
-        ret.push(results[i].value);
-      }
-    }
-    return Promise.resolve({ values: ret });
+  async filtervalues(options: capFilterStorageOptions): Promise<capValuesResult> {
+    console.log('filtervalues', options);
+    throw new Error('Method not implemented.');
   }
-
   async keysvalues(): Promise<capKeysValuesResult> {
-    let ret: Array<any> = [];
-    let results: Array<Data>;
-    results = await this.mDb.keysvalues();
-    for (let i: number = 0; i < results.length; i++) {
-      let res: any = { key: results[i].name, value: results[i].value };
-      ret.push(res);
-    }
-    return Promise.resolve({ keysvalues: ret });
+    throw new Error('Method not implemented.');
   }
-  async deleteStore(
-    options: capOpenStorageOptions,
-  ): Promise<capDataStorageResult> {
+  async deleteStore(options: capOpenStorageOptions): Promise<capDataStorageResult> {
     console.log('deleteStore', options);
-    return Promise.reject('Not implemented');
+    throw new Error('Method not implemented.');
   }
 }
-
-const CapacitorDataStorageSqlite = new CapacitorDataStorageSqliteWeb();
-
-export { CapacitorDataStorageSqlite };
-
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(CapacitorDataStorageSqlite);

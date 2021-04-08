@@ -1,16 +1,13 @@
 import { WebPlugin } from '@capacitor/core';
-import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
-import { CapacitorDataStorageSqlitePlugin, capDataStorageOptions, capFilterStorageOptions, capOpenStorageOptions, capTableStorageOptions, capEchoOptions, capEchoResult, capDataStorageResult, capValueResult, capKeysResult, capValuesResult, capKeysValuesResult } from './definitions';
+import type { CapacitorDataStorageSqlitePlugin, capEchoOptions, capEchoResult, capDataStorageOptions, capDataStorageResult, capFilterStorageOptions, capKeysResult, capKeysValuesResult, capOpenStorageOptions, capTableStorageOptions, capValueResult, capValuesResult } from './definitions';
 export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
-    mDb: StorageDatabaseHelper;
-    constructor();
     echo(options: capEchoOptions): Promise<capEchoResult>;
-    openStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
-    setTable(options: capTableStorageOptions): Promise<capDataStorageResult>;
-    set(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    openStore(options: capOpenStorageOptions): Promise<void>;
+    setTable(options: capTableStorageOptions): Promise<void>;
+    set(options: capDataStorageOptions): Promise<void>;
     get(options: capDataStorageOptions): Promise<capValueResult>;
     remove(options: capDataStorageOptions): Promise<capDataStorageResult>;
-    clear(): Promise<capDataStorageResult>;
+    clear(): Promise<void>;
     iskey(options: capDataStorageOptions): Promise<capDataStorageResult>;
     keys(): Promise<capKeysResult>;
     values(): Promise<capValuesResult>;
@@ -18,5 +15,3 @@ export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements 
     keysvalues(): Promise<capKeysValuesResult>;
     deleteStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
 }
-declare const CapacitorDataStorageSqlite: CapacitorDataStorageSqliteWeb;
-export { CapacitorDataStorageSqlite };

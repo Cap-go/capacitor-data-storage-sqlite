@@ -2,7 +2,6 @@ require 'json'
 
 package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
-
   Pod::Spec.new do |s|
     s.name = 'CapacitorDataStorageSqlite'
     s.version = package['version']
@@ -12,7 +11,7 @@ package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
     s.author = package['author']
     s.source = { :git => package['repository']['url'], :tag => s.version.to_s }
     s.source_files = 'ios/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}'
-    s.ios.deployment_target  = '11.0'
+    s.ios.deployment_target  = '12.0'
     s.dependency 'Capacitor'
     s.dependency 'SQLCipher'
     s.swift_version = '5.1'

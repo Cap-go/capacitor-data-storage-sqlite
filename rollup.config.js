@@ -1,23 +1,22 @@
-import nodeResolve from '@rollup/plugin-node-resolve';
-
 export default {
   input: 'dist/esm/index.js',
-  external: ['jeep-localforage'],
-  output: {
-    file: 'dist/plugin.js',
-    format: 'iife',
-    name: 'capacitorPlugin',
-    globals: {
-      '@capacitor/core': 'capacitorExports',
-      'jeep-localforage': 'LocalForage',
+  output: [
+    {
+      file: 'dist/plugin.js',
+      format: 'iife',
+      name: 'capacitorCapacitorDataStorageSqlite',
+      globals: {
+        '@capacitor/core': 'capacitorExports',
+      },
+      sourcemap: true,
+      inlineDynamicImports: true,
     },
-    sourcemap: true,
-  },
-  plugins: [
-    nodeResolve({
-      // allowlist of dependencies to bundle in
-      // @see https://github.com/rollup/plugins/tree/master/packages/node-resolve#resolveonly
-      resolveOnly: ['lodash'],
-    }),
+    {
+      file: 'dist/plugin.cjs.js',
+      format: 'cjs',
+      sourcemap: true,
+      inlineDynamicImports: true,
+    },
   ],
+  external: ['@capacitor/core'],
 };

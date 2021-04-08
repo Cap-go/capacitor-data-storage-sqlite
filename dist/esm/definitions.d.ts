@@ -1,8 +1,3 @@
-declare module '@capacitor/core' {
-    interface PluginRegistry {
-        CapacitorDataStorageSqlite: CapacitorDataStorageSqlitePlugin;
-    }
-}
 export interface CapacitorDataStorageSqlitePlugin {
     /**
      *
@@ -14,24 +9,24 @@ export interface CapacitorDataStorageSqlitePlugin {
     /**
      * Open a store
      * @param options: capOpenStorageOptions
-     * @returns Promise<capDataStorageResult>
+     * @returns Promise<void>
      * @since 0.0.1
      */
-    openStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
+    openStore(options: capOpenStorageOptions): Promise<void>;
     /**
      * Set or Add a table to an existing store
      * @param options: capTableStorageOptions
-     * @returns Promise<capDataStorageResult>
+     * @returns Promise<void>
      * @since 0.0.1
      */
-    setTable(options: capTableStorageOptions): Promise<capDataStorageResult>;
+    setTable(options: capTableStorageOptions): Promise<void>;
     /**
      * Store a data with given key and value
      * @param options: capDataStorageOptions
-     * @returns Promise<capDataStorageResult>
+     * @returns Promise<void>
      * @since 0.0.1
      */
-    set(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    set(options: capDataStorageOptions): Promise<void>;
     /**
      * Retrieve a data value for a given data key
      * @param options: capDataStorageOptions
@@ -51,11 +46,11 @@ export interface CapacitorDataStorageSqlitePlugin {
      * @returns Promise<capDataStorageResult>
      * @since 0.0.1
      */
-    clear(): Promise<capDataStorageResult>;
+    clear(): Promise<void>;
     /**
      * Check if a data key exists
      * @param options: capDataStorageOptions
-     * @returns Promise<capDataStorageResult>
+     * @returns Promise<void>
      * @since 0.0.1
      */
     iskey(options: capDataStorageOptions): Promise<capDataStorageResult>;
