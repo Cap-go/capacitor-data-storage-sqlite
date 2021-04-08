@@ -43,39 +43,12 @@ npx cap sync
 
 - On iOS, no further steps are needed.
 
-- On Android, register the plugin in your main activity:
-
-  ```java
-  import com.jeep.plugin.capacitor.CapacitorDataStorageSqlite;
-
-  public class MainActivity extends BridgeActivity {
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-
-      // Initializes the Bridge
-      this.init(
-          savedInstanceState,
-          new ArrayList<Class<? extends Plugin>>() {
-            {
-              // Additional plugins you've installed go here
-              // Ex: add(TotallyAwesomePlugin.class);
-              add(CapacitorDataStorageSqlite.class);
-            }
-          }
-        );
-    }
-  }
-
-  ```
 
 Then build YOUR_APPLICATION
 
 ```
 npm run build
 npx cap copy
-npx cap copy web
 npx cap open ios
 ```
 
@@ -154,3 +127,4 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+

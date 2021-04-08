@@ -8,7 +8,7 @@ enum CapacitorDataStorageSqliteError: Error {
     var mDb: StorageDatabaseHelper?
 
     // MARK: - Echo
-
+    
     @objc public func echo(_ value: String) -> String {
         return value
     }
@@ -89,11 +89,11 @@ enum CapacitorDataStorageSqliteError: Error {
                                     .failed(message: message)
         }
     }
-
+    
     // MARK: - get
 
     @objc func get(_ name: String) throws -> String {
-
+        
         if mDb != nil {
             do {
                 if let data: Data = try mDb?.get(name: name) {
