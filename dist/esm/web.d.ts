@@ -6,12 +6,12 @@ export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements 
     setTable(options: capTableStorageOptions): Promise<void>;
     set(options: capDataStorageOptions): Promise<void>;
     get(options: capDataStorageOptions): Promise<capValueResult>;
-    remove(options: capDataStorageOptions): Promise<capDataStorageResult>;
+    remove(options: capDataStorageOptions): Promise<void>;
     clear(): Promise<void>;
     iskey(options: capDataStorageOptions): Promise<capDataStorageResult>;
     keys(): Promise<capKeysResult>;
     values(): Promise<capValuesResult>;
     filtervalues(options: capFilterStorageOptions): Promise<capValuesResult>;
     keysvalues(): Promise<capKeysValuesResult>;
-    deleteStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
+    deleteStore(options: capOpenStorageOptions): Promise<void>;
 }

@@ -10,9 +10,9 @@ import Foundation
 import Capacitor
 
 class ReturnHandler {
-    
+
     // MARK: - rResult
-    
+
     func rResult(call: CAPPluginCall, ret: Bool? = nil,
                  message: String? = nil) {
         if let intMessage = message {
@@ -29,16 +29,29 @@ class ReturnHandler {
             }
         }
     }
-    
+
     // MARK: - rValue
-    
+
     func rValue(call: CAPPluginCall, ret: String,
-                 message: String? = nil) {
+                message: String? = nil) {
         if let intMessage = message {
             call.reject(intMessage)
             return
         } else {
             call.resolve(["value": ret])
+            return
+        }
+    }
+
+    // MARK: - rDict
+
+    func rDict(call: CAPPluginCall, ret: [String: [Any]],
+               message: String? = nil) {
+        if let intMessage = message {
+            call.reject(intMessage)
+            return
+        } else {
+            call.resolve(ret)
             return
         }
     }

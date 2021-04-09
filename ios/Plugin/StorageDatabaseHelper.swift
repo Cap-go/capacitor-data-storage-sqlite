@@ -14,12 +14,13 @@ enum StorageHelperError: Error {
     case setTable(message: String)
     case creationTable(message: String)
     case creationIndex(message: String)
-    case set(message: String)
-    case get(message: String)
+    case setkey(message: String)
+    case getkey(message: String)
     case iskey(message: String)
     case remove(message: String)
     case clear(message: String)
-    case isKeyExists(message:String)
+    case isKeyExists(message: String)
+    case insertData(message: String)
     case updateData(message: String)
     case closeDB(message: String)
     case getValue(message: String)
@@ -61,6 +62,7 @@ class StorageDatabaseHelper {
 
     // MARK: - Init
 
+    // swiftlint:disable function_body_length
     init(databaseName: String, tableName: String, encrypted: Bool, mode: String,
          secret: String = "", newsecret: String = "") throws {
         print("path: \(path)")
@@ -77,23 +79,23 @@ class StorageDatabaseHelper {
             throw StorageHelperError.initFailed(message: msg)
         }
         if self.path.count > 0 {
-        // connect to the database (create if doesn't exist)
+            // connect to the database (create if doesn't exist)
             let connData: [String: String] = ["path": self.path, "mode": self.mode,
-                "tablename": self.tableName, "idxcolname": IDXCOLNAME]
+                                              "tablename": self.tableName, "idxcolname": IDXCOLNAME]
             let message: String =
                 UtilsSQLite.createConnection(dbHelper: self, data: connData, encrypted: self.encrypted,
                                              secret: self.secret, newsecret: self.newsecret)
             self.isOpen = message.count == 0 || message == "swap newsecret" ||
-                          message == "success encryption" ? true : false
+                message == "success encryption" ? true : false
             if message.count > 0 {
                 if message.contains("connection:") {
                     let msg = "wrong new secret"
                     throw StorageHelperError
-                                    .initFailed(message: msg)
+                    .initFailed(message: msg)
                 } else if message.contains("wrong secret") {
                     let msg = "wrong secret"
                     throw StorageHelperError
-                                    .initFailed(message: msg)
+                    .initFailed(message: msg)
                 } else if message == "swap newsecret" {
                     self.secret = self.newsecret
                 } else if message == "success encryption" {
@@ -101,14 +103,14 @@ class StorageDatabaseHelper {
                 } else {
                     print("message")
                     throw StorageHelperError
-                                    .initFailed(message: message)
+                    .initFailed(message: message)
                 }
             }
 
         } else {
             let msg = "Could not generate the store path"
             throw StorageHelperError
-                            .initFailed(message: msg)
+            .initFailed(message: msg)
         }
     }
 
@@ -122,70 +124,34 @@ class StorageDatabaseHelper {
                                      secret: self.secret)
         } catch let error {
             let msg = error.localizedDescription
-            throw StorageHelperError.set(message: msg)
+            throw StorageHelperError.setkey(message: msg)
         }
         // check if the data already exists
         guard let key: String = data.name else {
             let msg = "no data.name given"
-            throw StorageHelperError.set(message: msg)
+            throw StorageHelperError.setkey(message: msg)
         }
         do {
-            
+
             let isKey = try isKeyExists(mDB: mDB, key: key)
             if isKey {
                 try updateData(mDB: mDB, data: data)
             } else {
-                let insertStatementString = "INSERT INTO " +
-                    "\(tableName) (\(COLNAME), \(COLVALUE)) " +
-                    "VALUES (?, ?);"
-                var insertStatement: OpaquePointer?
-
-                if sqlite3_prepare_v2(mDB,
-                                      insertStatementString,
-                                      -1, &insertStatement,
-                                      nil) == SQLITE_OK {
-                    guard let name: NSString = data.name as
-                                        NSString? else {
-                        
-                        let msg = "Could not find name."
-                        throw StorageHelperError
-                                        .set(message: msg)
-                    }
-                    guard let value: NSString = data.value as
-                                        NSString? else {
-                        let msg = "Could not find value."
-                        throw StorageHelperError
-                                        .set(message: msg)
-                    }
-                    sqlite3_bind_text(insertStatement, 1,
-                                      name.utf8String, -1, nil)
-                    sqlite3_bind_text(insertStatement, 2,
-                                      value.utf8String, -1, nil)
-                  if sqlite3_step(insertStatement) !=
-                                                SQLITE_DONE {
-                    let msg = "Could not insert row."
-                    throw StorageHelperError
-                                    .set(message: msg)
-                  }
-                } else {
-                    let msg = "INSERT statement could " +
-                              "not be prepared."
-                    throw StorageHelperError
-                                    .set(message: msg)
-                }
-                sqlite3_finalize(insertStatement)
+                try insertData(mDB: mDB, data: data)
             }
             try closeDB(mDB: mDB, method: "set")
-            
+
         } catch StorageHelperError.isKeyExists(let message) {
-            throw StorageHelperError.set(message: message)
+            throw StorageHelperError.setkey(message: message)
+        } catch StorageHelperError.insertData(let message) {
+            throw StorageHelperError.setkey(message: message)
         } catch StorageHelperError.updateData(let message) {
-            throw StorageHelperError.set(message: message)
+            throw StorageHelperError.setkey(message: message)
         } catch StorageHelperError.closeDB(let message) {
-            throw StorageHelperError.set(message: message)
+            throw StorageHelperError.setkey(message: message)
         } catch let error {
             let msg = error.localizedDescription
-            throw StorageHelperError.set(message: msg)
+            throw StorageHelperError.setkey(message: msg)
         }
     }
 
@@ -204,12 +170,12 @@ class StorageDatabaseHelper {
                 return nil
             }
         } catch StorageHelperError.getValue(let message) {
-            throw StorageHelperError.get(message: message)
+            throw StorageHelperError.getkey(message: message)
         } catch StorageHelperError.closeDB(let message) {
-            throw StorageHelperError.get(message: message)
+            throw StorageHelperError.getkey(message: message)
         } catch let error {
             let msg = error.localizedDescription
-            throw StorageHelperError.get(message: msg)
+            throw StorageHelperError.getkey(message: msg)
         }
 
     }
@@ -231,8 +197,7 @@ class StorageDatabaseHelper {
 
     // MARK: - Remove
 
-    func remove(name: String) throws -> Bool {
-        var ret: Bool = false
+    func remove(name: String) throws {
         let mDB: OpaquePointer?
         do {
             try mDB = UtilsSQLite.getWritableDatabase(filename: self.path,
@@ -241,20 +206,18 @@ class StorageDatabaseHelper {
                 "\(COLNAME) = '\(name)';"
             var deleteStatement: OpaquePointer?
             if sqlite3_prepare_v2(mDB, deleteStatementStirng, -1, &deleteStatement,
-                                                            nil) == SQLITE_OK {
-              if sqlite3_step(deleteStatement) == SQLITE_DONE {
-                ret = true
-              } else {
-                let msg = "Could not delete row."
-                throw StorageHelperError.remove(message: msg)
-              }
+                                  nil) == SQLITE_OK {
+                if sqlite3_step(deleteStatement) != SQLITE_DONE {
+                    let msg = "Could not delete row."
+                    throw StorageHelperError.remove(message: msg)
+                }
             } else {
                 let msg = "DELETE statement could not be prepared."
                 throw StorageHelperError.remove(message: msg)
             }
             sqlite3_finalize(deleteStatement)
             try closeDB(mDB: mDB, method: "remove")
-            return ret
+            return
         } catch StorageHelperError.closeDB(let message) {
             throw StorageHelperError.remove(message: message)
         } catch let error {
@@ -265,7 +228,7 @@ class StorageDatabaseHelper {
 
     // MARK: - Clear
 
-    func clear() throws -> Bool {
+    func clear() throws {
         var ret: Bool = false
         let mDB: OpaquePointer?
         do {
@@ -275,23 +238,23 @@ class StorageDatabaseHelper {
 
             var deleteStatement: OpaquePointer?
             if sqlite3_prepare_v2(mDB, deleteStatementString, -1, &deleteStatement,
-                                                                nil) == SQLITE_OK {
-              if sqlite3_step(deleteStatement) == SQLITE_DONE {
-                ret = true
-              } else {
-                let msg = "Could not delete all rows."
-                throw StorageHelperError.clear(message: msg)
-              }
+                                  nil) == SQLITE_OK {
+                if sqlite3_step(deleteStatement) == SQLITE_DONE {
+                    ret = true
+                } else {
+                    let msg = "Could not delete all rows."
+                    throw StorageHelperError.clear(message: msg)
+                }
             } else {
                 let msg = "DELETE statement could not be prepared."
                 throw StorageHelperError.clear(message: msg)
             }
             sqlite3_finalize(deleteStatement)
             if ret {
-                ret = try resetIndex()
+                try resetIndex()
             }
             try closeDB(mDB: mDB, method: "clear")
-            return ret
+            return
         } catch StorageHelperError.resetIndex(let message) {
             throw StorageHelperError.clear(message: message)
         } catch StorageHelperError.closeDB(let message) {
@@ -308,7 +271,7 @@ class StorageDatabaseHelper {
         let mDB: OpaquePointer?
         do {
             try mDB = UtilsSQLite.getWritableDatabase(
-                    filename: self.path, secret: self.secret)
+                filename: self.path, secret: self.secret)
             try createTable(mDB: mDB, tableName: tblName,
                             ifNotExists: true)
             tableName = tblName
@@ -320,15 +283,15 @@ class StorageDatabaseHelper {
             return
         } catch StorageHelperError.creationIndex(let message) {
             throw StorageHelperError
-                .setTable(message: message)
+            .setTable(message: message)
         } catch StorageHelperError.creationTable(let message) {
             throw StorageHelperError
-                .setTable(message: message)
+            .setTable(message: message)
         } catch StorageHelperError.closeDB(let message) {
             throw StorageHelperError.setTable(message: message)
         } catch let error {
             throw StorageHelperError
-                .setTable(message: error.localizedDescription)
+            .setTable(message: error.localizedDescription)
         }
     }
 
@@ -343,30 +306,32 @@ class StorageDatabaseHelper {
             let getKeysString: String = "SELECT * FROM \(tableName);"
             var getKeysStatement: OpaquePointer?
             if sqlite3_prepare_v2(mDB, getKeysString, -1, &getKeysStatement,
-                                                                nil) == SQLITE_OK {
+                                  nil) == SQLITE_OK {
                 while sqlite3_step(getKeysStatement) == SQLITE_ROW {
                     let queryResultCol1 = sqlite3_column_text(getKeysStatement, 1)
                     if let mQueryResultCol1 = queryResultCol1 {
                         retArray.append(String(cString: mQueryResultCol1))
                     } else {
-                        print("keys: Error in sqlite3_column_text")
-                        return [String]()
+                        let msg = "Error in sqlite3_column_text"
+                        throw StorageHelperError.keys(message: msg)
                     }
                 }
             } else {
-                print("keys: Error statement could not be prepared.")
-                return [String]()
+                let msg = "Error statement could not be prepared."
+                throw StorageHelperError.keys(message: msg)
             }
             sqlite3_finalize(getKeysStatement)
             try closeDB(mDB: mDB, method: "keys")
             return retArray
+        } catch StorageHelperError.keys(let message) {
+            throw StorageHelperError.keys(message: message)
         } catch StorageHelperError.closeDB(let message) {
             throw StorageHelperError.keys(message: message)
         } catch let error {
             throw StorageHelperError
-                .keys(message: error.localizedDescription)
+            .keys(message: error.localizedDescription)
         }
-   }
+    }
 
     // MARK: - Values
 
@@ -383,22 +348,24 @@ class StorageDatabaseHelper {
                     if let mQueryResultCol2 = queryResultCol2 {
                         retArray.append(String(cString: mQueryResultCol2))
                     } else {
-                        print("values: Error in sqlite3_column_text")
-                        return [String]()
+                        let msg = "values: Error in sqlite3_column_text"
+                        throw StorageHelperError.values(message: msg)
                     }
                 }
             } else {
-                print("values: Error statement could not be prepared.")
-                return [String]()
+                let msg = "values: Error statement could not be prepared."
+                throw StorageHelperError.values(message: msg)
             }
             sqlite3_finalize(getValuesStatement)
             try closeDB(mDB: mDB, method: "values")
             return retArray
+        } catch StorageHelperError.values(let message) {
+            throw StorageHelperError.values(message: message)
         } catch StorageHelperError.closeDB(let message) {
             throw StorageHelperError.values(message: message)
         } catch let error {
             throw StorageHelperError
-                .values(message: error.localizedDescription)
+            .values(message: error.localizedDescription)
         }
     }
 
@@ -425,22 +392,24 @@ class StorageDatabaseHelper {
                     if let mQueryResultCol0 = queryResultCol0 {
                         retArray.append(String(cString: mQueryResultCol0))
                     } else {
-                        print("filtervalues: Error in sqlite3_column_text")
-                        return [String]()
+                        let msg = "Error in sqlite3_column_text"
+                        throw StorageHelperError.filtervalues(message: msg)
                     }
                 }
             } else {
-                print("filtervalues: Error statement could not be prepared.")
-                return [String]()
+                let msg = "Error statement could not be prepared."
+                throw StorageHelperError.filtervalues(message: msg)
             }
             sqlite3_finalize(getValuesStatement)
             try closeDB(mDB: mDB, method: "filtervalues")
             return retArray
+        } catch StorageHelperError.filtervalues(let message) {
+            throw StorageHelperError.filtervalues(message: message)
         } catch StorageHelperError.closeDB(let message) {
             throw StorageHelperError.filtervalues(message: message)
         } catch let error {
             throw StorageHelperError
-                .filtervalues(message: error.localizedDescription)
+            .filtervalues(message: error.localizedDescription)
         }
     }
 
@@ -460,7 +429,7 @@ class StorageDatabaseHelper {
             throw StorageHelperError.keysvalues(message: message)
         } catch let error {
             throw StorageHelperError
-                .keysvalues(message: error.localizedDescription)
+            .keysvalues(message: error.localizedDescription)
         }
     }
 
@@ -472,7 +441,7 @@ class StorageDatabaseHelper {
         if returnCode != SQLITE_OK {
             let errmsg: String = String(cString: sqlite3_errmsg(mDB))
             message = "Error: \(method) closing the database rc: \(returnCode)" +
-                      " message: \(errmsg)"
+                " message: \(errmsg)"
             throw StorageHelperError.closeDB(message: message)
         }
     }
@@ -491,19 +460,19 @@ class StorageDatabaseHelper {
         var createTableStatement: OpaquePointer?
         if sqlite3_prepare_v2(mDB, createTableString, -1,
                               &createTableStatement, nil) ==
-                                                    SQLITE_OK {
+            SQLITE_OK {
             if sqlite3_step(createTableStatement) !=
-                                                SQLITE_DONE {
+                SQLITE_DONE {
                 let msg = "Error \(tableName) table could not" +
                     " be created."
                 throw StorageHelperError
-                                .creationTable(message:msg)
+                .creationTable(message: msg)
             }
         } else {
             let msg = "Error CREATE TABLE statement could not" +
                 " be prepared."
             throw StorageHelperError
-                            .creationTable(message:msg)
+            .creationTable(message: msg)
         }
         sqlite3_finalize(createTableStatement)
         return
@@ -513,7 +482,7 @@ class StorageDatabaseHelper {
 
     func createIndex(mDB: OpaquePointer?, tableName: String,
                      colName: String, ifNotExists: Bool)
-                                                    throws {
+    throws {
         let exist: String = ifNotExists ? "IF NOT EXISTS" : ""
         let idx: String = "index_\(tableName)_on_\(colName)"
         let createIndexString: String = "CREATE INDEX " +
@@ -522,20 +491,20 @@ class StorageDatabaseHelper {
         var createIndexStatement: OpaquePointer?
         if sqlite3_prepare_v2(mDB, createIndexString, -1,
                               &createIndexStatement, nil) ==
-                                                SQLITE_OK {
+            SQLITE_OK {
             if sqlite3_step(createIndexStatement) ==
                 SQLITE_DONE {
             } else {
                 let msg = "Error Index \(idx) on table " +
                     "\(tableName) could not be created."
                 throw StorageHelperError
-                                .creationIndex(message:msg)
+                .creationIndex(message: msg)
             }
         } else {
             let msg = "Error CREATE INDEX statement " +
                 "could not be prepared."
             throw StorageHelperError
-                            .creationIndex(message:msg)
+            .creationIndex(message: msg)
         }
         sqlite3_finalize(createIndexStatement)
         return
@@ -548,7 +517,7 @@ class StorageDatabaseHelper {
         // check if the key already exists
         guard let data: Data = try getValue(mDB: mDB, key: key) else {
             let msg = "Error no data.name given"
-            throw StorageHelperError.isKeyExists(message:msg)
+            throw StorageHelperError.isKeyExists(message: msg)
         }
         if data.id != nil {
             ret = true
@@ -574,20 +543,20 @@ class StorageDatabaseHelper {
                     rowData.name = String(cString: mQueryResultCol1)
                 } else {
                     let msg = "Error in sqlite3_column_text column 1"
-                    throw StorageHelperError.getValue(message:msg)
+                    throw StorageHelperError.getValue(message: msg)
                 }
                 let queryResultCol2 = sqlite3_column_text(getStatement, 2)
                 if let mQueryResultCol2 = queryResultCol2 {
                     rowData.value = String(cString: mQueryResultCol2)
                 } else {
                     let msg = "Error in sqlite3_column_text column 2"
-                    throw StorageHelperError.getValue(message:msg)
+                    throw StorageHelperError.getValue(message: msg)
                 }
                 resArray.append(rowData)
             }
         } else {
             let msg = "Error statement could not be prepared."
-            throw StorageHelperError.getValue(message:msg)
+            throw StorageHelperError.getValue(message: msg)
         }
         sqlite3_finalize(getStatement)
         if resArray.count > 0 {
@@ -598,47 +567,78 @@ class StorageDatabaseHelper {
         return retData
     }
 
+    private func insertData(mDB: OpaquePointer?, data: Data) throws {
+
+        let insertStatementString = "INSERT INTO " +
+            "\(tableName) (\(COLNAME), \(COLVALUE)) " +
+            "VALUES (?, ?);"
+        var insertStatement: OpaquePointer?
+        if sqlite3_prepare_v2(mDB, insertStatementString, -1, &insertStatement,
+                              nil) == SQLITE_OK {
+            guard let name: NSString = data.name as
+                    NSString? else {
+                let msg = "Could not find name."
+                throw StorageHelperError.insertData(message: msg)
+            }
+            guard let value: NSString = data.value as
+                    NSString? else {
+                let msg = "Could not find value."
+                throw StorageHelperError.insertData(message: msg)
+            }
+            sqlite3_bind_text(insertStatement, 1,
+                              name.utf8String, -1, nil)
+            sqlite3_bind_text(insertStatement, 2,
+                              value.utf8String, -1, nil)
+            if sqlite3_step(insertStatement) !=
+                SQLITE_DONE {
+                let msg = "Could not insert row."
+                throw StorageHelperError.insertData(message: msg)
+            }
+        } else {
+            let msg = "INSERT statement could " +
+                "not be prepared."
+            throw StorageHelperError.insertData(message: msg)
+        }
+        sqlite3_finalize(insertStatement)
+        return
+    }
+
     // MARK: - UpdateData
 
     private func updateData(mDB: OpaquePointer?, data: Data)
-                                                    throws {
+    throws {
         let updateStatementString = """
         UPDATE \(tableName) SET \(COLVALUE) = ?
         WHERE \(COLNAME) = ?;
         """
         var updateStatement: OpaquePointer?
-        do {
-            if sqlite3_prepare_v2(mDB, updateStatementString,
-                                  -1, &updateStatement, nil) ==
-                                                    SQLITE_OK {
-                guard let name: NSString = data.name as
-                                                NSString? else {
-                    let msg = "updateData: Could not find name."
-                    throw StorageHelperError.updateData(message:msg)
-                }
-                guard let value: NSString = data.value as
-                                                NSString? else {
-                    let msg = "updateData: Could not find value."
-                    throw StorageHelperError.updateData(message:msg)
-                }
-                sqlite3_bind_text(updateStatement, 1,
-                                  value.utf8String, -1, nil)
-                sqlite3_bind_text(updateStatement, 2,
-                                  name.utf8String, -1, nil)
-              if sqlite3_step(updateStatement) != SQLITE_DONE {
-                let msg = "updateData: Could not update row. "
-                throw StorageHelperError.updateData(message:msg)
-              }
-            } else {
-                let msg = "UPDATE statement could not be prepared"
-                throw StorageHelperError.updateData(message:msg)
+        if sqlite3_prepare_v2(mDB, updateStatementString,
+                              -1, &updateStatement, nil) ==
+            SQLITE_OK {
+            guard let name: NSString = data.name as
+                    NSString? else {
+                let msg = "updateData: Could not find name."
+                throw StorageHelperError.updateData(message: msg)
             }
-            sqlite3_finalize(updateStatement)
-            return
-        } catch let error {
-            throw StorageHelperError
-                .updateData(message: error.localizedDescription)
+            guard let value: NSString = data.value as
+                    NSString? else {
+                let msg = "updateData: Could not find value."
+                throw StorageHelperError.updateData(message: msg)
+            }
+            sqlite3_bind_text(updateStatement, 1,
+                              value.utf8String, -1, nil)
+            sqlite3_bind_text(updateStatement, 2,
+                              name.utf8String, -1, nil)
+            if sqlite3_step(updateStatement) != SQLITE_DONE {
+                let msg = "updateData: Could not update row. "
+                throw StorageHelperError.updateData(message: msg)
+            }
+        } else {
+            let msg = "UPDATE statement could not be prepared"
+            throw StorageHelperError.updateData(message: msg)
         }
+        sqlite3_finalize(updateStatement)
+        return
 
     }
 
@@ -662,12 +662,12 @@ class StorageDatabaseHelper {
                     }
                 } else {
                     let msg = "Error in sqlite3_column_text column 1"
-                    throw StorageHelperError.getTables(message:msg)
+                    throw StorageHelperError.getTables(message: msg)
                 }
             }
         } else {
             let msg = "Error statement could not be prepared."
-            throw StorageHelperError.getTables(message:msg)
+            throw StorageHelperError.getTables(message: msg)
         }
         sqlite3_finalize(getTablesStatement)
         if retArray.count > 0 {
@@ -679,35 +679,32 @@ class StorageDatabaseHelper {
 
     // MARK: - ResetIndex
 
-    private func resetIndex() throws -> Bool {
-         var ret: Bool = false
-         let mDB: OpaquePointer?
-         do {
+    private func resetIndex() throws {
+        let mDB: OpaquePointer?
+        do {
             try mDB = UtilsSQLite.getWritableDatabase(filename: self.path,
                                                       secret: self.secret)
-         } catch let error {
+        } catch let error {
             throw StorageHelperError
-                .resetIndex(message: error.localizedDescription)
-         }
-         let updateStatementString = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE " +
-                                     " NAME='\(tableName)';"
-        
-         var updateStatement: OpaquePointer?
-         if sqlite3_prepare_v2(mDB, updateStatementString, -1, &updateStatement,
-                               nil) == SQLITE_OK {
-            
-           if sqlite3_step(updateStatement) == SQLITE_DONE {
-             ret = true
-           } else {
-            let msg = "Error Could not reset Index."
-            throw StorageHelperError.getTables(message:msg)
-           }
-         } else {
+            .resetIndex(message: error.localizedDescription)
+        }
+        let updateStatementString = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE " +
+            " NAME='\(tableName)';"
+
+        var updateStatement: OpaquePointer?
+        if sqlite3_prepare_v2(mDB, updateStatementString, -1, &updateStatement,
+                              nil) == SQLITE_OK {
+
+            if sqlite3_step(updateStatement) != SQLITE_DONE {
+                let msg = "Error Could not reset Index."
+                throw StorageHelperError.getTables(message: msg)
+            }
+        } else {
             let msg = "Error UPDATE statement could not be prepared."
-            throw StorageHelperError.getTables(message:msg)
-         }
-         sqlite3_finalize(updateStatement)
-         return ret
+            throw StorageHelperError.getTables(message: msg)
+        }
+        sqlite3_finalize(updateStatement)
+        return
     }
 
     // MARK: - GetKeysValues
@@ -726,7 +723,7 @@ class StorageDatabaseHelper {
                     rowData.name = String(cString: mQueryResultCol1)
                 } else {
                     let msg = "Error in sqlite3_column_text column 1."
-                    throw StorageHelperError.getKeysValues(message:msg)
+                    throw StorageHelperError.getKeysValues(message: msg)
                 }
                 let queryResultCol2 = sqlite3_column_text(getKeysValuesStatement,
                                                           2)
@@ -734,14 +731,14 @@ class StorageDatabaseHelper {
                     rowData.value = String(cString: mQueryResultCol2)
                 } else {
                     let msg = "Error in sqlite3_column_text column 2."
-                    throw StorageHelperError.getKeysValues(message:msg)
+                    throw StorageHelperError.getKeysValues(message: msg)
                 }
                 retArray.append(rowData)
             }
             sqlite3_finalize(getKeysValuesStatement)
         } else {
             let msg = "Error statement could not be prepared."
-            throw StorageHelperError.getKeysValues(message:msg)
+            throw StorageHelperError.getKeysValues(message: msg)
         }
         return retArray
 
@@ -749,8 +746,7 @@ class StorageDatabaseHelper {
 
     // MARK: - DeleteDB
 
-    func deleteDB(databaseName: String) throws -> Bool {
-        var ret: Bool = false
+    func deleteDB(databaseName: String) throws {
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let fileURL = dir.appendingPathComponent(databaseName)
             let isFileExists = FileManager.default.fileExists(atPath: fileURL.path)
@@ -759,17 +755,16 @@ class StorageDatabaseHelper {
                     try FileManager.default.removeItem(at: fileURL)
                     print("Database \(databaseName) deleted")
                     isOpen = false
-                    ret = true
+                    return
                 } catch let error {
                     throw StorageHelperError
-                        .deleteDB(message: error.localizedDescription)
+                    .deleteDB(message: error.localizedDescription)
                 }
             } else {
                 let msg = "File \(databaseName) does not exist"
                 throw StorageHelperError.deleteDB(message: msg)
             }
         }
-        return ret
     }
 }
 // swiftlint:enable type_body_length

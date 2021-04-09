@@ -1,3 +1,15 @@
+## 3.0.0-alpha.1 (2021-04-08)
+
+### Added Features (iOS)
+
+- USAGE.md documentation
+- isKey, keys, values, keysvalues
+- filtervalues, deleteStore
+
+### Bug Fixes
+
+- fix CapacitorDataStorageSqlite.podspec
+
 ## 3.0.0-alpha.0 (2021-04-08)
 
 ### Chores
@@ -22,7 +34,7 @@
 
 ## 2.4.2 (2020-11-07)
 
-### ### Added Features
+### Added Features
 
 - add filtervalues to get all values for filter keys
 - add Ionic/Vue app starter

@@ -40,13 +40,13 @@ class UtilsSQLite {
             message = "init - createConnection: tableName not defined"
             return message
         }
-         guard let IDXCOLNAME = data["idxcolname"] else {
-             message = "init - createConnection: IDXCOLNAME not defined"
-             return message
-         }
+        guard let IDXCOLNAME = data["idxcolname"] else {
+            message = "init - createConnection: IDXCOLNAME not defined"
+            return message
+        }
         if !encrypted && data["mode"] == "no-encryption" {
             message = UtilsSQLite.createConnectionNoEncryption(dbHelper: dbHelper, path: path,
-                        tableName: tableName, IDXCOLNAME: IDXCOLNAME)
+                                                               tableName: tableName, IDXCOLNAME: IDXCOLNAME)
         } else if encrypted && data["mode"] == "secret" && secret.count > 0 {
             message =
                 UtilsSQLite.createConnectionEncryptedWithSecret(dbHelper: dbHelper, path: path, secret: secret,
@@ -126,13 +126,13 @@ class UtilsSQLite {
                 return message
             }
             /* this should work but does not sqlite3_rekey_v2 is not known
-            if sqlite3_rekey_v2(db!, "\(path)", newsecret, Int32(newsecret.count)) == SQLITE_OK {
-                self.isOpen = true
-            } else {
-                print("Unable to open a connection to database at \(path)")
-                throw StorageDatabaseHelperError.wrongNewSecret
-            }
-            */
+             if sqlite3_rekey_v2(db!, "\(path)", newsecret, Int32(newsecret.count)) == SQLITE_OK {
+             self.isOpen = true
+             } else {
+             print("Unable to open a connection to database at \(path)")
+             throw StorageDatabaseHelperError.wrongNewSecret
+             }
+             */
             message = createStoreTableIndexes(dbHelper: dbHelper, mDB: mDB, tableName: tableName,
                                               IDXCOLNAME: IDXCOLNAME)
             if message.count == 0 {
@@ -159,7 +159,7 @@ class UtilsSQLite {
                 UtilsSQLite.encryptDatabase(dbHelper: dbHelper, filePath: path, secret: secret,
                                             tableName: tableName, IDXCOLNAME: IDXCOLNAME)
             if res {
-                    retMessage = "success encryption"
+                retMessage = "success encryption"
             }
         } catch UtilsSQLiteError.encryptionFailed {
             retMessage = "init: Error Database Encryption failed"
@@ -194,20 +194,20 @@ class UtilsSQLite {
                 }
             }
             /* this should work but doe not sqlite3_key_v2 is not known
-            if key.count > 0 {
-                let nKey:Int32 = Int32(key.count)
-                if sqlite3_key_v2(db!, filename, key, nKey) == SQLITE_OK {
-                    if (sqlite3_exec(db!, "SELECT count(*) FROM sqlite_master;", nil, nil, nil) != SQLITE_OK) {
-                      print("Unable to open a connection to database at \(filename)")
-                      throw StorageDatabaseHelperError.wrongSecret
-                    }
-                } else {
-                    print("Unable to open a connection to database at \(filename)")
-                    throw StorageDatabaseHelperError.wrongSecret
-                }
-            }
-            print("Successfully opened connection to database at \(filename)")
-            */
+             if key.count > 0 {
+             let nKey:Int32 = Int32(key.count)
+             if sqlite3_key_v2(db!, filename, key, nKey) == SQLITE_OK {
+             if (sqlite3_exec(db!, "SELECT count(*) FROM sqlite_master;", nil, nil, nil) != SQLITE_OK) {
+             print("Unable to open a connection to database at \(filename)")
+             throw StorageDatabaseHelperError.wrongSecret
+             }
+             } else {
+             print("Unable to open a connection to database at \(filename)")
+             throw StorageDatabaseHelperError.wrongSecret
+             }
+             }
+             print("Successfully opened connection to database at \(filename)")
+             */
             return mDB
         } else {
             print("connection: Unable to open a connection to database at \(filename)")
@@ -249,7 +249,7 @@ class UtilsSQLite {
             sqlite3_bind_text(handle, Int32(idx), value, -1, SQLITETRANSIENT)
         } else if let value = value as? Int {
             sqlite3_bind_int(handle, Int32(idx), Int32(value))
-         } else if let value = value as? Bool {
+        } else if let value = value as? Bool {
             var bInt: Int = 0
             if value {bInt = 1}
             sqlite3_bind_int(handle, Int32(idx), Int32(bInt))
@@ -279,7 +279,7 @@ class UtilsSQLite {
         // Determine type of column - http://www.sqlite.org/c3ref/c_blob.html
         let declaredType = sqlite3_column_decltype(stmt, index)
 
-           if let dclType = declaredType {
+        if let dclType = declaredType {
             var declaredType = String(cString: dclType).uppercased()
 
             if let index = declaredType.firstIndex(of: "(" ) {
@@ -347,7 +347,7 @@ class UtilsSQLite {
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: filePath) {
             ret = true
-         }
+        }
         return ret
     }
 
@@ -395,18 +395,18 @@ class UtilsSQLite {
     // MARK: - RenameFile
 
     class func renameFile (filePath: String, toFilePath: String) throws {
-         let fileManager = FileManager.default
-         do {
+        let fileManager = FileManager.default
+        do {
             if isFileExist(filePath: toFilePath) {
                 let fileName = URL(fileURLWithPath: toFilePath).lastPathComponent
                 try  _ = deleteFile(fileName: fileName)
             }
 
-             try fileManager.moveItem(atPath: filePath, toPath: toFilePath)
-         } catch let error {
+            try fileManager.moveItem(atPath: filePath, toPath: toFilePath)
+        } catch let error {
             print("Error: \(error)")
-             throw UtilsSQLiteError.renameFileFailed
-         }
+            throw UtilsSQLiteError.renameFileFailed
+        }
     }
 
     // MARK: - EncryptDatabase

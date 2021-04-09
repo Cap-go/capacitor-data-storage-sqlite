@@ -65,14 +65,14 @@ No configuration required for this plugin
 | setTable                     | ❌      | ✅  | ❌       | ❌  |
 | set                          | ❌      | ✅  | ❌       | ❌  |
 | get                          | ❌      | ✅  | ❌       | ❌  |
-| iskey                        | ❌      | ❌  | ❌       | ❌  |
-| keys                         | ❌      | ❌  | ❌       | ❌  |
-| values                       | ❌      | ❌  | ❌       | ❌  |
-| filtervalues                 | ❌      | ❌  | ❌       | ❌  |
-| keysvalues                   | ❌      | ❌  | ❌       | ❌  |
+| iskey                        | ❌      | ✅  | ❌       | ❌  |
+| keys                         | ❌      | ✅  | ❌       | ❌  |
+| values                       | ❌      | ✅  | ❌       | ❌  |
+| filtervalues                 | ❌      | ✅  | ❌       | ❌  |
+| keysvalues                   | ❌      | ✅  | ❌       | ❌  |
 | remove                       | ❌      | ✅  | ❌       | ❌  |
 | clear                        | ❌      | ✅  | ❌       | ❌  |
-| deleteStore                  | ❌      | ❌  | ❌       | ❌  |
+| deleteStore                  | ❌      | ✅  | ❌       | ❌  |
 
 ## Documentation
 

@@ -3,7 +3,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     async echo(options) {
         console.log('ECHO', options);
         const ret = {};
-        ret.value = options.value ? options.value : "";
+        ret.value = options.value ? options.value : '';
         return ret;
     }
     async openStore(options) {

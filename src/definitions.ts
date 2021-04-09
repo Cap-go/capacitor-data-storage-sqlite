@@ -37,20 +37,20 @@ export interface CapacitorDataStorageSqlitePlugin {
   /**
    * Remove a data with given key
    * @param options: capDataStorageOptions
-   * @returns Promise<capDataStorageResult>
+   * @returns Promise<void>
    * @since 0.0.1
    */
-  remove(options: capDataStorageOptions): Promise<capDataStorageResult>;
+  remove(options: capDataStorageOptions): Promise<void>;
   /**
    * Clear the Data Store (delete all keys)
-   * @returns Promise<capDataStorageResult>
+   * @returns Promise<void>
    * @since 0.0.1
    */
   clear(): Promise<void>;
   /**
    * Check if a data key exists
    * @param options: capDataStorageOptions
-   * @returns Promise<void>
+   * @returns Promise<capDataStorageResult>
    * @since 0.0.1
    */
   iskey(options: capDataStorageOptions): Promise<capDataStorageResult>;
@@ -82,10 +82,9 @@ export interface CapacitorDataStorageSqlitePlugin {
   /**
    * Delete a store
    * @param options: capOpenStorageOptions
-   * @returns Promise<capDataStorageResult>
+   * @returns Promise<void>
    */
-  deleteStore(options: capOpenStorageOptions): Promise<capDataStorageResult>;
-
+  deleteStore(options: capOpenStorageOptions): Promise<void>;
 }
 
 export interface capEchoOptions {
@@ -185,4 +184,3 @@ export interface capKeysValuesResult {
    */
   keysvalues: any[];
 }
-

@@ -1,10 +1,7 @@
 import Foundation
 import Capacitor
 
-/**
- * Please read the Capacitor iOS Plugin Development Guide
- * here: https://capacitorjs.com/docs/plugins/ios
- */
+// swiftlint:disable type_body_length
 @objc(CapacitorDataStorageSqlitePlugin)
 public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     private let implementation = CapacitorDataStorageSqlite()
@@ -13,7 +10,6 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     var globalData: Global = Global()
 
     // MARK: - Echo
-
 
     @objc func echo(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? ""
@@ -24,6 +20,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
 
     // MARK: - OpenStore
 
+    // swiftlint:disable function_body_length
     @objc func openStore(_ call: CAPPluginCall) {
         let dbName = call.options["database"] as? String ?? "storage"
         let tableName = call.options["table"] as? String ?? "storage_table"
@@ -34,7 +31,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         if encrypted {
             inMode = call.options["mode"] as? String ?? "no-encryption"
             if inMode != "no-encryption" && inMode != "encryption"
-                    && inMode != "secret" && inMode != "newsecret" && inMode != "wrongsecret" {
+                && inMode != "secret" && inMode != "newsecret" && inMode != "wrongsecret" {
                 retHandler.rResult(
                     call: call,
                     message: "OpenStore: Error inMode must be in ['encryption','secret','newsecret'])")
@@ -66,7 +63,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             retHandler.rResult(call: call)
             return
         } catch CapacitorDataStorageSqliteError
-                                    .failed(let message) {
+                    .failed(let message) {
             let msg = "openStore: \(message)"
             retHandler.rResult(call: call, message: msg)
             return
@@ -76,12 +73,13 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             return
         }
     }
+    // swiftlint:enable function_body_length
 
     // MARK: - SetTable
 
     @objc func setTable(_ call: CAPPluginCall) {
         guard let tableName = call.options["table"] as? String
-                                                    else {
+        else {
             retHandler.rResult(
                 call: call,
                 message: "setTable: Must provide a table name")
@@ -92,7 +90,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             retHandler.rResult(call: call)
             return
         } catch CapacitorDataStorageSqliteError
-                                    .failed(let message) {
+                    .failed(let message) {
             let msg = "setTable: \(message)"
             retHandler.rResult(call: call, message: msg)
             return
@@ -115,7 +113,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         }
         data.name = key
         guard let value = call.options["value"] as? String
-                                                else {
+        else {
             retHandler.rResult(
                 call: call,
                 message: "set: Must provide a value")
@@ -127,7 +125,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             retHandler.rResult(call: call)
             return
         } catch CapacitorDataStorageSqliteError
-                                    .failed(let message) {
+                    .failed(let message) {
             let msg = "set: \(message)"
             retHandler.rResult(call: call, message: msg)
             return
@@ -153,7 +151,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             retHandler.rValue(call: call, ret: ret)
             return
         } catch CapacitorDataStorageSqliteError
-                                    .failed(let message) {
+                    .failed(let message) {
             let msg = "get: \(message)"
             retHandler.rValue(call: call, ret: "", message: msg)
             return
@@ -170,23 +168,22 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     @objc func remove(_ call: CAPPluginCall) {
         guard let key = call.options["key"] as? String else {
             retHandler.rResult(
-                call: call, ret: false,
+                call: call,
                 message: "remove: Must provide a key")
             return
         }
         do {
-            let res = try implementation.remove(key)
-            let ret = res == 1 ? true : false
-            retHandler.rResult(call: call, ret: ret)
+            try implementation.remove(key)
+            retHandler.rResult(call: call)
             return
         } catch CapacitorDataStorageSqliteError
-                                    .failed(let message) {
+                    .failed(let message) {
             let msg = "remove: \(message)"
-            retHandler.rResult(call: call, ret: false, message: msg)
+            retHandler.rResult(call: call, message: msg)
             return
         } catch let error {
             let msg = "remove: \(error.localizedDescription)"
-            retHandler.rResult(call: call, ret: false, message: msg)
+            retHandler.rResult(call: call, message: msg)
             return
         }
 
@@ -195,90 +192,129 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     // MARK: - Clear
 
     @objc func clear(_ call: CAPPluginCall) {
-        
+
         do {
-            let res = try implementation.clear()
-            let ret = res == 1 ? true : false
-            retHandler.rResult(call: call, ret: ret)
+            try implementation.clear()
+            retHandler.rResult(call: call)
             return
         } catch CapacitorDataStorageSqliteError
-                                    .failed(let message) {
+                    .failed(let message) {
             let msg = "clear: \(message)"
-            retHandler.rResult(call: call, ret: false, message: msg)
+            retHandler.rResult(call: call, message: msg)
             return
         } catch let error {
             let msg = "clear: \(error.localizedDescription)"
-            retHandler.rResult(call: call, ret: false, message: msg)
+            retHandler.rResult(call: call, message: msg)
             return
         }
     }
-/*
+
     // MARK: - IsKey
 
     @objc func iskey(_ call: CAPPluginCall) {
         guard let key = call.options["key"] as? String else {
-            call.reject("Must provide a key")
+            retHandler.rResult(
+                call: call, ret: false,
+                message: "remove: Must provide a key")
             return
         }
-        let result: Bool = mDb?.iskey(name: key) ?? false
-        call.resolve(["result": result])
+        do {
+            let res = try implementation.iskey(key)
+            let ret = res == 1 ? true : false
+            retHandler.rResult(call: call, ret: ret)
+            return
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "iskey: \(message)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        } catch let error {
+            let msg = "iskey: \(error.localizedDescription)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        }
+
     }
 
     // MARK: - Keys
 
     @objc func keys(_ call: CAPPluginCall) {
-        guard let result = mDb?.keys() else {
-            var ret: Int? = 1
-            ret = nil
-            call.resolve(["keys": ret as Any])
+        do {
+            let ret = try implementation.keys()
+            retHandler.rDict(call: call, ret: ["keys": ret])
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "keys: \(message)"
+            retHandler.rDict(call: call, ret: ["keys": []], message: msg)
+            return
+        } catch let error {
+            let msg = "keys: \(error.localizedDescription)"
+            retHandler.rDict(call: call, ret: ["keys": []], message: msg)
             return
         }
-        call.resolve(["keys": result])
     }
 
     // MARK: - Values
 
     @objc func values(_ call: CAPPluginCall) {
-        guard let result = mDb?.values() else {
-            var ret: Int? = 1
-            ret = nil
-            call.resolve(["values": ret as Any])
+        do {
+            let ret = try implementation.values()
+            retHandler.rDict(call: call, ret: ["values": ret])
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "values: \(message)"
+            retHandler.rDict(call: call, ret: ["values": []], message: msg)
+            return
+        } catch let error {
+            let msg = "values: \(error.localizedDescription)"
+            retHandler.rDict(call: call, ret: ["values": []], message: msg)
             return
         }
-        call.resolve(["values": result])
     }
 
     // MARK: - FilterValues
 
     @objc func filtervalues(_ call: CAPPluginCall) {
         guard let filter = call.options["filter"] as? String else {
-            call.reject("Must provide a filter")
+            retHandler.rDict(
+                call: call, ret: ["values": []],
+                message: "remove: Must provide a filter")
             return
         }
-        guard let result = mDb?.filtervalues(filter: filter) else {
-            var ret: Int? = 1
-            ret = nil
-            call.resolve(["values": ret as Any])
+        do {
+            let ret = try implementation.filtervalues(filter: filter)
+            retHandler.rDict(call: call, ret: ["values": ret])
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "values: \(message)"
+            retHandler.rDict(call: call, ret: ["values": []], message: msg)
+            return
+        } catch let error {
+            let msg = "values: \(error.localizedDescription)"
+            retHandler.rDict(call: call, ret: ["values": []], message: msg)
             return
         }
-        call.resolve(["values": result])
     }
 
     // MARK: - KeyValues
 
     @objc func keysvalues(_ call: CAPPluginCall) {
-        guard let results = mDb?.keysvalues() else {
-            var ret: Int? = 1
-            ret = nil
-            call.resolve(["keysvalues": ret as Any])
+        do {
+            let ret = try implementation.keysvalues()
+            retHandler.rDict(call: call, ret: ["keysvalues": ret])
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "keysvalues: \(message)"
+            retHandler.rDict(call: call, ret: ["keysvalues": []],
+                             message: msg)
+            return
+        } catch let error {
+            let msg = "keysvalues: \(error.localizedDescription)"
+            retHandler.rDict(call: call, ret: ["keysvalues": []],
+                             message: msg)
             return
         }
-        var dic: [Any] = []
-        for result in results {
-            let res = ["key": result.name, "value": result.value]
-            dic.append(res)
-        }
-        call.resolve(["keysvalues": dic])
+
     }
 
     // MARK: - DeleteStore
@@ -286,14 +322,20 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     @objc func deleteStore(_ call: CAPPluginCall) {
         let storeName = call.options["database"] as? String ?? "storage"
         do {
-            let res: Bool = try (mDb?.deleteDB(databaseName: "\(storeName)SQLite.db")) ?? false
-            call.success(["result": res])
-        } catch StorageHelperError.deleteStore {
-            call.reject("Error in deleting store")
-        } catch {
-            call.reject("Unexpected error: \(error).")
+            try implementation.deleteStore(storeName: storeName)
+            retHandler.rResult(call: call)
+            return
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "set: \(message)"
+            retHandler.rResult(call: call, message: msg)
+            return
+        } catch let error {
+            let msg = "set: \(error.localizedDescription)"
+            retHandler.rResult(call: call, message: msg)
+            return
         }
-
     }
- */
+
 }
+// swiftlint:enable type_body_length
