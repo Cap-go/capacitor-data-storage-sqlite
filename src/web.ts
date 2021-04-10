@@ -71,4 +71,17 @@ export class CapacitorDataStorageSqliteWeb
     console.log('deleteStore', options);
     throw new Error('Method not implemented.');
   }
+  async isTable(
+    options: capTableStorageOptions,
+  ): Promise<capDataStorageResult> {
+    console.log('isTable', options);
+    throw new Error('Method not implemented.');
+  }
+  async tables(): Promise<capKeysResult> {
+    throw new Error('Method not implemented.');
+  }
+  async deleteTable(options: capTableStorageOptions): Promise<void> {
+    console.log('deleteTable', options);
+    throw new Error('Method not implemented.');
+  }
 }

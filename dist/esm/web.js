@@ -50,5 +50,16 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         console.log('deleteStore', options);
         throw new Error('Method not implemented.');
     }
+    async isTable(options) {
+        console.log('isTable', options);
+        throw new Error('Method not implemented.');
+    }
+    async tables() {
+        throw new Error('Method not implemented.');
+    }
+    async deleteTable(options) {
+        console.log('deleteTable', options);
+        throw new Error('Method not implemented.');
+    }
 }
 //# sourceMappingURL=web.js.map

@@ -1,3 +1,9 @@
+## 3.0.0-alpha.2 (2021-04-09)
+
+### Added Features (iOS)
+
+- isTable, tables, deleteTable
+
 ## 3.0.0-alpha.1 (2021-04-08)
 
 ### Added Features (iOS)

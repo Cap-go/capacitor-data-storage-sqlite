@@ -45,6 +45,9 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 * [`filtervalues(...)`](#filtervalues)
 * [`keysvalues()`](#keysvalues)
 * [`deleteStore(...)`](#deletestore)
+* [`isTable(...)`](#istable)
+* [`tables()`](#tables)
+* [`deleteTable(...)`](#deletetable)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -277,6 +280,61 @@ Delete a store
 | **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
 
 **Returns:** <code>any</code>
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### isTable(...)
+
+```typescript
+isTable(options: capTableStorageOptions) => any
+```
+
+Check if a table exists
+
+| Param         | Type                                                                      | Description                                                    |
+| ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
+
+**Returns:** <code>any</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### tables()
+
+```typescript
+tables() => any
+```
+
+Get the table list for the current store
+
+**Returns:** <code>any</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### deleteTable(...)
+
+```typescript
+deleteTable(options: capTableStorageOptions) => any
+```
+
+Delete a store
+
+| Param         | Type                                                                      | Description                                                    |
+| ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
+
+**Returns:** <code>any</code>
+
+**Since:** 3.0.0
 
 --------------------
 

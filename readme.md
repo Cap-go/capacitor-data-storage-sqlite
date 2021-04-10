@@ -73,6 +73,9 @@ No configuration required for this plugin
 | remove                       | ❌      | ✅  | ❌       | ❌  |
 | clear                        | ❌      | ✅  | ❌       | ❌  |
 | deleteStore                  | ❌      | ✅  | ❌       | ❌  |
+| isTable                      | ❌      | ✅  | ❌       | ❌  |
+| tables                       | ❌      | ✅  | ❌       | ❌  |
+| deleteTable                  | ❌      | ✅  | ❌       | ❌  |
 
 ## Documentation
 

@@ -1,6 +1,7 @@
 import Foundation
 import Capacitor
 
+// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 @objc(CapacitorDataStorageSqlitePlugin)
 public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
@@ -55,7 +56,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         }
         do {
             try implementation
-                .openStore("\(dbName)SQLite.db",
+                .openStore(dbName,
                            tableName: tableName,
                            encrypted: encrypted, inMode: inMode,
                            secretKey: secretKey,
@@ -337,5 +338,75 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         }
     }
 
+    // MARK: - isTable
+
+    @objc func isTable(_ call: CAPPluginCall) {
+        guard let table = call.options["table"] as? String else {
+            retHandler.rResult(
+                call: call, ret: false,
+                message: "remove: Must provide a table")
+            return
+        }
+        do {
+            let res = try implementation.isTable(table)
+            let ret = res == 1 ? true : false
+            retHandler.rResult(call: call, ret: ret)
+            return
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "istable: \(message)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        } catch let error {
+            let msg = "istable: \(error.localizedDescription)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        }
+    }
+
+    // MARK: - tables
+
+    @objc func tables(_ call: CAPPluginCall) {
+        do {
+            let ret = try implementation.tables()
+            retHandler.rDict(call: call, ret: ["tables": ret])
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "tables: \(message)"
+            retHandler.rDict(call: call, ret: ["tables": []], message: msg)
+            return
+        } catch let error {
+            let msg = "tables: \(error.localizedDescription)"
+            retHandler.rDict(call: call, ret: ["tables": []], message: msg)
+            return
+        }
+    }
+
+    // MARK: - deleteTable
+
+    @objc func deleteTable(_ call: CAPPluginCall) {
+        guard let table = call.options["table"] as? String else {
+            retHandler.rResult(
+                call: call, ret: false,
+                message: "remove: Must provide a table")
+            return
+        }
+        do {
+            try implementation.deleteTable(table)
+            retHandler.rResult(call: call)
+            return
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "clear: \(message)"
+            retHandler.rResult(call: call, message: msg)
+            return
+        } catch let error {
+            let msg = "clear: \(error.localizedDescription)"
+            retHandler.rResult(call: call, message: msg)
+            return
+        }
+    }
+
 }
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length

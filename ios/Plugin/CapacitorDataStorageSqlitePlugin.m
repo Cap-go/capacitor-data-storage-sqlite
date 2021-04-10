@@ -17,4 +17,7 @@ CAP_PLUGIN(CapacitorDataStorageSqlitePlugin, "CapacitorDataStorageSqlite",
            CAP_PLUGIN_METHOD(keysvalues, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(iskey, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(deleteStore,CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(isTable,CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(tables,CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(deleteTable,CAPPluginReturnPromise);
 )

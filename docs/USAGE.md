@@ -236,6 +236,50 @@ export class StoreService {
       return Promise.reject(new Error("deleteStore: Store not opened"));
     }
   }
+  async isTable(table:string): Promise<boolean> {
+    if(this.isService && this.store != null) {
+      if(table.length > 0) {
+        try {
+          const {result} = await this.store.isTable({ table });
+          return Promise.resolve(result);
+        } catch (err) {
+          return Promise.reject(err);
+        }
+      } else {
+        return Promise.reject(new Error("isTable: Must give a table"));
+      }
+    } else {
+      return Promise.reject(new Error("isTable: Store not opened"));
+    }
+  }
+  async getAllTables(): Promise<Array<string>> {
+    if(this.isService && this.store != null) {
+      try {
+        const {tables} = await this.store.tables();
+        return Promise.resolve(tables); 
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    } else {
+      return Promise.reject(new Error("getAllTables: Store not opened"));
+    }
+  }
+  async deleteTable(table?:string): Promise<void> {
+    if(this.isService && this.store != null) {
+      if(table.length > 0) {
+        try {
+          await this.store.deleteTable({table});
+          return Promise.resolve();
+        } catch (err) {
+            return Promise.reject(err);
+        } 
+      } else {
+        return Promise.reject(new Error("deleteTable: Must give a table"));
+      }
+    } else {
+      return Promise.reject(new Error("deleteTable: Store not opened"));
+    }
+  }
 }
 
 ```

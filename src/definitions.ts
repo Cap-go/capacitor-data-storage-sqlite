@@ -83,8 +83,29 @@ export interface CapacitorDataStorageSqlitePlugin {
    * Delete a store
    * @param options: capOpenStorageOptions
    * @returns Promise<void>
+   * @since 0.0.1
    */
   deleteStore(options: capOpenStorageOptions): Promise<void>;
+  /**
+   * Check if a table exists
+   * @param options: capTableStorageOptions
+   * @returns Promise<capDataStorageResult>
+   * @since 3.0.0
+   */
+  isTable(options: capTableStorageOptions): Promise<capDataStorageResult>;
+  /**
+   * Get the table list for the current store
+   * @returns Promise<capKeysResult>
+   * @since 3.0.0
+   */
+  tables(): Promise<capKeysResult>;
+  /**
+   * Delete a store
+   * @param options: capTableStorageOptions
+   * @returns Promise<void>
+   * @since 3.0.0
+   */
+  deleteTable(options: capTableStorageOptions): Promise<void>;
 }
 
 export interface capEchoOptions {

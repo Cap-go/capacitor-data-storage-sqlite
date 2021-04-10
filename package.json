@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -37,7 +37,7 @@
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
     "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api CapacitorDataStorageSqlitePlugin --output-readme README.md --output-json dist/docs.json",
+    "docgen": "docgen --api CapacitorDataStorageSqlitePlugin --output-readme docs/API.md --output-json dist/docs.json",
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",

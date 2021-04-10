@@ -35,11 +35,14 @@ enum StorageHelperError: Error {
     case deleteFileFailed
     case fileNotExist
     case alreadyEncrypted
-    case noTables
     case renameFileFailed
     case insertRowFailed
     case deleteStore
     case deleteDB(message: String)
+    case isTable(message: String)
+    case tables(message: String)
+    case deleteTable(message: String)
+    case dropTable(message: String)
 }
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
@@ -446,6 +449,100 @@ class StorageDatabaseHelper {
         }
     }
 
+    // MARK: - IsTable
+
+    func isTable(name: String) throws -> Bool {
+        var ret: Bool = false
+        var retArray: [String] = [String]()
+        let mDB: OpaquePointer?
+        do {
+            try mDB = UtilsSQLite.getReadableDatabase(filename: self.path,
+                                                      secret: self.secret)
+            retArray = try getTables(mDB: mDB)
+            if retArray.contains(name) {ret = true}
+            try closeDB(mDB: mDB, method: "isTable")
+            return ret
+        } catch StorageHelperError.getTables(let message) {
+            throw StorageHelperError.isTable(message: message)
+        } catch StorageHelperError.closeDB(let message) {
+            throw StorageHelperError.isTable(message: message)
+        } catch let error {
+            throw StorageHelperError
+            .isTable(message: error.localizedDescription)
+        }
+    }
+
+    // MARK: - tables
+
+    func tables() throws -> [String] {
+        var retArray: [String] = [String]()
+        let mDB: OpaquePointer?
+        do {
+            try mDB = UtilsSQLite.getReadableDatabase(filename: self.path,
+                                                      secret: self.secret)
+            retArray = try getTables(mDB: mDB)
+            try closeDB(mDB: mDB, method: "tables")
+            return retArray
+        } catch StorageHelperError.getTables(let message) {
+            throw StorageHelperError.tables(message: message)
+        } catch StorageHelperError.closeDB(let message) {
+            throw StorageHelperError.tables(message: message)
+        } catch let error {
+            throw StorageHelperError
+            .tables(message: error.localizedDescription)
+        }
+    }
+
+    // MARK: - DeleteTable
+
+    func deleteTable(tableName: String) throws {
+        var retArray: [String] = [String]()
+        let mDB: OpaquePointer?
+        do {
+            try mDB = UtilsSQLite.getWritableDatabase(filename: self.path,
+                                                      secret: self.secret)
+            retArray = try getTables(mDB: mDB)
+            if retArray.contains(tableName) {
+                try dropTable(mDB: mDB, tableName: tableName)
+            }
+            try closeDB(mDB: mDB, method: "deleteTable")
+            return
+        } catch StorageHelperError.dropTable(let message) {
+            throw StorageHelperError.deleteTable(message: message)
+        } catch StorageHelperError.getTables(let message) {
+            throw StorageHelperError.deleteTable(message: message)
+        } catch StorageHelperError.closeDB(let message) {
+            throw StorageHelperError.deleteTable(message: message)
+        } catch let error {
+            throw StorageHelperError
+            .deleteTable(message: error.localizedDescription)
+        }
+
+    }
+
+    // MARK: - DropTable
+
+    func dropTable (mDB: OpaquePointer?, tableName: String) throws {
+        let dropTableString: String = "DROP TABLE IF EXISTS \(tableName)"
+        var dropTableStatement: OpaquePointer?
+        if sqlite3_prepare_v2(mDB, dropTableString, -1,
+                              &dropTableStatement, nil) == SQLITE_OK {
+            if sqlite3_step(dropTableStatement) !=
+                SQLITE_DONE {
+                let msg = "Error \(tableName) table could not" +
+                    " be deleted."
+                throw StorageHelperError.dropTable(message: msg)
+            }
+        } else {
+            let msg = "Error DROP TABLE statement could not" +
+                " be prepared."
+            throw StorageHelperError.dropTable(message: msg)
+        }
+        sqlite3_finalize(dropTableStatement)
+        return
+
+    }
+
     // MARK: - CreateTable
 
     func createTable (mDB: OpaquePointer?, tableName: String,
@@ -673,7 +770,8 @@ class StorageDatabaseHelper {
         if retArray.count > 0 {
             return retArray
         } else {
-            throw StorageHelperError.noTables
+            let msg = "Error no tables returned"
+            throw StorageHelperError.getTables(message: msg)
         }
     }
 
@@ -697,11 +795,11 @@ class StorageDatabaseHelper {
 
             if sqlite3_step(updateStatement) != SQLITE_DONE {
                 let msg = "Error Could not reset Index."
-                throw StorageHelperError.getTables(message: msg)
+                throw StorageHelperError.resetIndex(message: msg)
             }
         } else {
             let msg = "Error UPDATE statement could not be prepared."
-            throw StorageHelperError.getTables(message: msg)
+            throw StorageHelperError.resetIndex(message: msg)
         }
         sqlite3_finalize(updateStatement)
         return

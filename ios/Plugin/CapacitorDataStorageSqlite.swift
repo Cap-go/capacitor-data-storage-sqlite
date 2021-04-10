@@ -315,5 +315,73 @@ enum CapacitorDataStorageSqliteError: Error {
         }
     }
 
-}
+    // MARK: - isTable
+
+    @objc func isTable(_ name: String) throws -> NSNumber {
+        if mDb != nil {
+            do {
+                let result: Bool = try mDb?.isTable(name: name) ?? false
+                if result {
+                    return 1
+                } else {
+                    return 0
+                }
+            } catch StorageHelperError.isTable(let message) {
+                throw CapacitorDataStorageSqliteError
+                .failed(message: message)
+            } catch let error {
+                let msg = error.localizedDescription
+                throw CapacitorDataStorageSqliteError
+                .failed(message: msg)
+            }
+        } else {
+            let message = "No database connection"
+            throw CapacitorDataStorageSqliteError
+            .failed(message: message)
+        }
+    }
+
+    // MARK: - tables
+
+    @objc func tables() throws -> [String] {
+        if mDb != nil {
+            do {
+                let result = try mDb?.tables() ?? []
+                return result
+            } catch StorageHelperError.tables(let message) {
+                throw CapacitorDataStorageSqliteError
+                .failed(message: message)
+            } catch let error {
+                let msg = error.localizedDescription
+                throw CapacitorDataStorageSqliteError
+                .failed(message: msg)
+            }
+        } else {
+            let message = "No database connection"
+            throw CapacitorDataStorageSqliteError
+            .failed(message: message)
+        }
+    }
+
+    // MARK: - deleteTable
+
+    @objc func deleteTable(_ tableName: String) throws {
+
+        if mDb != nil {
+            do {
+                try mDb?.deleteTable(tableName: tableName)
+                return
+            } catch StorageHelperError.deleteTable(let message) {
+                throw CapacitorDataStorageSqliteError
+                .failed(message: message)
+            } catch let error {
+                throw CapacitorDataStorageSqliteError
+                .failed(message: error.localizedDescription)
+            }
+        } else {
+            let message = "Must open a store first"
+            throw CapacitorDataStorageSqliteError
+            .failed(message: message)
+        }
+    }}
 // swiftlint:enable type_body_length
