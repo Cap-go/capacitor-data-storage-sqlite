@@ -29,6 +29,9 @@ export class CapacitorDataStorageSqliteWeb
     console.log('openStore', options);
     throw new Error('Method not implemented.');
   }
+  async close(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
   async setTable(options: capTableStorageOptions): Promise<void> {
     console.log('setTable', options);
     throw new Error('Method not implemented.');

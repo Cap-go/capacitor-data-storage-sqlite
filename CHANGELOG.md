@@ -1,3 +1,10 @@
+## 3.0.0-alpha.3 (2021-04-10)
+
+### Added Features (Android)
+
+- add all methods
+- add close method (Android only)
+
 ## 3.0.0-alpha.2 (2021-04-09)
 
 ### Added Features (iOS)

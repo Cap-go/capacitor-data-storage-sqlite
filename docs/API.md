@@ -34,6 +34,7 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 
 * [`echo(...)`](#echo)
 * [`openStore(...)`](#openstore)
+* [`close()`](#close)
 * [`setTable(...)`](#settable)
 * [`set(...)`](#set)
 * [`get(...)`](#get)
@@ -89,6 +90,21 @@ Open a store
 **Returns:** <code>any</code>
 
 **Since:** 0.0.1
+
+--------------------
+
+
+### close()
+
+```typescript
+close() => any
+```
+
+Close the Store
+
+**Returns:** <code>any</code>
+
+**Since:** 3.0.0
 
 --------------------
 

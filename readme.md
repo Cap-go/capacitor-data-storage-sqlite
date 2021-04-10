@@ -4,7 +4,7 @@
 <br>
 <p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3 🚧</strong></p><br>
 <p align="center">
-  iOS for testing only</p>
+  iOS & Android only</p>
 <p align="center">
   Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of <strong>type string only</strong> to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
 
@@ -43,6 +43,7 @@ npx cap sync
 
 - On iOS, no further steps are needed.
 
+- On Android, no further steps are needed.
 
 Then build YOUR_APPLICATION
 
@@ -50,6 +51,7 @@ Then build YOUR_APPLICATION
 npm run build
 npx cap copy
 npx cap open ios
+npx cap open android
 ```
 
 ## Configuration
@@ -60,22 +62,23 @@ No configuration required for this plugin
 
 | Name                         | Android | iOS | Electron | Web |
 | :--------------------------- | :------ | :-- | :------- | :-- |
-| openStore (non-encrypted DB) | ❌      | ✅  | ❌       | ❌  |
-| openStore (encrypted DB)     | ❌      | ✅  | ❌       | ❌  |
-| setTable                     | ❌      | ✅  | ❌       | ❌  |
-| set                          | ❌      | ✅  | ❌       | ❌  |
-| get                          | ❌      | ✅  | ❌       | ❌  |
-| iskey                        | ❌      | ✅  | ❌       | ❌  |
-| keys                         | ❌      | ✅  | ❌       | ❌  |
-| values                       | ❌      | ✅  | ❌       | ❌  |
-| filtervalues                 | ❌      | ✅  | ❌       | ❌  |
-| keysvalues                   | ❌      | ✅  | ❌       | ❌  |
-| remove                       | ❌      | ✅  | ❌       | ❌  |
-| clear                        | ❌      | ✅  | ❌       | ❌  |
-| deleteStore                  | ❌      | ✅  | ❌       | ❌  |
-| isTable                      | ❌      | ✅  | ❌       | ❌  |
-| tables                       | ❌      | ✅  | ❌       | ❌  |
-| deleteTable                  | ❌      | ✅  | ❌       | ❌  |
+| openStore (non-encrypted DB) | ✅      | ✅  | ❌       | ❌  |
+| openStore (encrypted DB)     | ✅      | ✅  | ❌       | ❌  |
+| close                        | ✅      | ❌  | ❌       | ❌  |
+| setTable                     | ✅      | ✅  | ❌       | ❌  |
+| set                          | ✅      | ✅  | ❌       | ❌  |
+| get                          | ✅      | ✅  | ❌       | ❌  |
+| iskey                        | ✅      | ✅  | ❌       | ❌  |
+| keys                         | ✅      | ✅  | ❌       | ❌  |
+| values                       | ✅      | ✅  | ❌       | ❌  |
+| filtervalues                 | ✅      | ✅  | ❌       | ❌  |
+| keysvalues                   | ✅      | ✅  | ❌       | ❌  |
+| remove                       | ✅      | ✅  | ❌       | ❌  |
+| clear                        | ✅      | ✅  | ❌       | ❌  |
+| deleteStore                  | ✅      | ✅  | ❌       | ❌  |
+| isTable                      | ✅      | ✅  | ❌       | ❌  |
+| tables                       | ✅      | ✅  | ❌       | ❌  |
+| deleteTable                  | ✅      | ✅  | ❌       | ❌  |
 
 ## Documentation
 
@@ -110,7 +113,10 @@ No configuration required for this plugin
 
 ## Dependencies
 
-The IOS code is using SQLCipher allowing for database encryption. 
+The IOS & Android code use SQLCipher allowing for database encryption. 
+The Android code is now based on `androidx.sqlite`. The database is not closed anymore after each transaction for performance improvement.
+You must manage the `close`of the database before opening a new database.
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

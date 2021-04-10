@@ -3,6 +3,7 @@ import type { CapacitorDataStorageSqlitePlugin, capEchoOptions, capEchoResult, c
 export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     echo(options: capEchoOptions): Promise<capEchoResult>;
     openStore(options: capOpenStorageOptions): Promise<void>;
+    close(): Promise<void>;
     setTable(options: capTableStorageOptions): Promise<void>;
     set(options: capDataStorageOptions): Promise<void>;
     get(options: capDataStorageOptions): Promise<capValueResult>;

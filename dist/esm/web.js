@@ -10,6 +10,9 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         console.log('openStore', options);
         throw new Error('Method not implemented.');
     }
+    async close() {
+        throw new Error('Method not implemented.');
+    }
     async setTable(options) {
         console.log('setTable', options);
         throw new Error('Method not implemented.');
