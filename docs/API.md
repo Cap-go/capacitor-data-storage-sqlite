@@ -34,7 +34,9 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 
 * [`echo(...)`](#echo)
 * [`openStore(...)`](#openstore)
-* [`close()`](#close)
+* [`closeStore(...)`](#closestore)
+* [`isStoreOpen(...)`](#isstoreopen)
+* [`isStoreExists(...)`](#isstoreexists)
 * [`setTable(...)`](#settable)
 * [`set(...)`](#set)
 * [`get(...)`](#get)
@@ -94,13 +96,55 @@ Open a store
 --------------------
 
 
-### close()
+### closeStore(...)
 
 ```typescript
-close() => any
+closeStore(options: capStorageOptions) => any
 ```
 
 Close the Store
+
+| Param         | Type                                                            | Description                                          |
+| ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
+
+**Returns:** <code>any</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### isStoreOpen(...)
+
+```typescript
+isStoreOpen(options: capStorageOptions) => any
+```
+
+Check if the Store is opened
+
+| Param         | Type                                                            | Description                                          |
+| ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
+
+**Returns:** <code>any</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### isStoreExists(...)
+
+```typescript
+isStoreExists(options: capStorageOptions) => any
+```
+
+Check if the Store exists
+
+| Param         | Type                                                            | Description                                          |
+| ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
 
 **Returns:** <code>any</code>
 
@@ -382,6 +426,21 @@ Delete a store
 | **`mode`**      | <code>string</code>  | * Set the mode for database ancryption ["encryption", "secret","newsecret"] |
 
 
+#### capStorageOptions
+
+| Prop           | Type                | Description      |
+| -------------- | ------------------- | ---------------- |
+| **`database`** | <code>string</code> | The storage name |
+
+
+#### capDataStorageResult
+
+| Prop          | Type                 | Description                                   |
+| ------------- | -------------------- | --------------------------------------------- |
+| **`result`**  | <code>boolean</code> | result set to true when successful else false |
+| **`message`** | <code>string</code>  | a returned message                            |
+
+
 #### capTableStorageOptions
 
 | Prop        | Type                | Description            |
@@ -402,14 +461,6 @@ Delete a store
 | Prop        | Type                | Description                         |
 | ----------- | ------------------- | ----------------------------------- |
 | **`value`** | <code>string</code> | the data value for a given data key |
-
-
-#### capDataStorageResult
-
-| Prop          | Type                 | Description                                   |
-| ------------- | -------------------- | --------------------------------------------- |
-| **`result`**  | <code>boolean</code> | result set to true when successful else false |
-| **`message`** | <code>string</code>  | a returned message                            |
 
 
 #### capKeysResult

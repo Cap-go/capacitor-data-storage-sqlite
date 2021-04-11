@@ -70,14 +70,57 @@ public class CapacitorDataStorageSqlitePlugin extends Plugin {
     }
 
     @PluginMethod
-    public void close(PluginCall call) {
+    public void closeStore(PluginCall call) {
+        if (!call.getData().has("database")) {
+            rHandler.retResult(call, false, "closeStore: Must provide a database");
+            return;
+        }
+        String dbName = call.getString("database");
         try {
-            implementation.close();
+            implementation.closeStore(dbName);
             rHandler.retResult(call, null, null);
             return;
         } catch (Exception e) {
             String msg = "Close: " + e.getMessage();
             rHandler.retResult(call, null, msg);
+            return;
+        }
+    }
+
+    @PluginMethod
+    public void isStoreOpen(PluginCall call) {
+        boolean ret = false;
+        if (!call.getData().has("database")) {
+            rHandler.retResult(call, false, "IsStoreOpen: Must provide a database");
+            return;
+        }
+        String dbName = call.getString("database");
+        try {
+            ret = implementation.isStoreOpen(dbName);
+            rHandler.retResult(call, ret, null);
+            return;
+        } catch (Exception e) {
+            String msg = "IsStoreOpen: " + e.getMessage();
+            rHandler.retResult(call, false, msg);
+            return;
+        }
+    }
+
+    @PluginMethod
+    public void isStoreExists(PluginCall call) {
+        boolean ret = false;
+        if (!call.getData().has("database")) {
+            rHandler.retResult(call, false, "IsStoreExists: Must provide a database");
+            return;
+        }
+        String dbName = call.getString("database");
+        try {
+            ret = implementation.isStoreExists(dbName);
+            rHandler.retResult(call, ret, null);
+            return;
+        } catch (Exception e) {
+            String msg = "IsStoreExists: " + e.getMessage();
+            rHandler.retResult(call, false, msg);
             return;
         }
     }
@@ -293,7 +336,7 @@ public class CapacitorDataStorageSqlitePlugin extends Plugin {
     @PluginMethod
     public void deleteTable(PluginCall call) {
         if (!call.getData().has("table")) {
-            rHandler.retResult(call, null, "Remove: Must provide a table");
+            rHandler.retResult(call, null, "DeleteTable: Must provide a table");
             return;
         }
         String table = call.getString("table");
@@ -303,6 +346,24 @@ public class CapacitorDataStorageSqlitePlugin extends Plugin {
             return;
         } catch (Exception e) {
             String msg = "DeleteTable: " + e.getMessage();
+            rHandler.retResult(call, null, msg);
+            return;
+        }
+    }
+
+    @PluginMethod
+    public void deleteStore(PluginCall call) {
+        if (!call.getData().has("database")) {
+            rHandler.retResult(call, null, "DeleteStore: Must provide a database");
+            return;
+        }
+        String dbName = call.getString("database");
+        try {
+            implementation.deleteStore(dbName);
+            rHandler.retResult(call, null, null);
+            return;
+        } catch (Exception e) {
+            String msg = "DeleteStore: " + e.getMessage();
             rHandler.retResult(call, null, msg);
             return;
         }

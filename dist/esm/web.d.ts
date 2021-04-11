@@ -1,9 +1,11 @@
 import { WebPlugin } from '@capacitor/core';
-import type { CapacitorDataStorageSqlitePlugin, capEchoOptions, capEchoResult, capDataStorageOptions, capDataStorageResult, capFilterStorageOptions, capKeysResult, capKeysValuesResult, capOpenStorageOptions, capTableStorageOptions, capValueResult, capValuesResult } from './definitions';
+import type { CapacitorDataStorageSqlitePlugin, capEchoOptions, capEchoResult, capDataStorageOptions, capDataStorageResult, capFilterStorageOptions, capKeysResult, capKeysValuesResult, capOpenStorageOptions, capTableStorageOptions, capValueResult, capValuesResult, capStorageOptions } from './definitions';
 export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     echo(options: capEchoOptions): Promise<capEchoResult>;
     openStore(options: capOpenStorageOptions): Promise<void>;
-    close(): Promise<void>;
+    closeStore(options: capStorageOptions): Promise<void>;
+    isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult>;
+    isStoreExists(options: capStorageOptions): Promise<capDataStorageResult>;
     setTable(options: capTableStorageOptions): Promise<void>;
     set(options: capDataStorageOptions): Promise<void>;
     get(options: capDataStorageOptions): Promise<capValueResult>;

@@ -6,6 +6,9 @@
 CAP_PLUGIN(CapacitorDataStorageSqlitePlugin, "CapacitorDataStorageSqlite",
            CAP_PLUGIN_METHOD(echo, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(openStore, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(closeStore, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(isStoreOpen, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(isStoreExists, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setTable, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(set, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(get, CAPPluginReturnPromise);

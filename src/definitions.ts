@@ -15,11 +15,26 @@ export interface CapacitorDataStorageSqlitePlugin {
   openStore(options: capOpenStorageOptions): Promise<void>;
   /**
    * Close the Store
+   * @param options: capStorageOptions
    * @returns Promise<void>
    * @since 3.0.0
    */
-   close(): Promise<void>;
-   /**
+  closeStore(options: capStorageOptions): Promise<void>;
+  /**
+   * Check if the Store is opened
+   * @param options: capStorageOptions
+   * @returns Promise<capDataStorageResult>
+   * @since 3.0.0
+   */
+  isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult>;
+  /**
+   * Check if the Store exists
+   * @param options: capStorageOptions
+   * @returns Promise<capDataStorageResult>
+   * @since 3.0.0
+   */
+  isStoreExists(options: capStorageOptions): Promise<capDataStorageResult>;
+  /**
    * Set or Add a table to an existing store
    * @param options: capTableStorageOptions
    * @returns Promise<void>
@@ -154,11 +169,18 @@ export interface capDataStorageOptions {
    */
   value?: string;
 }
+export interface capStorageOptions {
+  /**
+   * The storage name
+   */
+  database: string;
+}
+
 export interface capTableStorageOptions {
   /**
    * The storage table name
    */
-  table: string; // default:
+  table: string;
 }
 export interface capFilterStorageOptions {
   /**

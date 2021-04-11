@@ -64,7 +64,9 @@ No configuration required for this plugin
 | :--------------------------- | :------ | :-- | :------- | :-- |
 | openStore (non-encrypted DB) | ✅      | ✅  | ❌       | ❌  |
 | openStore (encrypted DB)     | ✅      | ✅  | ❌       | ❌  |
-| close                        | ✅      | ❌  | ❌       | ❌  |
+| closeStore                   | ✅      | ❌  | ❌       | ❌  |
+| isStoreOpen                  | ✅      | ❌  | ❌       | ❌  |
+| isStoreExists                | ✅      | ❌  | ❌       | ❌  |
 | setTable                     | ✅      | ✅  | ❌       | ❌  |
 | set                          | ✅      | ✅  | ❌       | ❌  |
 | get                          | ✅      | ✅  | ❌       | ❌  |

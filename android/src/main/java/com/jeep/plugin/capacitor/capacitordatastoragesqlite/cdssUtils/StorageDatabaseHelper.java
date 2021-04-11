@@ -49,6 +49,8 @@ public class StorageDatabaseHelper {
         this._encrypted = encrypted;
         this._mode = mode;
         this._file = context.getDatabasePath(dbName);
+        this._globVar = new Global();
+        this._uCipher = new UtilsSQLCipher();
 
         this.InitializeSQLCipher();
         if (!this._file.getParentFile().exists()) {
@@ -64,6 +66,15 @@ public class StorageDatabaseHelper {
     private void InitializeSQLCipher() {
         Log.d(TAG, " in InitializeSQLCipher: ");
         SQLiteDatabase.loadLibs(_context);
+    }
+
+    /**
+     * GetStoreName
+     * Return the current store name
+     * @return
+     */
+    public String getStoreName() {
+        return this._dbName;
     }
 
     /**

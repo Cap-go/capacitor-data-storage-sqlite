@@ -13,6 +13,7 @@ import type {
   capTableStorageOptions,
   capValueResult,
   capValuesResult,
+  capStorageOptions,
 } from './definitions';
 
 export class CapacitorDataStorageSqliteWeb
@@ -29,7 +30,18 @@ export class CapacitorDataStorageSqliteWeb
     console.log('openStore', options);
     throw new Error('Method not implemented.');
   }
-  async close(): Promise<void> {
+  async closeStore(options: capStorageOptions): Promise<void> {
+    console.log('closeStore', options);
+    throw new Error('Method not implemented.');
+  }
+  async isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult> {
+    console.log('isStoreOpen', options);
+    throw new Error('Method not implemented.');
+  }
+  async isStoreExists(
+    options: capStorageOptions,
+  ): Promise<capDataStorageResult> {
+    console.log('isStoreExists', options);
     throw new Error('Method not implemented.');
   }
   async setTable(options: capTableStorageOptions): Promise<void> {

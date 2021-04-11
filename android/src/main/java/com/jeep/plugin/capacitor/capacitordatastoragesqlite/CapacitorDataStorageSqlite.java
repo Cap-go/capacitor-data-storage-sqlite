@@ -4,6 +4,7 @@ import android.content.Context;
 import com.getcapacitor.JSObject;
 import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.Data;
 import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.StorageDatabaseHelper;
+import java.io.File;
 import java.util.List;
 
 public class CapacitorDataStorageSqlite {
@@ -43,8 +44,9 @@ public class CapacitorDataStorageSqlite {
         }
     }
 
-    public void close() throws Exception {
-        if (mDb != null && mDb.isOpen) {
+    public void closeStore(String dbName) throws Exception {
+        String database = dbName + "SQLite.db";
+        if (mDb != null && mDb.isOpen && mDb.getStoreName().equals(database)) {
             try {
                 mDb.close();
                 return;
@@ -52,7 +54,16 @@ public class CapacitorDataStorageSqlite {
                 throw new Exception(e.getMessage());
             }
         } else {
-            throw new Exception("mDb is not opened or null");
+            throw new Exception("mDb " + dbName + " is not opened or null");
+        }
+    }
+
+    public boolean isStoreOpen(String dbName) throws Exception {
+        String database = dbName + "SQLite.db";
+        if (mDb != null && mDb.getStoreName().equals(database)) {
+            return mDb.isOpen;
+        } else {
+            throw new Exception("mDb " + dbName + " is not the current one or null");
         }
     }
 
@@ -243,6 +254,32 @@ public class CapacitorDataStorageSqlite {
             }
         } else {
             throw new Exception("mDb is not opened or null");
+        }
+    }
+
+    public void deleteStore(String dbName) throws Exception {
+        try {
+            context.deleteDatabase(dbName + "SQLite.db");
+            context.deleteFile(dbName + "SQLite.db");
+            File databaseFile = context.getDatabasePath(dbName + "SQLite.db");
+            if (databaseFile.exists()) {
+                throw new Exception("failed to delete the store");
+            } else {
+                return;
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public boolean isStoreExists(String dbName) throws Exception {
+        boolean ret = false;
+        try {
+            File databaseFile = context.getDatabasePath(dbName + "SQLite.db");
+            if (databaseFile.exists()) ret = true;
+            return ret;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
     }
 }

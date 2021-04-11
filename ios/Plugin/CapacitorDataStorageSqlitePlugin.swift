@@ -76,6 +76,27 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     }
     // swiftlint:enable function_body_length
 
+    // MARK: - closeStore
+
+    @objc func closeStore(_ call: CAPPluginCall) {
+
+        call.unimplemented("Not implemented on iOS.")
+    }
+
+    // MARK: - isStoreOpen
+
+    @objc func isStoreOpen(_ call: CAPPluginCall) {
+
+        call.unimplemented("Not implemented on iOS.")
+    }
+
+    // MARK: - isStoreExists
+
+    @objc func isStoreExists(_ call: CAPPluginCall) {
+
+        call.unimplemented("Not implemented on iOS.")
+    }
+
     // MARK: - SetTable
 
     @objc func setTable(_ call: CAPPluginCall) {

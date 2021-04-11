@@ -1,3 +1,14 @@
+## 3.0.0-alpha.4 (2021-04-11)
+
+### Added Features (Android)
+
+- add isStoreOpen, isStoreExists, deleteStore
+- rename close in closeStore
+
+### Bug Fixes
+
+- fix encryption issue
+
 ## 3.0.0-alpha.3 (2021-04-10)
 
 ### Added Features (Android)
