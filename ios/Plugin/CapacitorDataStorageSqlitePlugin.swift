@@ -61,7 +61,26 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
 
     @objc func closeStore(_ call: CAPPluginCall) {
 
-        call.unimplemented("Not implemented on iOS.")
+        guard let database = call.options["database"] as? String
+        else {
+            retHandler.rResult(
+                call: call, ret: false,
+                message: "closeStore: Must provide a database")
+            return
+        }
+        do {
+            try implementation.closeStore(database)
+            retHandler.rResult(call: call)
+            return
+        } catch CapacitorDataStorageSqliteError.failed(let message) {
+            let msg = "closeStore: \(message)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        } catch let error {
+            let msg = "closeStore: \(error.localizedDescription)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        }
     }
 
     // MARK: - isStoreOpen

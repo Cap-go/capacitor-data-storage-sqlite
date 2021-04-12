@@ -1,3 +1,9 @@
+## 3.0.0-alpha.6 (2021-04-12)
+
+### Bug Fixes
+
+- fix closeStore iOS
+
 ## 3.0.0-alpha.5 (2021-04-12)
 
 ### Added Features (iOS)

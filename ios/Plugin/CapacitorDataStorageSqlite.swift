@@ -43,7 +43,8 @@ enum CapacitorDataStorageSqliteError: Error {
     // MARK: - closeStore
 
     @objc func closeStore(_ name: String) throws {
-        if mDb != nil && ((mDb?.isOpen) != nil) && mDb?.dbName == name {
+        if mDb != nil && ((mDb?.isOpen) != nil) &&
+            mDb?.dbName == "\(name)SQLite.db" {
             do {
                 try mDb?.close()
                 return
