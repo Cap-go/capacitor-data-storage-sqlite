@@ -1,3 +1,9 @@
+## 3.0.0-alpha.5 (2021-04-12)
+
+### Added Features (iOS)
+
+- rewrite the whole code to remove the closeDB at each transaction
+
 ## 3.0.0-alpha.4 (2021-04-11)
 
 ### Added Features (Android)

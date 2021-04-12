@@ -14,7 +14,10 @@
 		2CACE45E261F1B990055F68F /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CACE45D261F1B990055F68F /* Data.swift */; };
 		2CACE462261F1BB80055F68F /* StorageDatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CACE461261F1BB80055F68F /* StorageDatabaseHelper.swift */; };
 		2CACE475261F1DDA0055F68F /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CACE474261F1DDA0055F68F /* Blob.swift */; };
-		2CACE47B261F1DF40055F68F /* UtilsSQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CACE47A261F1DF40055F68F /* UtilsSQLite.swift */; };
+		2CCD1A6026240DB3007BF606 /* UtilsSQLCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD1A5F26240DB3007BF606 /* UtilsSQLCipher.swift */; };
+		2CCD1A6426241136007BF606 /* UtilsBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD1A6326241136007BF606 /* UtilsBinding.swift */; };
+		2CCD1A6F26242CE8007BF606 /* UtilsEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD1A6E26242CE8007BF606 /* UtilsEncryption.swift */; };
+		2CCD1A7326242D45007BF606 /* UtilsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD1A7226242D45007BF606 /* UtilsFile.swift */; };
 		2F98D68224C9AAE500613A4C /* CapacitorDataStorageSqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */; };
 		50ADFF92201F53D600D50D53 /* Plugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADFF88201F53D600D50D53 /* Plugin.framework */; };
 		50ADFF97201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFF96201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift */; };
@@ -40,7 +43,10 @@
 		2CACE45D261F1B990055F68F /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		2CACE461261F1BB80055F68F /* StorageDatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageDatabaseHelper.swift; sourceTree = "<group>"; };
 		2CACE474261F1DDA0055F68F /* Blob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
-		2CACE47A261F1DF40055F68F /* UtilsSQLite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsSQLite.swift; sourceTree = "<group>"; };
+		2CCD1A5F26240DB3007BF606 /* UtilsSQLCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsSQLCipher.swift; sourceTree = "<group>"; };
+		2CCD1A6326241136007BF606 /* UtilsBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsBinding.swift; sourceTree = "<group>"; };
+		2CCD1A6E26242CE8007BF606 /* UtilsEncryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsEncryption.swift; sourceTree = "<group>"; };
+		2CCD1A7226242D45007BF606 /* UtilsFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsFile.swift; sourceTree = "<group>"; };
 		2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapacitorDataStorageSqlite.swift; sourceTree = "<group>"; };
 		3B2A61DA5A1F2DD4F959604D /* Pods_Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ADFF88201F53D600D50D53 /* Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,7 +91,10 @@
 			isa = PBXGroup;
 			children = (
 				2CACE474261F1DDA0055F68F /* Blob.swift */,
-				2CACE47A261F1DF40055F68F /* UtilsSQLite.swift */,
+				2CCD1A5F26240DB3007BF606 /* UtilsSQLCipher.swift */,
+				2CCD1A6326241136007BF606 /* UtilsBinding.swift */,
+				2CCD1A6E26242CE8007BF606 /* UtilsEncryption.swift */,
+				2CCD1A7226242D45007BF606 /* UtilsFile.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -334,15 +343,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CCD1A6F26242CE8007BF606 /* UtilsEncryption.swift in Sources */,
 				2CACE462261F1BB80055F68F /* StorageDatabaseHelper.swift in Sources */,
+				2CCD1A7326242D45007BF606 /* UtilsFile.swift in Sources */,
 				2CACE456261F1B5E0055F68F /* ReturnHandler.swift in Sources */,
-				2CACE47B261F1DF40055F68F /* UtilsSQLite.swift in Sources */,
 				2CACE45E261F1B990055F68F /* Data.swift in Sources */,
 				50E1A94820377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift in Sources */,
+				2CCD1A6026240DB3007BF606 /* UtilsSQLCipher.swift in Sources */,
 				2CACE475261F1DDA0055F68F /* Blob.swift in Sources */,
 				2F98D68224C9AAE500613A4C /* CapacitorDataStorageSqlite.swift in Sources */,
 				2CACE45A261F1B7B0055F68F /* Global.swift in Sources */,
 				50ADFFA82020EE4F00D50D53 /* CapacitorDataStorageSqlitePlugin.m in Sources */,
+				2CCD1A6426241136007BF606 /* UtilsBinding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

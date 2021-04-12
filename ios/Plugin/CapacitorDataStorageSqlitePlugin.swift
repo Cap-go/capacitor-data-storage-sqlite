@@ -8,8 +8,6 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     private let implementation = CapacitorDataStorageSqlite()
     private let retHandler: ReturnHandler = ReturnHandler()
 
-    var globalData: Global = Global()
-
     // MARK: - Echo
 
     @objc func echo(_ call: CAPPluginCall) {
@@ -21,16 +19,14 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
 
     // MARK: - OpenStore
 
-    // swiftlint:disable function_body_length
     @objc func openStore(_ call: CAPPluginCall) {
         let dbName = call.options["database"] as? String ?? "storage"
         let tableName = call.options["table"] as? String ?? "storage_table"
         let encrypted = call.options["encrypted"] as? Bool ?? false
         var inMode: String = ""
-        var secretKey: String = ""
-        var newsecretKey: String = ""
         if encrypted {
             inMode = call.options["mode"] as? String ?? "no-encryption"
+
             if inMode != "no-encryption" && inMode != "encryption"
                 && inMode != "secret" && inMode != "newsecret" && inMode != "wrongsecret" {
                 retHandler.rResult(
@@ -38,19 +34,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
                     message: "OpenStore: Error inMode must be in ['encryption','secret','newsecret'])")
                 return
             }
-            if inMode == "encryption" || inMode == "secret" {
-                secretKey = globalData.secret
-            } else if inMode == "newsecret" {
-                secretKey = globalData.secret
-                newsecretKey = globalData.newsecret
-                globalData.secret = newsecretKey
-            } else if inMode == "wrongsecret" {
-                secretKey = "wrongsecret"
-                inMode = "secret"
-            } else {
-                secretKey = ""
-                newsecretKey = ""
-            }
+
         } else {
             inMode = "no-encryption"
         }
@@ -58,9 +42,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation
                 .openStore(dbName,
                            tableName: tableName,
-                           encrypted: encrypted, inMode: inMode,
-                           secretKey: secretKey,
-                           newsecretKey: newsecretKey)
+                           encrypted: encrypted, inMode: inMode)
             retHandler.rResult(call: call)
             return
         } catch CapacitorDataStorageSqliteError
@@ -74,7 +56,6 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             return
         }
     }
-    // swiftlint:enable function_body_length
 
     // MARK: - closeStore
 
@@ -86,15 +67,55 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
     // MARK: - isStoreOpen
 
     @objc func isStoreOpen(_ call: CAPPluginCall) {
-
-        call.unimplemented("Not implemented on iOS.")
+        guard let database = call.options["database"] as? String
+        else {
+            retHandler.rResult(
+                call: call, ret: false,
+                message: "isStoreOpen: Must provide a database")
+            return
+        }
+        do {
+            let res = try implementation.isStoreOpen(database)
+            let ret = res == 1 ? true : false
+            retHandler.rResult(call: call, ret: ret)
+            return
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "isStoreOpen: \(message)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        } catch let error {
+            let msg = "isStoreOpen: \(error.localizedDescription)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        }
     }
 
     // MARK: - isStoreExists
 
     @objc func isStoreExists(_ call: CAPPluginCall) {
-
-        call.unimplemented("Not implemented on iOS.")
+        guard let database = call.options["database"] as? String
+        else {
+            retHandler.rResult(
+                call: call, ret: false,
+                message: "isStoreExists: Must provide a database")
+            return
+        }
+        do {
+            let res = try implementation.isStoreExists(database)
+            let ret = res == 1 ? true : false
+            retHandler.rResult(call: call, ret: ret)
+            return
+        } catch CapacitorDataStorageSqliteError
+                    .failed(let message) {
+            let msg = "isStoreExists: \(message)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        } catch let error {
+            let msg = "isStoreExists: \(error.localizedDescription)"
+            retHandler.rResult(call: call, ret: false, message: msg)
+            return
+        }
     }
 
     // MARK: - SetTable
