@@ -10,6 +10,7 @@
     "android/src/main/",
     "android/build.gradle",
     "dist/",
+    "electron/",
     "ios/Plugin/",
     "CapacitorDataStorageSqlite.podspec"
   ],
@@ -41,6 +42,7 @@
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
+    "test": "echo \"No test specified\"",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
@@ -73,6 +75,9 @@
     },
     "android": {
       "src": "android"
+    },
+    "electron": {
+      "src": "electron"
     }
   }
 }
