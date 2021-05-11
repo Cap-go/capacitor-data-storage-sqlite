@@ -1,3 +1,9 @@
+## 3.0.0-alpha.7 (2021-05-11)
+
+### Chores
+
+- capacitor: update to capacitor 3.0.0-rc.2
+
 ## 3.0.0-alpha.6 (2021-04-12)
 
 ### Bug Fixes
