@@ -37,13 +37,18 @@ meaning that it will not work in IE11 without additional JavaScript transformati
 ## Installation
 
 ```bash
-npm install capacitor-data-storage-sqlite@next
+npm install --save capacitor-data-storage-sqlite@next
 npx cap sync
 ```
 
 - On iOS, no further steps are needed.
 
 - On Android, no further steps are needed.
+
+- On Web, 
+```bash
+npm install --save localforage
+```
 
 Then build YOUR_APPLICATION
 
@@ -52,6 +57,7 @@ npm run build
 npx cap copy
 npx cap open ios
 npx cap open android
+ionic serve
 ```
 
 ## Configuration
@@ -118,6 +124,7 @@ No configuration required for this plugin
 The IOS & Android code use SQLCipher allowing for database encryption. 
 The Android code is now based on `androidx.sqlite`. The database is not closed anymore after each transaction for performance improvement.
 You must manage the `close`of the database before opening a new database.
+The Web code use `localforage` package to store the datastore in the Browser.
 
 ## Contributors ✨
 
