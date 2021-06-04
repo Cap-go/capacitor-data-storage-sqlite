@@ -1,4 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
+import { Data } from './web-utils/Data';
+import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     async echo(options) {
         console.log('ECHO', options);
@@ -7,71 +9,207 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         return ret;
     }
     async openStore(options) {
-        console.log('openStore', options);
-        throw new Error('Method not implemented.');
+        const dbName = options.database ? `${options.database}IDB` : 'storageIDB';
+        const tableName = options.table ? options.table : 'storage_store';
+        try {
+            console.log('in openstore plugin');
+            console.log(`dbName ${dbName}`);
+            console.log(`tableName ${tableName}`);
+            this.mDb = new StorageDatabaseHelper(dbName, tableName);
+            return Promise.resolve();
+        }
+        catch (err) {
+            return Promise.reject(`OpenStore: ${err.message}`);
+        }
     }
     async closeStore(options) {
         console.log('closeStore', options);
-        throw new Error('Method not implemented.');
+        throw new Error('Method closeStore not implemented.');
     }
     async isStoreOpen(options) {
         console.log('isStoreOpen', options);
-        throw new Error('Method not implemented.');
+        throw new Error('Method isStoreOpen not implemented.');
     }
     async isStoreExists(options) {
         console.log('isStoreExists', options);
-        throw new Error('Method not implemented.');
+        throw new Error('Method isStoreExists not implemented.');
     }
     async setTable(options) {
-        console.log('setTable', options);
-        throw new Error('Method not implemented.');
+        const tableName = options.table;
+        if (tableName == null) {
+            return Promise.reject('SetTable: Must provide a table name');
+        }
+        if (this.mDb) {
+            try {
+                await this.mDb.setTable(tableName);
+                return Promise.resolve();
+            }
+            catch (err) {
+                return Promise.reject(`SetTable: ${err.message}`);
+            }
+        }
+        else {
+            return Promise.reject('SetTable: Must open a store first');
+        }
     }
     async set(options) {
-        console.log('set', options);
-        throw new Error('Method not implemented.');
+        const key = options.key;
+        if (key == null || typeof key != 'string') {
+            return Promise.reject('Set: Must provide key as string');
+        }
+        const value = options.value ? options.value : null;
+        if (value == null || typeof value != 'string') {
+            return Promise.reject('Set: Must provide value as string');
+        }
+        const data = new Data();
+        data.name = key;
+        data.value = value;
+        try {
+            await this.mDb.set(data);
+            return Promise.resolve();
+        }
+        catch (err) {
+            return Promise.reject(`Set: ${err.message}`);
+        }
     }
     async get(options) {
-        console.log('get', options);
-        throw new Error('Method not implemented.');
+        const key = options.key;
+        if (key == null || typeof key != 'string') {
+            return Promise.reject('Get: Must provide key as string');
+        }
+        try {
+            const data = await this.mDb.get(key);
+            if ((data === null || data === void 0 ? void 0 : data.value) != null) {
+                return Promise.resolve({ value: data.value });
+            }
+            else {
+                return Promise.resolve({ value: '' });
+            }
+        }
+        catch (err) {
+            return Promise.reject(`Get: ${err.message}`);
+        }
     }
     async remove(options) {
-        console.log('remove', options);
-        throw new Error('Method not implemented.');
+        const key = options.key;
+        if (key == null || typeof key != 'string') {
+            return Promise.reject('Remove: Must provide key as string');
+        }
+        try {
+            await this.mDb.remove(key);
+            return Promise.resolve();
+        }
+        catch (err) {
+            return Promise.reject(`Remove: ${err.message}`);
+        }
     }
     async clear() {
-        throw new Error('Method not implemented.');
+        try {
+            await this.mDb.clear();
+            return Promise.resolve();
+        }
+        catch (err) {
+            return Promise.reject(`Clear: ${err.message}`);
+        }
     }
     async iskey(options) {
-        console.log('iskey', options);
-        throw new Error('Method not implemented.');
+        const key = options.key;
+        if (key == null || typeof key != 'string') {
+            return Promise.reject('Iskey: Must provide key as string');
+        }
+        try {
+            const ret = await this.mDb.iskey(key);
+            return Promise.resolve({ result: ret });
+        }
+        catch (err) {
+            return Promise.reject(`Iskey: ${err.message}`);
+        }
     }
     async keys() {
-        throw new Error('Method not implemented.');
+        try {
+            const ret = await this.mDb.keys();
+            return Promise.resolve({ keys: ret });
+        }
+        catch (err) {
+            return Promise.reject(`Keys: ${err.message}`);
+        }
     }
     async values() {
-        throw new Error('Method not implemented.');
+        try {
+            const ret = await this.mDb.values();
+            return Promise.resolve({ values: ret });
+        }
+        catch (err) {
+            return Promise.reject(`Values: ${err.message}`);
+        }
     }
     async filtervalues(options) {
-        console.log('filtervalues', options);
-        throw new Error('Method not implemented.');
+        const filter = options.filter;
+        if (filter == null || typeof filter != 'string') {
+            return Promise.reject('Filtervalues: Must provide filter as string');
+        }
+        let regFilter;
+        if (filter.startsWith('%')) {
+            regFilter = new RegExp('^' + filter.substring(1), 'i');
+        }
+        else if (filter.endsWith('%')) {
+            regFilter = new RegExp(filter.slice(0, -1) + '$', 'i');
+        }
+        else {
+            regFilter = new RegExp(filter, 'i');
+        }
+        try {
+            const ret = [];
+            const results = await this.mDb.keysvalues();
+            for (const result of results) {
+                if (result.name != null && regFilter.test(result.name)) {
+                    if (result.value != null) {
+                        ret.push(result.value);
+                    }
+                    else {
+                        return Promise.reject(`Filtervalues: result.value is null`);
+                    }
+                }
+            }
+            return Promise.resolve({ values: ret });
+        }
+        catch (err) {
+            return Promise.reject(`Filtervalues: ${err.message}`);
+        }
     }
     async keysvalues() {
-        throw new Error('Method not implemented.');
+        try {
+            const ret = [];
+            const results = await this.mDb.keysvalues();
+            for (const result of results) {
+                if (result.name != null && result.value != null) {
+                    const res = { key: result.name, value: result.value };
+                    ret.push(res);
+                }
+                else {
+                    return Promise.reject(`Keysvalues: result.name/value are null`);
+                }
+            }
+            return Promise.resolve({ keysvalues: ret });
+        }
+        catch (err) {
+            return Promise.reject(`Keysvalues: ${err.message}`);
+        }
     }
     async deleteStore(options) {
         console.log('deleteStore', options);
-        throw new Error('Method not implemented.');
+        throw new Error('Method deleteStore not implemented.');
     }
     async isTable(options) {
         console.log('isTable', options);
-        throw new Error('Method not implemented.');
+        throw new Error('Method isTable not implemented.');
     }
     async tables() {
-        throw new Error('Method not implemented.');
+        throw new Error('Method tables not implemented.');
     }
     async deleteTable(options) {
         console.log('deleteTable', options);
-        throw new Error('Method not implemented.');
+        throw new Error('Method deleteTable not implemented.');
     }
 }
 //# sourceMappingURL=web.js.map

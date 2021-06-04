@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "3.0.0-alpha.7",
+  "version": "0.0.1",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -10,7 +10,6 @@
     "android/src/main/",
     "android/build.gradle",
     "dist/",
-    "electron/",
     "ios/Plugin/",
     "CapacitorDataStorageSqlite.podspec"
   ],
@@ -18,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jepiqueau/capacitor-data-storage-sqlite.git"
+    "url": "git+https://github.com/jepiqueau/capacitor-data-storage-sqlite.git.git"
   },
   "bugs": {
-    "url": "https://github.com/jepiqueau/capacitor-data-storage-sqlite/issues"
+    "url": "https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/issues"
   },
   "keywords": [
     "capacitor",
@@ -42,17 +41,17 @@
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "test": "echo \"No test specified\"",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "^3.0.0-rc.2",
-    "@capacitor/core": "3.0.0-rc.2",
-    "@capacitor/docgen": "^0.0.14",
-    "@capacitor/ios": "^3.0.0-rc.2",
+    "@capacitor/android": "^3.0.0",
+    "@capacitor/core": "^3.0.0",
+    "@capacitor/docgen": "^0.0.16",
+    "@capacitor/ios": "^3.0.0",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "eslint": "^7.11.0",
     "prettier": "~2.2.0",
     "prettier-plugin-java": "~1.0.0",
@@ -62,7 +61,8 @@
     "typescript": "~4.0.3"
   },
   "peerDependencies": {
-    "@capacitor/core": "^3.0.0-rc.2"
+    "@capacitor/core": "^3.0.0",
+    "localforage": "^1.9.0"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
@@ -75,9 +75,9 @@
     },
     "android": {
       "src": "android"
-    },
-    "electron": {
-      "src": "electron"
     }
+  },
+  "dependencies": {
+    "localforage": "^1.9.0"
   }
 }

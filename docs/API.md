@@ -63,16 +63,14 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 ### echo(...)
 
 ```typescript
-echo(options: capEchoOptions) => any
+echo(options: capEchoOptions) => Promise<capEchoResult>
 ```
 
 | Param         | Type                                                      | Description                                    |
 | ------------- | --------------------------------------------------------- | ---------------------------------------------- |
 | **`options`** | <code><a href="#capechooptions">capEchoOptions</a></code> | : <a href="#capechooptions">capEchoOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
+**Returns:** <code>Promise&lt;<a href="#capechoresult">capEchoResult</a>&gt;</code>
 
 --------------------
 
@@ -80,7 +78,7 @@ echo(options: capEchoOptions) => any
 ### openStore(...)
 
 ```typescript
-openStore(options: capOpenStorageOptions) => any
+openStore(options: capOpenStorageOptions) => Promise<void>
 ```
 
 Open a store
@@ -89,17 +87,13 @@ Open a store
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
-
 --------------------
 
 
 ### closeStore(...)
 
 ```typescript
-closeStore(options: capStorageOptions) => any
+closeStore(options: capStorageOptions) => Promise<void>
 ```
 
 Close the Store
@@ -108,17 +102,13 @@ Close the Store
 | ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
 | **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 3.0.0
-
 --------------------
 
 
 ### isStoreOpen(...)
 
 ```typescript
-isStoreOpen(options: capStorageOptions) => any
+isStoreOpen(options: capStorageOptions) => Promise<capDataStorageResult>
 ```
 
 Check if the Store is opened
@@ -127,9 +117,7 @@ Check if the Store is opened
 | ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
 | **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 3.0.0
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
 --------------------
 
@@ -137,7 +125,7 @@ Check if the Store is opened
 ### isStoreExists(...)
 
 ```typescript
-isStoreExists(options: capStorageOptions) => any
+isStoreExists(options: capStorageOptions) => Promise<capDataStorageResult>
 ```
 
 Check if the Store exists
@@ -146,9 +134,7 @@ Check if the Store exists
 | ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
 | **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 3.0.0
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
 --------------------
 
@@ -156,7 +142,7 @@ Check if the Store exists
 ### setTable(...)
 
 ```typescript
-setTable(options: capTableStorageOptions) => any
+setTable(options: capTableStorageOptions) => Promise<void>
 ```
 
 Set or Add a table to an existing store
@@ -165,17 +151,13 @@ Set or Add a table to an existing store
 | ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
-
 --------------------
 
 
 ### set(...)
 
 ```typescript
-set(options: capDataStorageOptions) => any
+set(options: capDataStorageOptions) => Promise<void>
 ```
 
 Store a data with given key and value
@@ -184,17 +166,13 @@ Store a data with given key and value
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
-
 --------------------
 
 
 ### get(...)
 
 ```typescript
-get(options: capDataStorageOptions) => any
+get(options: capDataStorageOptions) => Promise<capValueResult>
 ```
 
 Retrieve a data value for a given data key
@@ -203,9 +181,7 @@ Retrieve a data value for a given data key
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
+**Returns:** <code>Promise&lt;<a href="#capvalueresult">capValueResult</a>&gt;</code>
 
 --------------------
 
@@ -213,7 +189,7 @@ Retrieve a data value for a given data key
 ### remove(...)
 
 ```typescript
-remove(options: capDataStorageOptions) => any
+remove(options: capDataStorageOptions) => Promise<void>
 ```
 
 Remove a data with given key
@@ -222,24 +198,16 @@ Remove a data with given key
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
-
 --------------------
 
 
 ### clear()
 
 ```typescript
-clear() => any
+clear() => Promise<void>
 ```
 
 Clear the Data Store (delete all keys)
-
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
 
 --------------------
 
@@ -247,7 +215,7 @@ Clear the Data Store (delete all keys)
 ### iskey(...)
 
 ```typescript
-iskey(options: capDataStorageOptions) => any
+iskey(options: capDataStorageOptions) => Promise<capDataStorageResult>
 ```
 
 Check if a data key exists
@@ -256,9 +224,7 @@ Check if a data key exists
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
 --------------------
 
@@ -266,14 +232,12 @@ Check if a data key exists
 ### keys()
 
 ```typescript
-keys() => any
+keys() => Promise<capKeysResult>
 ```
 
 Get the data key list
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
+**Returns:** <code>Promise&lt;<a href="#capkeysresult">capKeysResult</a>&gt;</code>
 
 --------------------
 
@@ -281,14 +245,12 @@ Get the data key list
 ### values()
 
 ```typescript
-values() => any
+values() => Promise<capValuesResult>
 ```
 
 Get the data value list
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
+**Returns:** <code>Promise&lt;<a href="#capvaluesresult">capValuesResult</a>&gt;</code>
 
 --------------------
 
@@ -296,7 +258,7 @@ Get the data value list
 ### filtervalues(...)
 
 ```typescript
-filtervalues(options: capFilterStorageOptions) => any
+filtervalues(options: capFilterStorageOptions) => Promise<capValuesResult>
 ```
 
 Get the data value list for filter keys
@@ -305,9 +267,7 @@ Get the data value list for filter keys
 | ------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | **`options`** | <code><a href="#capfilterstorageoptions">capFilterStorageOptions</a></code> | : <a href="#capfilterstorageoptions">capFilterStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 2.4.2
+**Returns:** <code>Promise&lt;<a href="#capvaluesresult">capValuesResult</a>&gt;</code>
 
 --------------------
 
@@ -315,14 +275,12 @@ Get the data value list for filter keys
 ### keysvalues()
 
 ```typescript
-keysvalues() => any
+keysvalues() => Promise<capKeysValuesResult>
 ```
 
 Get the data key/value pair list
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
+**Returns:** <code>Promise&lt;<a href="#capkeysvaluesresult">capKeysValuesResult</a>&gt;</code>
 
 --------------------
 
@@ -330,7 +288,7 @@ Get the data key/value pair list
 ### deleteStore(...)
 
 ```typescript
-deleteStore(options: capOpenStorageOptions) => any
+deleteStore(options: capOpenStorageOptions) => Promise<void>
 ```
 
 Delete a store
@@ -339,17 +297,13 @@ Delete a store
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 0.0.1
-
 --------------------
 
 
 ### isTable(...)
 
 ```typescript
-isTable(options: capTableStorageOptions) => any
+isTable(options: capTableStorageOptions) => Promise<capDataStorageResult>
 ```
 
 Check if a table exists
@@ -358,9 +312,7 @@ Check if a table exists
 | ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 3.0.0
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
 --------------------
 
@@ -368,14 +320,12 @@ Check if a table exists
 ### tables()
 
 ```typescript
-tables() => any
+tables() => Promise<capKeysResult>
 ```
 
 Get the table list for the current store
 
-**Returns:** <code>any</code>
-
-**Since:** 3.0.0
+**Returns:** <code>Promise&lt;<a href="#capkeysresult">capKeysResult</a>&gt;</code>
 
 --------------------
 
@@ -383,7 +333,7 @@ Get the table list for the current store
 ### deleteTable(...)
 
 ```typescript
-deleteTable(options: capTableStorageOptions) => any
+deleteTable(options: capTableStorageOptions) => Promise<void>
 ```
 
 Delete a store
@@ -392,21 +342,10 @@ Delete a store
 | ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
 
-**Returns:** <code>any</code>
-
-**Since:** 3.0.0
-
 --------------------
 
 
 ### Interfaces
-
-
-#### capEchoOptions
-
-| Prop        | Type                | Description         |
-| ----------- | ------------------- | ------------------- |
-| **`value`** | <code>string</code> | String to be echoed |
 
 
 #### capEchoResult
@@ -414,6 +353,13 @@ Delete a store
 | Prop        | Type                | Description     |
 | ----------- | ------------------- | --------------- |
 | **`value`** | <code>string</code> | String returned |
+
+
+#### capEchoOptions
+
+| Prop        | Type                | Description         |
+| ----------- | ------------------- | ------------------- |
+| **`value`** | <code>string</code> | String to be echoed |
 
 
 #### capOpenStorageOptions
@@ -465,16 +411,16 @@ Delete a store
 
 #### capKeysResult
 
-| Prop       | Type            | Description                   |
-| ---------- | --------------- | ----------------------------- |
-| **`keys`** | <code>{}</code> | the data key list as an Array |
+| Prop       | Type                  | Description                   |
+| ---------- | --------------------- | ----------------------------- |
+| **`keys`** | <code>string[]</code> | the data key list as an Array |
 
 
 #### capValuesResult
 
-| Prop         | Type            | Description                      |
-| ------------ | --------------- | -------------------------------- |
-| **`values`** | <code>{}</code> | the data values list as an Array |
+| Prop         | Type                  | Description                      |
+| ------------ | --------------------- | -------------------------------- |
+| **`values`** | <code>string[]</code> | the data values list as an Array |
 
 
 #### capFilterStorageOptions
@@ -486,9 +432,9 @@ Delete a store
 
 #### capKeysValuesResult
 
-| Prop             | Type            | Description                                                        |
-| ---------------- | --------------- | ------------------------------------------------------------------ |
-| **`keysvalues`** | <code>{}</code> | the data keys/values list as an Array of {key:string,value:string} |
+| Prop             | Type               | Description                                                        |
+| ---------------- | ------------------ | ------------------------------------------------------------------ |
+| **`keysvalues`** | <code>any[]</code> | the data keys/values list as an Array of {key:string,value:string} |
 
 </docgen-api>
 

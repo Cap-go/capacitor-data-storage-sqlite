@@ -1,3 +1,14 @@
+## 3.0.0-rc.1 (2021-06-04)
+
+### Chores
+
+- capacitor: update to capacitor 3.0.0
+
+### Added Features (Web)
+
+- rewrite the whole code to try...catch error
+
+
 ## 3.0.0-alpha.7 (2021-05-11)
 
 ### Chores

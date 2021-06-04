@@ -376,7 +376,7 @@ public class StorageDatabaseHelper {
         List<Data> data = new ArrayList<>();
         if (_db.isOpen()) {
             try {
-                String DATA_SELECT_QUERY = "SELECT * FROM " + this._tableName + ";";
+                String DATA_SELECT_QUERY = "SELECT * FROM " + this._tableName + " ORDER BY " + COL_NAME + ";";
 
                 c = (Cursor) _db.query(DATA_SELECT_QUERY);
                 if (c.getCount() > 0) {

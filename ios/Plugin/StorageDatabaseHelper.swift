@@ -444,7 +444,7 @@ class StorageDatabaseHelper {
     func keysvalues() throws -> [Data] {
         var retArray: [Data] = [Data]()
         if mDB != nil && isOpen {
-            let keysStatement = "SELECT * FROM \(tableName);"
+            let keysStatement = "SELECT * FROM \(tableName) ORDER BY \(COLNAME);"
             var results: [[String: Any]] = []
             do {
                 results = try UtilsSQLCipher.querySQL(mDB: self,

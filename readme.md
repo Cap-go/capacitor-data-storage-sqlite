@@ -62,21 +62,21 @@ No configuration required for this plugin
 
 | Name                         | Android | iOS | Electron | Web |
 | :--------------------------- | :------ | :-- | :------- | :-- |
-| openStore (non-encrypted DB) | ✅      | ✅  | ❌       | ❌  |
+| openStore (non-encrypted DB) | ✅      | ✅  | ❌       | ✅  |
 | openStore (encrypted DB)     | ✅      | ✅  | ❌       | ❌  |
 | closeStore                   | ✅      | ✅  | ❌       | ❌  |
 | isStoreOpen                  | ✅      | ✅  | ❌       | ❌  |
 | isStoreExists                | ✅      | ✅  | ❌       | ❌  |
-| setTable                     | ✅      | ✅  | ❌       | ❌  |
-| set                          | ✅      | ✅  | ❌       | ❌  |
-| get                          | ✅      | ✅  | ❌       | ❌  |
-| iskey                        | ✅      | ✅  | ❌       | ❌  |
-| keys                         | ✅      | ✅  | ❌       | ❌  |
-| values                       | ✅      | ✅  | ❌       | ❌  |
-| filtervalues                 | ✅      | ✅  | ❌       | ❌  |
-| keysvalues                   | ✅      | ✅  | ❌       | ❌  |
-| remove                       | ✅      | ✅  | ❌       | ❌  |
-| clear                        | ✅      | ✅  | ❌       | ❌  |
+| setTable                     | ✅      | ✅  | ❌       | ✅  |
+| set                          | ✅      | ✅  | ❌       | ✅  |
+| get                          | ✅      | ✅  | ❌       | ✅  |
+| iskey                        | ✅      | ✅  | ❌       | ✅  |
+| keys                         | ✅      | ✅  | ❌       | ✅  |
+| values                       | ✅      | ✅  | ❌       | ✅  |
+| filtervalues                 | ✅      | ✅  | ❌       | ✅  |
+| keysvalues                   | ✅      | ✅  | ❌       | ✅  |
+| remove                       | ✅      | ✅  | ❌       | ✅  |
+| clear                        | ✅      | ✅  | ❌       | ✅  |
 | deleteStore                  | ✅      | ✅  | ❌       | ❌  |
 | isTable                      | ✅      | ✅  | ❌       | ❌  |
 | tables                       | ✅      | ✅  | ❌       | ❌  |
