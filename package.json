@@ -41,6 +41,7 @@
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
+    "test": "echo \"No test specified\"",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
