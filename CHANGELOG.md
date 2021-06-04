@@ -1,4 +1,10 @@
-## 3.0.0-rc.1 (2021-06-04)
+## 3.0.0-rc.2 (2021-06-04)
+
+### Bug Fixes
+
+- fix CapacitorDataStorageSqlite.podspec
+
+## 3.0.0-rc.1 (2021-06-04) Not to be used
 
 ### Chores
 
