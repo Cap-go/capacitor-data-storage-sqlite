@@ -1,3 +1,9 @@
+## 3.0.0 (2021-06-07)
+
+### Bug Fixes
+
+- fix iOS isStoreExists, isStoreOpen
+
 ## 3.0.0-rc.4 (2021-06-07)
 
 ### Bug Fixes

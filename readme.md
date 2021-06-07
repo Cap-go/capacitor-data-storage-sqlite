@@ -37,7 +37,7 @@ meaning that it will not work in IE11 without additional JavaScript transformati
 ## Installation
 
 ```bash
-npm install --save capacitor-data-storage-sqlite@next
+npm install --save capacitor-data-storage-sqlite
 npx cap sync
 ```
 
@@ -121,18 +121,21 @@ No configuration required for this plugin
 
 - [angular-data-storage-sqlite-app-starter](https://github.com/jepiqueau/angular-data-storage-sqlite-app-starter)
 
-
 ### Ionic/React
 
+- [react-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
 
 ### React
 
+- [react-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
 
 ### Ionic/Vue
 
+- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
 
 ### Vue
 
+- [vue-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
 
 ## Usage
 

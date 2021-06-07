@@ -42,11 +42,11 @@ export interface CapacitorDataStorageSqlitePlugin {
      */
     deleteStore(options: capOpenStorageOptions): Promise<void>;
     /**
-    * Set or Add a table to an existing store
-    * @param options: capTableStorageOptions
-    * @returns Promise<void>
-    * @since 0.0.1
-    */
+     * Set or Add a table to an existing store
+     * @param options: capTableStorageOptions
+     * @returns Promise<void>
+     * @since 0.0.1
+     */
     setTable(options: capTableStorageOptions): Promise<void>;
     /**
      * Store a data with given key and value

@@ -68,7 +68,8 @@ enum CapacitorDataStorageSqliteError: Error {
 
     @objc func isStoreExists(_ name: String) throws -> NSNumber {
 
-        let result: Bool = UtilsFile.isFileExist(fileName: name)
+        let result: Bool = UtilsFile
+            .isFileExist(fileName: "\(name)SQLite.db")
         if result {
             return 1
         } else {
@@ -80,7 +81,7 @@ enum CapacitorDataStorageSqliteError: Error {
 
     @objc func isStoreOpen(_ name: String) throws -> NSNumber {
         if mDb != nil {
-            if mDb?.dbName == name && ((mDb?.isOpen) != nil) {
+            if mDb?.dbName == "\(name)SQLite.db" && ((mDb?.isOpen) != nil) {
                 return 1
             } else {
                 return 0
