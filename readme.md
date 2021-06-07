@@ -2,7 +2,7 @@
 <h3 align="center">DATA STORAGE SQLITE</h3>
 <p align="center"><strong><code>capacitor-data-storage-sqlite</code></strong></p>
 <br>
-<p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3 🚧</strong></p><br>
+<p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3</strong></p><br>
 <p align="center">
   iOS & Android only</p>
 <p align="center">
@@ -50,13 +50,34 @@ npx cap sync
 npm install --save localforage
 ```
 
+- On Electron
+```bash
+npm install --save @capacitor-community/electron@next
+npx cap add @capacitor-community/electron
+```
+Go to the Electron folder of your application
+open your package.json and check to you have the following script
+`"rebuild-deps": "electron-rebuild"`
+otherwise add it
+
+```bash
+cd electron
+npm install --save sqlite3
+npm install --save-dev @types/sqlite3 electron-rebuild
+npm run rebuild-deps
+cd ..
+npx cap sync @capacitor-community/electron
+```
+
 Then build YOUR_APPLICATION
 
 ```
 npm run build
 npx cap copy
+npx cap copy @capacitor-community/electron
 npx cap open ios
 npx cap open android
+npx cap open @capacitor-community/electron
 ionic serve
 ```
 
@@ -123,8 +144,9 @@ No configuration required for this plugin
 
 The IOS & Android code use SQLCipher allowing for database encryption. 
 The Android code is now based on `androidx.sqlite`. The database is not closed anymore after each transaction for performance improvement.
-You must manage the `close`of the database before opening a new database.
+You must manage the `close` of the database before opening a new database.
 The Web code use `localforage` package to store the datastore in the Browser.
+The Electron code use `sqlite3`package
 
 ## Contributors ✨
 
