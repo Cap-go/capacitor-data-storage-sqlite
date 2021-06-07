@@ -1,3 +1,9 @@
+## 3.0.0-rc.4 (2021-06-07)
+
+### Bug Fixes
+
+- fix files electron in package.json
+
 ## 3.0.0-rc.3 (2021-06-07)
 
 ### Chore

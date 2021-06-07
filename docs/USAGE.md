@@ -2,7 +2,7 @@
 <h2 align="center">USAGE DOCUMENTATION</h2>
 <p align="center"><strong><code>capacitor-data-storage-sqlite</code></strong></p>
 <br>
-<p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3 🚧</strong></p><br>
+<p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3</strong></p><br>
 <p align="center">
   iOS for testing only</p>
 <p align="center">
