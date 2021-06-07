@@ -4,8 +4,6 @@
 <br>
 <p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3</strong></p><br>
 <p align="center">
-  iOS & Android only</p>
-<p align="center">
   Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of <strong>type string only</strong> to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
 
 <p align="center">
