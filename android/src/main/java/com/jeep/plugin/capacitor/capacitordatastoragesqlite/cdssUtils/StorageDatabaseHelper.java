@@ -316,7 +316,7 @@ public class StorageDatabaseHelper {
         List<String> data = new ArrayList<>();
         if (_db.isOpen()) {
             try {
-                String DATA_SELECT_QUERY = "SELECT " + COL_NAME + " FROM " + this._tableName + ";";
+                String DATA_SELECT_QUERY = "SELECT " + COL_NAME + " FROM " + this._tableName + " ORDER BY " + COL_NAME + ";";
 
                 c = (Cursor) _db.query(DATA_SELECT_QUERY);
                 if (c.getCount() > 0) {
@@ -346,7 +346,7 @@ public class StorageDatabaseHelper {
         List<String> data = new ArrayList<>();
         if (_db.isOpen()) {
             try {
-                String DATA_SELECT_QUERY = "SELECT " + COL_VALUE + " FROM " + this._tableName + ";";
+                String DATA_SELECT_QUERY = "SELECT " + COL_VALUE + " FROM " + this._tableName + " ORDER BY " + COL_NAME + ";";
 
                 c = (Cursor) _db.query(DATA_SELECT_QUERY);
                 if (c.getCount() > 0) {
@@ -413,7 +413,18 @@ public class StorageDatabaseHelper {
         if (_db.isOpen()) {
             try {
                 String DATA_SELECT_QUERY =
-                    "SELECT " + COL_VALUE + " FROM " + this._tableName + " WHERE " + COL_NAME + " LIKE '" + inFilter + "';";
+                    "SELECT " +
+                    COL_VALUE +
+                    " FROM " +
+                    this._tableName +
+                    " WHERE " +
+                    COL_NAME +
+                    " LIKE '" +
+                    inFilter +
+                    "'" +
+                    " ORDER BY " +
+                    COL_NAME +
+                    ";";
                 c = (Cursor) _db.query(DATA_SELECT_QUERY);
                 if (c.getCount() > 0) {
                     if (c.moveToFirst()) {
@@ -489,7 +500,7 @@ public class StorageDatabaseHelper {
         List<String> tables = new ArrayList<>();
         if (_db.isOpen()) {
             try {
-                String DATA_SELECT_QUERY = "SELECT name FROM sqlite_master WHERE TYPE='table';";
+                String DATA_SELECT_QUERY = "SELECT name FROM sqlite_master WHERE TYPE='table'" + " ORDER BY name " + ";";
 
                 c = (Cursor) _db.query(DATA_SELECT_QUERY);
                 if (c.getCount() > 0) {

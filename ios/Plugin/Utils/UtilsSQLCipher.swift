@@ -575,8 +575,8 @@ class UtilsSQLCipher {
     class func getTables(mDB: StorageDatabaseHelper) throws -> [String] {
         var retArray: [String] = [String]()
 
-        let getStmt: String = "SELECT \(COLNAME) FROM sqlite_master " +
-            "WHERE TYPE='table';"
+        let getStmt: String = "SELECT name FROM sqlite_master " +
+            "WHERE TYPE='table' ORDER BY name;"
         do {
             let results = try querySQL(mDB: mDB, sql: getStmt, values: [])
             if results.count > 0 {

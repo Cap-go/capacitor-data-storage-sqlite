@@ -327,7 +327,7 @@ public class CapacitorDataStorageSqlitePlugin extends Plugin {
             rHandler.retJSObject(call, ret, null);
             return;
         } catch (Exception e) {
-            String msg = "Keys: " + e.getMessage();
+            String msg = "Tables: " + e.getMessage();
             rHandler.retJSObject(call, new JSObject(), msg);
             return;
         }

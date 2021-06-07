@@ -341,7 +341,7 @@ class StorageDatabaseHelper {
     func keys() throws -> [String] {
         var retArray: [String] = [String]()
         if mDB != nil && isOpen {
-            let keysStatement = "SELECT \(COLNAME) FROM \(tableName);"
+            let keysStatement = "SELECT \(COLNAME) FROM \(tableName) ORDER BY \(COLNAME);"
             var results: [[String: Any]] = []
             do {
                 results = try UtilsSQLCipher.querySQL(mDB: self,
@@ -373,7 +373,7 @@ class StorageDatabaseHelper {
     func values() throws -> [String] {
         var retArray: [String] = [String]()
         if mDB != nil && isOpen {
-            let valuesStatement = "SELECT \(COLVALUE) FROM \(tableName);"
+            let valuesStatement = "SELECT \(COLVALUE) FROM \(tableName) ORDER BY \(COLNAME);"
             var results: [[String: Any]] = []
             do {
                 results = try UtilsSQLCipher.querySQL(mDB: self,

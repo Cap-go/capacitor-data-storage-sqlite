@@ -9,6 +9,7 @@ import type {
   capFilterStorageOptions,
   capKeysResult,
   capKeysValuesResult,
+  capTablesResult,
   capOpenStorageOptions,
   capTableStorageOptions,
   capValueResult,
@@ -217,7 +218,7 @@ export class CapacitorDataStorageSqliteWeb
     console.log('isTable', options);
     throw new Error('Method isTable not implemented.');
   }
-  async tables(): Promise<capKeysResult> {
+  async tables(): Promise<capTablesResult> {
     throw new Error('Method tables not implemented.');
   }
   async deleteTable(options: capTableStorageOptions): Promise<void> {

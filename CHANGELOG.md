@@ -1,3 +1,14 @@
+## 3.0.0-rc.3 (2021-06-07)
+
+### Chore
+
+- Electron 12.0.8
+
+### Added Features (Electron)
+
+- rewrite the whole code to try...catch error
+
+
 ## 3.0.0-rc.2 (2021-06-04)
 
 ### Bug Fixes

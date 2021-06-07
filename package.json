@@ -32,13 +32,15 @@
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
+    "verify:electron": "npm run build-electron",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
     "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- autocorrect --format",
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
     "swiftlint": "node-swiftlint",
     "docgen": "docgen --api CapacitorDataStorageSqlitePlugin --output-readme docs/API.md --output-json dist/docs.json",
-    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
+    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js  && npm run build-electron",
+    "build-electron": "tsc --project electron/tsconfig.json && rollup -c electron/rollup.config.js && rimraf ./electron/build",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "test": "echo \"No test specified\"",
@@ -76,9 +78,13 @@
     },
     "android": {
       "src": "android"
+    },
+    "electron": {
+      "src": "electron"
     }
   },
   "dependencies": {
+    "electron": "^12.0.8",
     "localforage": "^1.9.0"
   }
 }

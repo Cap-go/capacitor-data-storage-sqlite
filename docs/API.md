@@ -37,6 +37,7 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 * [`closeStore(...)`](#closestore)
 * [`isStoreOpen(...)`](#isstoreopen)
 * [`isStoreExists(...)`](#isstoreexists)
+* [`deleteStore(...)`](#deletestore)
 * [`setTable(...)`](#settable)
 * [`set(...)`](#set)
 * [`get(...)`](#get)
@@ -47,7 +48,6 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 * [`values()`](#values)
 * [`filtervalues(...)`](#filtervalues)
 * [`keysvalues()`](#keysvalues)
-* [`deleteStore(...)`](#deletestore)
 * [`isTable(...)`](#istable)
 * [`tables()`](#tables)
 * [`deleteTable(...)`](#deletetable)
@@ -135,6 +135,21 @@ Check if the Store exists
 | **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
 
 **Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
+
+--------------------
+
+
+### deleteStore(...)
+
+```typescript
+deleteStore(options: capOpenStorageOptions) => Promise<void>
+```
+
+Delete a store
+
+| Param         | Type                                                                    | Description                                                  |
+| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
 
 --------------------
 
@@ -285,21 +300,6 @@ Get the data key/value pair list
 --------------------
 
 
-### deleteStore(...)
-
-```typescript
-deleteStore(options: capOpenStorageOptions) => Promise<void>
-```
-
-Delete a store
-
-| Param         | Type                                                                    | Description                                                  |
-| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
-
---------------------
-
-
 ### isTable(...)
 
 ```typescript
@@ -320,12 +320,12 @@ Check if a table exists
 ### tables()
 
 ```typescript
-tables() => Promise<capKeysResult>
+tables() => Promise<capTablesResult>
 ```
 
 Get the table list for the current store
 
-**Returns:** <code>Promise&lt;<a href="#capkeysresult">capKeysResult</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#captablesresult">capTablesResult</a>&gt;</code>
 
 --------------------
 
@@ -435,6 +435,13 @@ Delete a store
 | Prop             | Type               | Description                                                        |
 | ---------------- | ------------------ | ------------------------------------------------------------------ |
 | **`keysvalues`** | <code>any[]</code> | the data keys/values list as an Array of {key:string,value:string} |
+
+
+#### capTablesResult
+
+| Prop         | Type                  | Description                 |
+| ------------ | --------------------- | --------------------------- |
+| **`tables`** | <code>string[]</code> | the tables list as an Array |
 
 </docgen-api>
 

@@ -54,6 +54,13 @@ export class StorageDatabaseHelper {
     }
   }
   async set(data: Data): Promise<void> {
+    try {
+      await this._db.setItem(data.name, data.value);
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    /*
     return this._db
       .setItem(data.name, data.value)
       .then(() => {
@@ -63,21 +70,35 @@ export class StorageDatabaseHelper {
         console.log('set: Error Data insertion failed: ' + error);
         return Promise.reject(error);
       });
+      */
   }
 
   async get(name: string): Promise<Data> {
+    try {
+      const value: string = await this._db.getItem(name);
+      const data: Data = new Data();
+      data.name = name;
+      data.value = value;
+      console.log(`data: ${JSON.stringify(data)}`);
+      return Promise.resolve(data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    /*
     return this._db
       .getItem(name)
       .then((value: string) => {
         const data: Data = new Data();
         data.name = name;
         data.value = value;
+        console.log(`data: ${JSON.stringify(data)}`)
         return Promise.resolve(data);
       })
       .catch((error: string) => {
         console.log('get: Error Data retrieve failed: ' + error);
-        return Promise.resolve(null);
+        return Promise.reject(error);
       });
+      */
   }
 
   async remove(name: string): Promise<void> {

@@ -35,6 +35,13 @@ export interface CapacitorDataStorageSqlitePlugin {
    */
   isStoreExists(options: capStorageOptions): Promise<capDataStorageResult>;
   /**
+   * Delete a store
+   * @param options: capOpenStorageOptions
+   * @returns Promise<void>
+   * @since 0.0.1
+   */
+   deleteStore(options: capOpenStorageOptions): Promise<void>;
+   /**
    * Set or Add a table to an existing store
    * @param options: capTableStorageOptions
    * @returns Promise<void>
@@ -101,13 +108,6 @@ export interface CapacitorDataStorageSqlitePlugin {
    */
   keysvalues(): Promise<capKeysValuesResult>;
   /**
-   * Delete a store
-   * @param options: capOpenStorageOptions
-   * @returns Promise<void>
-   * @since 0.0.1
-   */
-  deleteStore(options: capOpenStorageOptions): Promise<void>;
-  /**
    * Check if a table exists
    * @param options: capTableStorageOptions
    * @returns Promise<capDataStorageResult>
@@ -116,10 +116,10 @@ export interface CapacitorDataStorageSqlitePlugin {
   isTable(options: capTableStorageOptions): Promise<capDataStorageResult>;
   /**
    * Get the table list for the current store
-   * @returns Promise<capKeysResult>
+   * @returns Promise<capTablesResult>
    * @since 3.0.0
    */
-  tables(): Promise<capKeysResult>;
+  tables(): Promise<capTablesResult>;
   /**
    * Delete a store
    * @param options: capTableStorageOptions
@@ -232,4 +232,10 @@ export interface capKeysValuesResult {
    * the data keys/values list as an Array of {key:string,value:string}
    */
   keysvalues: any[];
+}
+export interface capTablesResult {
+  /**
+   * the tables list as an Array
+   */
+  tables: string[];
 }
