@@ -336,7 +336,7 @@ Get the table list for the current store
 deleteTable(options: capTableStorageOptions) => Promise<void>
 ```
 
-Delete a store
+Delete a table
 
 | Param         | Type                                                                      | Description                                                    |
 | ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
