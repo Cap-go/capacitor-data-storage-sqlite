@@ -198,7 +198,7 @@ class StorageDatabaseHelper {
             var retData: Data = Data()
             do {
                 let getString: String = """
-                SELECT * FROM \(tableName) WHERE \(COLNAME) = "\(name)";
+                SELECT * FROM \(tableName) WHERE \(COLNAME) = '\(name)';
                 """
                 result = try UtilsSQLCipher.querySQL(mDB: self,
                                                      sql: getString,
