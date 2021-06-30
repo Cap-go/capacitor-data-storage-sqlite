@@ -3,8 +3,7 @@
 <p align="center"><strong><code>capacitor-data-storage-sqlite</code></strong></p>
 <br>
 <p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 3</strong></p><br>
-<p align="center">
-  iOS for testing only</p>
+
 <p align="center">
   Capacitor Data Storage SQlite Plugin can be used in several frameworks, either through its own API or through Wrappers or Hooks.</p>
 
