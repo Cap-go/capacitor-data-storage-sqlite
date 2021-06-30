@@ -109,9 +109,9 @@ No configuration required for this plugin
 
 ## Documentation
 
-- [API_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/API.md)
+- [API_Documentation](docs/API.md)
 
-- [USAGE_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/USAGE.md)
+- [USAGE_Documentation](docs/USAGE.md)
 
 ## Applications demonstrating the use of the plugin
 
