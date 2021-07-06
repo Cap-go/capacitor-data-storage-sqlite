@@ -1,22 +1,16 @@
 package com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteStatement;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.CapacitorDataStorageSqlite;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.RetHandler;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.Data;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.Global;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteException;
 
 public class StorageDatabaseHelper {
 
@@ -238,17 +232,49 @@ public class StorageDatabaseHelper {
         if (_db.isOpen()) {
             try {
                 boolean ret = iskey(name);
-                String stmt;
+                String statement = "";
+                SupportSQLiteStatement stmt = null;
+
                 if (ret) {
                     // update
-                    stmt =
+                    statement = statement.concat("UPDATE ").concat(this._tableName).concat(" SET ");
+                    statement = statement.concat(COL_VALUE).concat(" = ? ");
+                    statement = statement.concat(" WHERE ").concat(COL_NAME).concat(" = ?;");
+                    stmt = _db.compileStatement(statement);
+                    Object[] valObj = new Object[2];
+                    valObj[0] = value;
+                    valObj[1] = name;
+                    SimpleSQLiteQuery.bind(stmt, valObj);
+                    stmt.executeUpdateDelete();
+                    /*                    stmt =
                         "UPDATE " + this._tableName + " SET " + COL_VALUE + " = '" + value + "' WHERE " + COL_NAME + " = '" + name + "';";
+                        */
                 } else {
                     // insert
+
+                    statement = statement.concat("INSERT INTO ").concat(this._tableName);
+                    statement = statement.concat(" (").concat(COL_NAME).concat(",");
+                    statement = statement.concat(COL_VALUE).concat(") VALUES(?,?);");
+                    stmt = _db.compileStatement(statement);
+                    Object[] valObj = new Object[2];
+                    valObj[0] = name;
+                    valObj[1] = value;
+                    SimpleSQLiteQuery.bind(stmt, valObj);
+                    stmt.executeInsert();
+                    /*
                     stmt =
                         "INSERT INTO " + _tableName + " (" + COL_NAME + "," + COL_VALUE + ") " + "VALUES('" + name + "','" + value + "');";
+                */
                 }
-                _db.execSQL(stmt);
+                //                _db.execSQL(stmt);
+            } catch (IllegalStateException e) {
+                String msg = "Failed in set" + e.getMessage();
+                Log.v(TAG, msg);
+                throw new Exception(msg);
+            } catch (IllegalArgumentException e) {
+                String msg = "Failed in set" + e.getMessage();
+                Log.v(TAG, msg);
+                throw new Exception(msg);
             } catch (Exception e) {
                 String msg = "Failed in set" + e.getMessage();
                 Log.v(TAG, msg);

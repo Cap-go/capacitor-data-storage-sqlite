@@ -1,3 +1,14 @@
+## 3.0.2 (2021-07-06)
+
+### Chore
+
+- @capacitor/core 3.0.2
+- Electron 13.1.4
+
+### Bug Fixes
+
+- fix Android Upgrade and single quotes in data make sqlite inserts fail. issue#45
+
 ## 3.0.1 (2021-06-09)
 
 ### Bug Fixes
