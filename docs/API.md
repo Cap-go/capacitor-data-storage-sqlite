@@ -71,6 +71,8 @@ echo(options: capEchoOptions) => Promise<capEchoResult>
 
 **Returns:** <code>Promise&lt;<a href="#capechoresult">capEchoResult</a>&gt;</code>
 
+**Since:** 0.0.1
+
 --------------------
 
 
@@ -86,6 +88,8 @@ Open a store
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
 
+**Since:** 0.0.1
+
 --------------------
 
 
@@ -100,6 +104,8 @@ Close the Store
 | Param         | Type                                                            | Description                                          |
 | ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
 | **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
+
+**Since:** 3.0.0
 
 --------------------
 
@@ -118,6 +124,8 @@ Check if the Store is opened
 
 **Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
+**Since:** 3.0.0
+
 --------------------
 
 
@@ -135,6 +143,8 @@ Check if the Store exists
 
 **Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
+**Since:** 3.0.0
+
 --------------------
 
 
@@ -149,6 +159,8 @@ Delete a store
 | Param         | Type                                                                    | Description                                                  |
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
+
+**Since:** 0.0.1
 
 --------------------
 
@@ -165,6 +177,8 @@ Set or Add a table to an existing store
 | ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
 
+**Since:** 0.0.1
+
 --------------------
 
 
@@ -179,6 +193,8 @@ Store a data with given key and value
 | Param         | Type                                                                    | Description                                                  |
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
+
+**Since:** 0.0.1
 
 --------------------
 
@@ -197,6 +213,8 @@ Retrieve a data value for a given data key
 
 **Returns:** <code>Promise&lt;<a href="#capvalueresult">capValueResult</a>&gt;</code>
 
+**Since:** 0.0.1
+
 --------------------
 
 
@@ -212,6 +230,8 @@ Remove a data with given key
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
 
+**Since:** 0.0.1
+
 --------------------
 
 
@@ -222,6 +242,8 @@ clear() => Promise<void>
 ```
 
 Clear the Data Store (delete all keys)
+
+**Since:** 0.0.1
 
 --------------------
 
@@ -240,6 +262,8 @@ Check if a data key exists
 
 **Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
+**Since:** 0.0.1
+
 --------------------
 
 
@@ -253,6 +277,8 @@ Get the data key list
 
 **Returns:** <code>Promise&lt;<a href="#capkeysresult">capKeysResult</a>&gt;</code>
 
+**Since:** 0.0.1
+
 --------------------
 
 
@@ -265,6 +291,8 @@ values() => Promise<capValuesResult>
 Get the data value list
 
 **Returns:** <code>Promise&lt;<a href="#capvaluesresult">capValuesResult</a>&gt;</code>
+
+**Since:** 0.0.1
 
 --------------------
 
@@ -283,6 +311,8 @@ Get the data value list for filter keys
 
 **Returns:** <code>Promise&lt;<a href="#capvaluesresult">capValuesResult</a>&gt;</code>
 
+**Since:** 2.4.2
+
 --------------------
 
 
@@ -295,6 +325,8 @@ keysvalues() => Promise<capKeysValuesResult>
 Get the data key/value pair list
 
 **Returns:** <code>Promise&lt;<a href="#capkeysvaluesresult">capKeysValuesResult</a>&gt;</code>
+
+**Since:** 0.0.1
 
 --------------------
 
@@ -313,6 +345,8 @@ Check if a table exists
 
 **Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
 
+**Since:** 3.0.0
+
 --------------------
 
 
@@ -325,6 +359,8 @@ tables() => Promise<capTablesResult>
 Get the table list for the current store
 
 **Returns:** <code>Promise&lt;<a href="#captablesresult">capTablesResult</a>&gt;</code>
+
+**Since:** 3.0.0
 
 --------------------
 
@@ -340,6 +376,8 @@ Delete a table
 | Param         | Type                                                                      | Description                                                    |
 | ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
+
+**Since:** 3.0.0
 
 --------------------
 

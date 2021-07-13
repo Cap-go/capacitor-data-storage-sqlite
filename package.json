@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "3.0.2",
+  "version": "3.1.1",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -48,10 +48,10 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "^3.0.2",
-    "@capacitor/core": "^3.0.2",
-    "@capacitor/docgen": "^0.0.16",
-    "@capacitor/ios": "^3.0.2",
+    "@capacitor/android": "^3.1.1",
+    "@capacitor/core": "^3.1.1",
+    "@capacitor/docgen": "^0.0.17",
+    "@capacitor/ios": "^3.1.1",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
@@ -65,7 +65,7 @@
     "typescript": "~4.3.4"
   },
   "peerDependencies": {
-    "@capacitor/core": "^3.0.2",
+    "@capacitor/core": "^3.1.1",
     "localforage": "^1.9.0"
   },
   "prettier": "@ionic/prettier-config",
