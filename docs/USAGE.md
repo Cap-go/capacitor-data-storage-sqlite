@@ -10,6 +10,7 @@
 ## Frameworks Index
 
 - [`Ionic/Angular`](#ionicangular)
+- [`Vanilla TypeScript`](#vanilla-typescript)
 
 ## Usage
 
@@ -826,3 +827,92 @@ export class MultitablesstoreComponent implements AfterViewInit {
 
 ```
 
+### Vanilla TypeScript
+
+Some suggestions that serve as a quickstart introduction to [API](./API.md).
+
+First a function to open the database.
+
+```ts
+import {
+  CapacitorDataStorageSqlite,
+  capOpenStorageOptions,
+} from "capacitor-data-storage-sqlite";
+
+export let sqlStore = CapacitorDataStorageSqlite;
+
+// Call this function before accessing 
+// functions like sqlStore.get sqlStore.set etc...
+export let initSqlStore = async () => {
+  console.log("Init capacitor-data-storage-sqlite");
+
+  let options: capOpenStorageOptions = {
+    database: "insert_db_name_here",
+    table: "insert_table_name_here",
+  };
+
+  try {
+    await sqlStore.openStore(options);
+  } catch (err) {
+    console.log("Error initialising capacitor-data-storage-sqlite.");
+    console.log(err);
+  }
+};
+```
+
+Second some helper functions to enable storage of serialisable objects.
+
+```ts
+import { sqlStore } from "file_with_initSqlStore_above";
+
+export let setData = async (key: string, value: any): Promise<boolean> => {
+  let valueJson = JSON.stringify(value);
+  try {
+    await sqlStore.set({ key: key, value: valueJson });
+    return true;
+  } catch (err) {
+    console.log(`Error setting ${key}: ${valueJson}`);
+    console.log(err);
+    return false;
+  }
+}
+
+export let restoreData = async (key: string): Promise<any> => {
+  try {
+    let exists = await sqlStore.iskey({ key: key });
+    if (!exists.result) return null;
+    let valueJson = await sqlStore.get({ key: key});
+    let value = JSON.parse(valueJson.value);
+    return value;
+  } catch (err) {
+    console.log(`Error restoring key ${key}`);
+    console.log(err);
+    return null;
+  }
+}
+```
+
+To load the entire table into memory use `sqlStore.keysvalues()`.
+
+```ts
+export let inMemoryMap = new Map<string, any>();
+
+export let loadInMemoryMap = async (): Promise<void> => {
+  try {
+    let keysvalues = await sqlStore.keysvalues();
+
+    for (let entry of keysvalues.keysvalues) {
+      let key = entry.key;
+      let value = JSON.parse(entry.value);
+
+      inMemoryMap.set(key, value);
+    }
+
+  } catch (err) {
+    console.log("Error loading table to in memory map.");
+    console.log(err);
+    return;
+  }
+}
+
+```
