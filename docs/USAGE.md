@@ -897,7 +897,7 @@ To load the entire table into memory use `sqlStore.keysvalues()`.
 ```ts
 export let inMemoryMap = new Map<string, any>();
 
-export let loadInMemoryMap = async (): Promise<void>> => {
+export let loadInMemoryMap = async (): Promise<void> => {
   try {
     let keysvalues = await sqlStore.keysvalues();
 
