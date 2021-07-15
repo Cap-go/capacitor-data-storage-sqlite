@@ -829,7 +829,7 @@ export class MultitablesstoreComponent implements AfterViewInit {
 
 ### Vanilla TypeScript
 
-Some rough suggestions that might serve as a quickstart introduction to [API](./API.md).
+Some suggestions that serve as a quickstart introduction to [API](./API.md).
 
 First a function to open the database.
 
