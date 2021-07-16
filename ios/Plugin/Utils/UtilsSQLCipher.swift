@@ -542,7 +542,7 @@ class UtilsSQLCipher {
                 .prepareSQL(mDB: mDB,
                             sql: updateStatementString,
                             values: values)
-            if lastId <= 0 {
+            if lastId < 0 {
                 let msg: String = "No data updated"
                 throw UtilsSQLCipherError.updateData(message: msg)
             }
