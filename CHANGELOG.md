@@ -1,3 +1,9 @@
+## 3.1.2-2 (2021-07-16)
+
+### Bug Fixes
+
+- fix verify all platforms (build)
+
 ## 3.1.2-1 (2021-07-16)
 
 ### Bug Fixes
