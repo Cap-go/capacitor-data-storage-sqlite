@@ -1,3 +1,10 @@
+## 3.1.2-1 (2021-07-13)
+
+### Bug Fixes
+
+- fix invalid error during update for existing key on iOS #47
+- update README, CHANGELOG
+
 ## 3.1.1 (2021-07-13)
 
 ### Chore
