@@ -1,3 +1,9 @@
+## 3.1.2-3 (2021-08-05)
+
+### Bug Fixes
+
+- fix Debug logs in distribution build issue#48
+
 ## 3.1.2-2 (2021-07-16)
 
 ### Bug Fixes

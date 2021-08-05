@@ -50,7 +50,6 @@ export class UtilsSQLite {
       const dbOpen = new this.SQLite3.Database(dbPath, flags);
       return Promise.resolve(dbOpen);
     } catch (err) {
-      console.log('Error: in UtilsSQLite.connection ', err);
       return Promise.reject(err);
     }
   }
@@ -80,7 +79,6 @@ export class UtilsSQLite {
       }
       return Promise.resolve(ret);
     } catch (err) {
-      console.log(`Error: in isFileExists ${err}`);
       return Promise.reject(err);
     }
   }
@@ -95,7 +93,6 @@ export class UtilsSQLite {
       }
       return Promise.resolve(retPath);
     } catch (err) {
-      console.log('Error: in getDBPath', err);
       return Promise.reject(err);
     }
   }
@@ -192,7 +189,6 @@ export class StorageDatabaseHelper {
       if (this.db != null) {
         return this.db.run(CREATE_STORAGE_TABLE, async (err: Error) => {
           if (err) {
-            console.log('Error: in createTable ', err.message);
             return Promise.reject(`Error: in createTable ${err.message}`);
           } else {
             try {

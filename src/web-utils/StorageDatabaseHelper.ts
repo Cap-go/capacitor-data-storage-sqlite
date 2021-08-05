@@ -10,9 +10,6 @@ export class StorageDatabaseHelper {
   private _dbName: string;
 
   constructor(dbName: string, tableName: string) {
-    console.log('in StorageDatabaseHelper');
-    console.log(`dbName ${dbName}`);
-    console.log(`tableName ${tableName}`);
     const res: boolean = this.openStore(dbName, tableName);
     if (res) {
       this._dbName = dbName;
@@ -20,20 +17,15 @@ export class StorageDatabaseHelper {
       this._dbName = '';
       throw new Error('openStore return false');
     }
-    console.log(`constructor this._dbName ${JSON.stringify(this._dbName)}`);
   }
   openStore(dbName: string, tableName: string): boolean {
     let ret = false;
     const config: any = this.setConfig(dbName, tableName);
-    console.log(`config ${JSON.stringify(config)}`);
-    console.log(`LocalForage ${JSON.stringify(localForage)}`);
     this._db = localForage.createInstance(config);
     if (this._db != null) {
       this._dbName = dbName;
-      console.log(`this._dbName ${JSON.stringify(this._dbName)}`);
       ret = true;
     }
-    console.log(`ret ${ret}`);
     return ret;
   }
   setConfig(dbName: string, tableName: string): any {
@@ -60,17 +52,6 @@ export class StorageDatabaseHelper {
     } catch (err) {
       return Promise.reject(err);
     }
-    /*
-    return this._db
-      .setItem(data.name, data.value)
-      .then(() => {
-        return Promise.resolve();
-      })
-      .catch((error: string) => {
-        console.log('set: Error Data insertion failed: ' + error);
-        return Promise.reject(error);
-      });
-      */
   }
 
   async get(name: string): Promise<Data> {
@@ -79,26 +60,10 @@ export class StorageDatabaseHelper {
       const data: Data = new Data();
       data.name = name;
       data.value = value;
-      console.log(`data: ${JSON.stringify(data)}`);
       return Promise.resolve(data);
     } catch (err) {
       return Promise.reject(err);
     }
-    /*
-    return this._db
-      .getItem(name)
-      .then((value: string) => {
-        const data: Data = new Data();
-        data.name = name;
-        data.value = value;
-        console.log(`data: ${JSON.stringify(data)}`)
-        return Promise.resolve(data);
-      })
-      .catch((error: string) => {
-        console.log('get: Error Data retrieve failed: ' + error);
-        return Promise.reject(error);
-      });
-      */
   }
 
   async remove(name: string): Promise<void> {
@@ -108,7 +73,6 @@ export class StorageDatabaseHelper {
         return Promise.resolve();
       })
       .catch((error: string) => {
-        console.log('remove: Error Data remove failed: ' + error);
         return Promise.reject(error);
       });
   }
@@ -120,7 +84,6 @@ export class StorageDatabaseHelper {
         return Promise.resolve();
       })
       .catch((error: string) => {
-        console.log('clear: Error Data clear failed: ' + error);
         return Promise.reject(error);
       });
   }
@@ -132,7 +95,6 @@ export class StorageDatabaseHelper {
         return Promise.resolve(keys);
       })
       .catch((error: string) => {
-        console.log('keys: Error Data retrieve keys failed: ' + error);
         return Promise.reject(error);
       });
   }
@@ -147,7 +109,6 @@ export class StorageDatabaseHelper {
         return Promise.resolve(values);
       })
       .catch((error: string) => {
-        console.log('values: Error Data retrieve values failed: ' + error);
         return Promise.reject(error);
       });
   }
@@ -165,9 +126,6 @@ export class StorageDatabaseHelper {
         return Promise.resolve(keysvalues);
       })
       .catch((error: string) => {
-        console.log(
-          'keysvalues: Error Data retrieve keys/values failed: ' + error,
-        );
         return Promise.reject(error);
       });
   }
@@ -182,7 +140,6 @@ export class StorageDatabaseHelper {
         }
       })
       .catch((error: string) => {
-        console.log('iskey: Error Data retrieve iskey failed: ' + error);
         return Promise.reject(error);
       });
   }

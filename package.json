@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "3.1.2-2",
+  "version": "3.1.2-3",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",

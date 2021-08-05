@@ -25,7 +25,6 @@ export class CapacitorDataStorageSqliteWeb
   private mDb!: StorageDatabaseHelper;
 
   async echo(options: capEchoOptions): Promise<capEchoResult> {
-    console.log('ECHO', options);
     const ret: capEchoResult = {} as capEchoResult;
     ret.value = options.value ? options.value : '';
     return ret;
@@ -35,9 +34,6 @@ export class CapacitorDataStorageSqliteWeb
     const dbName = options.database ? `${options.database}IDB` : 'storageIDB';
     const tableName = options.table ? options.table : 'storage_store';
     try {
-      console.log('in openstore plugin');
-      console.log(`dbName ${dbName}`);
-      console.log(`tableName ${tableName}`);
       this.mDb = new StorageDatabaseHelper(dbName, tableName);
       return Promise.resolve();
     } catch (err) {
@@ -45,18 +41,15 @@ export class CapacitorDataStorageSqliteWeb
     }
   }
   async closeStore(options: capStorageOptions): Promise<void> {
-    console.log('closeStore', options);
-    throw new Error('Method closeStore not implemented.');
+    throw new Error(`Method closeStore not implemented. ${options}`);
   }
   async isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult> {
-    console.log('isStoreOpen', options);
-    throw new Error('Method isStoreOpen not implemented.');
+    throw new Error(`Method isStoreOpen not implemented. ${options}`);
   }
   async isStoreExists(
     options: capStorageOptions,
   ): Promise<capDataStorageResult> {
-    console.log('isStoreExists', options);
-    throw new Error('Method isStoreExists not implemented.');
+    throw new Error(`Method isStoreExists not implemented. ${options}`);
   }
   async setTable(options: capTableStorageOptions): Promise<void> {
     const tableName = options.table;
@@ -209,20 +202,17 @@ export class CapacitorDataStorageSqliteWeb
     }
   }
   async deleteStore(options: capOpenStorageOptions): Promise<void> {
-    console.log('deleteStore', options);
-    throw new Error('Method deleteStore not implemented.');
+    throw new Error(`Method deleteStore not implemented. ${options}`);
   }
   async isTable(
     options: capTableStorageOptions,
   ): Promise<capDataStorageResult> {
-    console.log('isTable', options);
-    throw new Error('Method isTable not implemented.');
+    throw new Error(`Method isTable not implemented. ${options}`);
   }
   async tables(): Promise<capTablesResult> {
     throw new Error('Method tables not implemented.');
   }
   async deleteTable(options: capTableStorageOptions): Promise<void> {
-    console.log('deleteTable', options);
-    throw new Error('Method deleteTable not implemented.');
+    throw new Error(`Method deleteTable not implemented. ${options}`);
   }
 }

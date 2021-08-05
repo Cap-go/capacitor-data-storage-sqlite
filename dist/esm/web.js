@@ -3,7 +3,6 @@ import { Data } from './web-utils/Data';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     async echo(options) {
-        console.log('ECHO', options);
         const ret = {};
         ret.value = options.value ? options.value : '';
         return ret;
@@ -12,9 +11,6 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         const dbName = options.database ? `${options.database}IDB` : 'storageIDB';
         const tableName = options.table ? options.table : 'storage_store';
         try {
-            console.log('in openstore plugin');
-            console.log(`dbName ${dbName}`);
-            console.log(`tableName ${tableName}`);
             this.mDb = new StorageDatabaseHelper(dbName, tableName);
             return Promise.resolve();
         }
@@ -23,16 +19,13 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         }
     }
     async closeStore(options) {
-        console.log('closeStore', options);
-        throw new Error('Method closeStore not implemented.');
+        throw new Error(`Method closeStore not implemented. ${options}`);
     }
     async isStoreOpen(options) {
-        console.log('isStoreOpen', options);
-        throw new Error('Method isStoreOpen not implemented.');
+        throw new Error(`Method isStoreOpen not implemented. ${options}`);
     }
     async isStoreExists(options) {
-        console.log('isStoreExists', options);
-        throw new Error('Method isStoreExists not implemented.');
+        throw new Error(`Method isStoreExists not implemented. ${options}`);
     }
     async setTable(options) {
         const tableName = options.table;
@@ -197,19 +190,16 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
         }
     }
     async deleteStore(options) {
-        console.log('deleteStore', options);
-        throw new Error('Method deleteStore not implemented.');
+        throw new Error(`Method deleteStore not implemented. ${options}`);
     }
     async isTable(options) {
-        console.log('isTable', options);
-        throw new Error('Method isTable not implemented.');
+        throw new Error(`Method isTable not implemented. ${options}`);
     }
     async tables() {
         throw new Error('Method tables not implemented.');
     }
     async deleteTable(options) {
-        console.log('deleteTable', options);
-        throw new Error('Method deleteTable not implemented.');
+        throw new Error(`Method deleteTable not implemented. ${options}`);
     }
 }
 //# sourceMappingURL=web.js.map
