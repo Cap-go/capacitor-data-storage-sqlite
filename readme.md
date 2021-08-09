@@ -133,7 +133,7 @@ No configuration required for this plugin
 
 ### Vue
 
-- [vue-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
+- [vue-datastoragesqlite-app](https://github.com/jepiqueau/vue-datastoragesqlite-app)
 
 ## Usage
 
