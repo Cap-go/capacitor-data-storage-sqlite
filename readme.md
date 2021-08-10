@@ -129,7 +129,7 @@ No configuration required for this plugin
 
 ### Ionic/Vue
 
-- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
+- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/vue-data-storage-sqlite-app-starter)
 
 ### Vue
 
@@ -160,7 +160,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/jepiqueau"><img src="https://avatars3.githubusercontent.com/u/16580653?v=4" width="100px;" alt=""/><br /><sub><b>Jean Pierre Quéau</b></sub></a><br /><a href="https://github.com/capacitor-data-storage-sqlite/commits?author=jepiqueau" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/mwpb"><img src="https://avatars.githubusercontent.com/u/12957941?v=4" width="100px;" alt=""/><br /><sub><b>Matthew Burke</b></sub></a><br /><a href="https://github.com/capacitor-data-storage-sqlite/commits?author=jepiqueau" title="Documentation">📖</a></td>    
-    <td align="center"><a href="https://github.com/mwpb"><img src="https://avatars.githubusercontent.com/u/1745820?v=4" width="100px;" alt=""/><br /><sub><b>Kevin van Schaijk</b></sub></a><br /><a href="https://github.com/capacitor-data-storage-sqlite/commits?author=jepiqueau" title="Code">💻</a></td>    
+    <td align="center"><a href="https://github.com/mwpb"><img src="https://avatars.githubusercontent.com/u/1745820?v=4" width="100px;" alt=""/><br /><sub><b>Kevin van Schaijk</b></sub></a><br /><a href="https://github.com/capacitor-data-storage-sqlite/commits?author=jepiqueau" title="Code">💻</a></td>  
+    <td align="center"><a href="https://github.com/garbit"><img src="https://avatars.githubusercontent.com/u/555396?v=4" width="100px;" alt=""/><br /><sub><b>Andy Garbett</b></sub></a><br /><a href="https://github.com/capacitor-data-storage-sqlite/commits?author=jepiqueau" title="Documentation">📖</a></td>    
+     
   </tr>
 </table>
 
