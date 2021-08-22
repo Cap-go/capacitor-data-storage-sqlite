@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "3.2.0-1",
+  "version": "3.2.0-2",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -66,7 +66,7 @@
     "typescript": "~4.3.4"
   },
   "peerDependencies": {
-    "@capacitor/core": "^3.2.O",
+    "@capacitor/core": "^3.2.0",
     "localforage": "^1.9.0"
   },
   "prettier": "@ionic/prettier-config",

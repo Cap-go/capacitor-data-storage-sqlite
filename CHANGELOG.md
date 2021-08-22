@@ -1,3 +1,9 @@
+## 3.2.0-2 (2021-08-22)
+
+### Bug Fixes
+
+- fix package.json peerDependencies "@capacitor/core": "^3.2.0"
+
 ## 3.2.0-1 (2021-08-22)
 
 ### Chore
