@@ -1,3 +1,14 @@
+## 3.2.0-1 (2021-08-22)
+
+### Chore
+
+- @capacitor/core 3.2.0
+- @capacitor-community/electron 3.1.0
+
+### Added Features (Electron)
+
+- split the whole code as originately
+
 ## 3.1.2-3 (2021-08-05)
 
 ### Bug Fixes
