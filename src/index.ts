@@ -7,7 +7,8 @@ const CapacitorDataStorageSqlite = registerPlugin<CapacitorDataStorageSqlitePlug
   {
     web: () => import('./web').then(m => new m.CapacitorDataStorageSqliteWeb()),
     electron: () =>
-      (window as any).CapacitorCustomPlatform.plugins.CapacitorDataStorageSqlite,
+      (window as any).CapacitorCustomPlatform.plugins
+        .CapacitorDataStorageSqlite,
   },
 );
 
