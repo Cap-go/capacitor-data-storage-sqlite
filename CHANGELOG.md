@@ -1,3 +1,9 @@
+## 3.2.0-3 (2021-08-31)
+
+### Bug Fixes
+
+- fix index.ts for "@capacitor-community/electron": "^4.0.3"
+
 ## 3.2.0-2 (2021-08-22)
 
 ### Bug Fixes
