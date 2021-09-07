@@ -13,10 +13,15 @@ import type {
   capValueResult,
   capValuesResult,
   capStorageOptions,
+  JsonStore,
+  capStoreJson,
+  capDataStorageChanges,
+  capStoreImportOptions,
 } from '../../src/definitions';
 
 import { Data } from './electron-utils/Data';
 import { StorageDatabaseHelper } from './electron-utils/StorageDatabaseHelper';
+import { isJsonStore } from './electron-utils/json-utils';
 
 export class CapacitorDataStorageSqlite
   implements CapacitorDataStorageSqlitePlugin {
@@ -246,6 +251,75 @@ export class CapacitorDataStorageSqlite
       return Promise.resolve();
     } catch (err) {
       return Promise.reject(err);
+    }
+  }
+  async importFromJson(
+    options: capStoreImportOptions,
+  ): Promise<capDataStorageChanges> {
+    const keys = Object.keys(options);
+    if (!keys.includes('jsonstring')) {
+      return Promise.reject('Must provide a json object');
+    }
+    let totalChanges = 0;
+
+    if (options?.jsonstring) {
+      const jsonStrObj: string = options.jsonstring;
+      const jsonObj = JSON.parse(jsonStrObj);
+      const isValid = isJsonStore(jsonObj);
+      if (!isValid) {
+        return Promise.reject('Must provide a valid JsonSQLite Object');
+      }
+      const vJsonObj: JsonStore = jsonObj;
+      const dbName = vJsonObj.database
+        ? `${vJsonObj.database}SQLite.db`
+        : 'storageSQLite.db';
+      for (const table of vJsonObj.tables) {
+        const tableName = table.name ? table.name : 'storage_store';
+        try {
+          // Open the database
+          await this.mDb.openStore(dbName, tableName);
+          // Import the JsonSQLite Object
+          if (table?.values) {
+            const changes = await this.mDb.importJson(table.values);
+            totalChanges += changes;
+          }
+        } catch (err) {
+          return Promise.reject(`ImportFromJson: ${err}`);
+        } finally {
+          await this.mDb.closeStore(dbName);
+        }
+      }
+      return Promise.resolve({ changes: totalChanges });
+    } else {
+      return Promise.reject('Must provide a json object');
+    }
+  }
+  async isJsonValid(
+    options: capStoreImportOptions,
+  ): Promise<capDataStorageResult> {
+    const keys = Object.keys(options);
+    if (!keys.includes('jsonstring')) {
+      return Promise.reject('Must provide a json object');
+    }
+    if (options?.jsonstring) {
+      const jsonStrObj: string = options.jsonstring;
+      const jsonObj = JSON.parse(jsonStrObj);
+      const isValid = isJsonStore(jsonObj);
+      if (!isValid) {
+        return Promise.reject('Stringify Json Object not Valid');
+      } else {
+        return Promise.resolve({ result: true });
+      }
+    } else {
+      return Promise.reject('Must provide in options a stringify Json Object');
+    }
+  }
+  async exportToJson(): Promise<capStoreJson> {
+    try {
+      const ret: JsonStore = await this.mDb.exportJson();
+      return Promise.resolve({ export: ret });
+    } catch (err) {
+      return Promise.reject(`exportToJson: ${err.message}`);
     }
   }
 }

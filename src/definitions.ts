@@ -127,6 +127,28 @@ export interface CapacitorDataStorageSqlitePlugin {
    * @since 3.0.0
    */
   deleteTable(options: capTableStorageOptions): Promise<void>;
+  /**
+   * Import a database From a JSON
+   * @param jsonstring string
+   * @returns Promise<capDataStorageChanges>
+   * @since 3.2.0
+   */
+  importFromJson(
+    options: capStoreImportOptions,
+  ): Promise<capDataStorageChanges>;
+  /**
+   * Check the validity of a JSON Object
+   * @param jsonstring string
+   * @returns Promise<capDataStorageResult>
+   * @since 3.2.0
+   */
+  isJsonValid(options: capStoreImportOptions): Promise<capDataStorageResult>;
+  /**
+   * Export the given database to a JSON Object
+   * @returns Promise<capStoreJson>
+   * @since 3.2.0
+   */
+  exportToJson(): Promise<capStoreJson>;
 }
 
 export interface capEchoOptions {
@@ -154,7 +176,7 @@ export interface capOpenStorageOptions {
    */
   encrypted?: boolean; // only for ios and android
   /***
-   * Set the mode for database ancryption
+   * Set the mode for database encryption
    * ["encryption", "secret","newsecret"]
    */
   mode?: string; // only for ios and android
@@ -238,4 +260,49 @@ export interface capTablesResult {
    * the tables list as an Array
    */
   tables: string[];
+}
+export interface JsonStore {
+  /**
+   * The database name
+   */
+  database: string;
+  /**
+   * Set to true (database encryption) / false
+   * iOS & Android only
+   */
+  encrypted: boolean;
+  /***
+   * Array of Table (JsonTable)
+   */
+  tables: JsonTable[];
+}
+export interface JsonTable {
+  /**
+   * The database name
+   */
+  name: string;
+  /***
+   * Array of Values (capDataStorageOptions)
+   */
+  values?: capDataStorageOptions[];
+}
+
+export interface capDataStorageChanges {
+  /**
+   * the number of changes from an importFromJson command
+   */
+  changes?: number;
+}
+export interface capStoreImportOptions {
+  /**
+   * Set the JSON object to import
+   *
+   */
+  jsonstring?: string;
+}
+export interface capStoreJson {
+  /**
+   * an export JSON object
+   */
+  export?: JsonStore;
 }

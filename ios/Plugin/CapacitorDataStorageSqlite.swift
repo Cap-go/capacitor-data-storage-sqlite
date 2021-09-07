@@ -431,6 +431,120 @@ enum CapacitorDataStorageSqliteError: Error {
             .failed(message: message)
         }
     }
+
+    // MARK: - isJsonValid
+
+    @objc func isJsonValid(_ parsingData: String) throws {
+
+        if let data = ("["+parsingData+"]").data(using: .utf8) {
+            do {
+                _ = try JSONDecoder().decode([JsonStore].self,
+                                             from: data)
+                return
+            } catch let error {
+                let msg: String = "\(error.localizedDescription)"
+                throw CapacitorDataStorageSqliteError.failed(message: msg)
+            }
+        } else {
+            let msg: String = "Stringify Json Object not Valid"
+            throw CapacitorDataStorageSqliteError.failed(message: msg)
+        }
+    }
+
+    // MARK: - importFromJson
+
+    // swiftlint:disable function_body_length
+    @objc func importFromJson(_ parsingData: String)
+    throws -> [String: Int] {
+        var mDb: StorageDatabaseHelper
+        if let data = ("["+parsingData+"]").data(using: .utf8) {
+            // check jsonStore validity
+            var jsonStore: [JsonStore]
+            do {
+                jsonStore = try JSONDecoder()
+                    .decode([JsonStore].self, from: data)
+            } catch let error {
+                var msg: String = "Stringify Json Object not Valid "
+                msg.append("\(error.localizedDescription)")
+                throw CapacitorDataStorageSqliteError.failed(message: msg)
+            }
+            var totalChanges = 0
+            let encrypted: Bool = jsonStore[0].encrypted
+            let dbName: String =  jsonStore[0].database
+            let mode: String  = encrypted ? "secret" : ""
+            do {
+                for table in jsonStore[0].tables {
+                    // open the database
+                    mDb = try StorageDatabaseHelper(
+                        databaseName: "\(dbName)SQLite.db",
+                        tableName: table.name,
+                        encrypted: encrypted, mode: mode)
+                    if !(mDb.isOpen ) {
+                        throw CapacitorDataStorageSqliteError
+                        .failed(message: "store not opened")
+                    }
+
+                    // import table from json table values
+                    let changes: Int = try mDb
+                        .importFromJson(values: table.values)
+                    if changes < 1 {
+                        let msg: String = "changes < 1"
+                        throw CapacitorDataStorageSqliteError
+                        .failed(message: msg)
+                    }
+                    try mDb.close()
+                    totalChanges += changes
+                }
+                return ["changes": totalChanges]
+            } catch StorageHelperError.initFailed(let message) {
+                throw CapacitorDataStorageSqliteError
+                .failed(message: message)
+            } catch StorageHelperError.close(let message) {
+                throw CapacitorDataStorageSqliteError
+                .failed(message: message)
+            } catch StorageHelperError.importFromJson(let message) {
+                let msg = message
+                do {
+                    try closeStore(dbName)
+                    throw CapacitorDataStorageSqliteError.failed(message: msg)
+                } catch let error {
+                    throw CapacitorDataStorageSqliteError
+                    .failed(message: error.localizedDescription)
+                }
+            } catch let error {
+                print("\(error)")
+                throw CapacitorDataStorageSqliteError
+                .failed(message: error.localizedDescription)
+            }
+
+        } else {
+            let msg: String = "Stringify Json Object not Valid"
+            throw CapacitorDataStorageSqliteError.failed(message: msg)
+        }
+    }
+    // swiftlint:enable function_body_length
+
+    // MARK: - exportToJson
+
+    @objc func exportToJson()
+    throws -> [String: Any] {
+        if mDb != nil {
+            do {
+                let res: [String: Any] = try
+                    mDb?.exportToJson() ?? [:]
+                return res
+            } catch StorageHelperError.exportToJson(let message) {
+                throw CapacitorDataStorageSqliteError.failed(message: message)
+            } catch let error {
+                let msg: String = "\(error.localizedDescription)"
+                throw CapacitorDataStorageSqliteError.failed(message: msg)
+            }
+        } else {
+            let message = "Must open a store first"
+            throw CapacitorDataStorageSqliteError
+            .failed(message: message)
+        }
+    }
 }
 // swiftlint:enable type_body_length
 // swiftlint:enable file_length

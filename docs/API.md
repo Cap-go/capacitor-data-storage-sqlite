@@ -50,6 +50,9 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 * [`isTable(...)`](#istable)
 * [`tables()`](#tables)
 * [`deleteTable(...)`](#deletetable)
+* [`importFromJson(...)`](#importfromjson)
+* [`isJsonValid(...)`](#isjsonvalid)
+* [`exportToJson()`](#exporttojson)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -382,6 +385,59 @@ Delete a table
 --------------------
 
 
+### importFromJson(...)
+
+```typescript
+importFromJson(options: capStoreImportOptions) => Promise<capDataStorageChanges>
+```
+
+Import a database From a JSON
+
+| Param         | Type                                                                    |
+| ------------- | ----------------------------------------------------------------------- |
+| **`options`** | <code><a href="#capstoreimportoptions">capStoreImportOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastoragechanges">capDataStorageChanges</a>&gt;</code>
+
+**Since:** 3.2.0
+
+--------------------
+
+
+### isJsonValid(...)
+
+```typescript
+isJsonValid(options: capStoreImportOptions) => Promise<capDataStorageResult>
+```
+
+Check the validity of a JSON Object
+
+| Param         | Type                                                                    |
+| ------------- | ----------------------------------------------------------------------- |
+| **`options`** | <code><a href="#capstoreimportoptions">capStoreImportOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
+
+**Since:** 3.2.0
+
+--------------------
+
+
+### exportToJson()
+
+```typescript
+exportToJson() => Promise<capStoreJson>
+```
+
+Export the given database to a JSON Object
+
+**Returns:** <code>Promise&lt;<a href="#capstorejson">capStoreJson</a>&gt;</code>
+
+**Since:** 3.2.0
+
+--------------------
+
+
 ### Interfaces
 
 
@@ -406,7 +462,7 @@ Delete a table
 | **`database`**  | <code>string</code>  | The storage database name                                                   |
 | **`table`**     | <code>string</code>  | The storage table name                                                      |
 | **`encrypted`** | <code>boolean</code> | Set to true for database encryption                                         |
-| **`mode`**      | <code>string</code>  | * Set the mode for database ancryption ["encryption", "secret","newsecret"] |
+| **`mode`**      | <code>string</code>  | * Set the mode for database encryption ["encryption", "secret","newsecret"] |
 
 
 #### capStorageOptions
@@ -479,6 +535,44 @@ Delete a table
 | Prop         | Type                  | Description                 |
 | ------------ | --------------------- | --------------------------- |
 | **`tables`** | <code>string[]</code> | the tables list as an Array |
+
+
+#### capDataStorageChanges
+
+| Prop          | Type                | Description                                          |
+| ------------- | ------------------- | ---------------------------------------------------- |
+| **`changes`** | <code>number</code> | the number of changes from an importFromJson command |
+
+
+#### capStoreImportOptions
+
+| Prop             | Type                | Description                   |
+| ---------------- | ------------------- | ----------------------------- |
+| **`jsonstring`** | <code>string</code> | Set the JSON object to import |
+
+
+#### capStoreJson
+
+| Prop         | Type                                            | Description           |
+| ------------ | ----------------------------------------------- | --------------------- |
+| **`export`** | <code><a href="#jsonstore">JsonStore</a></code> | an export JSON object |
+
+
+#### JsonStore
+
+| Prop            | Type                     | Description                                                  |
+| --------------- | ------------------------ | ------------------------------------------------------------ |
+| **`database`**  | <code>string</code>      | The database name                                            |
+| **`encrypted`** | <code>boolean</code>     | Set to true (database encryption) / false iOS & Android only |
+| **`tables`**    | <code>JsonTable[]</code> | * Array of Table (<a href="#jsontable">JsonTable</a>)        |
+
+
+#### JsonTable
+
+| Prop         | Type                                 | Description                                                                    |
+| ------------ | ------------------------------------ | ------------------------------------------------------------------------------ |
+| **`name`**   | <code>string</code>                  | The database name                                                              |
+| **`values`** | <code>capDataStorageOptions[]</code> | * Array of Values (<a href="#capdatastorageoptions">capDataStorageOptions</a>) |
 
 </docgen-api>
 

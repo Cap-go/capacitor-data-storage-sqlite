@@ -368,4 +368,74 @@ public class CapacitorDataStorageSqlitePlugin extends Plugin {
             return;
         }
     }
+
+    /**
+     * IsJsonValid
+     * Check the validity of a given Json object
+     * @param call
+     */
+    @PluginMethod
+    public void isJsonValid(PluginCall call) {
+        if (!call.getData().has("jsonstring")) {
+            String msg = "IsJsonValid: Must provide a Stringify Json Object";
+            rHandler.retResult(call, false, msg);
+            return;
+        }
+        String parsingData = call.getString("jsonstring");
+        try {
+            Boolean res = implementation.isJsonValid(parsingData);
+            rHandler.retResult(call, res, null);
+            return;
+        } catch (Exception e) {
+            String msg = "isJsonValid: " + e.getMessage();
+            rHandler.retResult(call, false, msg);
+            return;
+        }
+    }
+
+    /**
+     * ImportFromJson Method
+     * Import from a given Json object
+     * @param call
+     */
+    @PluginMethod
+    public void importFromJson(PluginCall call) {
+        JSObject retRes = new JSObject();
+        retRes.put("changes", Integer.valueOf(-1));
+        if (!call.getData().has("jsonstring")) {
+            String msg = "ImportFromJson: Must provide a Stringify Json Object";
+            rHandler.retChanges(call, retRes, msg);
+            return;
+        }
+        String parsingData = call.getString("jsonstring");
+        try {
+            JSObject res = implementation.importFromJson(parsingData);
+            rHandler.retChanges(call, res, null);
+            return;
+        } catch (Exception e) {
+            String msg = "ImportFromJson: " + e.getMessage();
+            rHandler.retChanges(call, retRes, msg);
+            return;
+        }
+    }
+
+    /**
+     * ExportToJson Method
+     * Export the database to Json Object
+     * @param call
+     */
+    @PluginMethod
+    public void exportToJson(PluginCall call) {
+        JSObject retObj = new JSObject();
+
+        try {
+            JSObject res = implementation.exportToJson();
+            rHandler.retJsonObject(call, res, null);
+            return;
+        } catch (Exception e) {
+            String msg = "ExportToJson: " + e.getMessage();
+            rHandler.retJsonObject(call, retObj, msg);
+            return;
+        }
+    }
 }

@@ -468,6 +468,83 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         }
     }
 
+    // MARK: - IsJsonValid
+
+    @objc func isJsonValid(_ call: CAPPluginCall) {
+        let parsingData: String = call.getString("jsonstring") ?? ""
+        if parsingData.count == 0 {
+            var msg: String = "IsJsonValid: "
+            msg.append("Must provide a Stringify Json Object")
+            retHandler.rResult(call: call, message: msg)
+            return
+        }
+        do {
+            try implementation.isJsonValid(parsingData)
+            retHandler.rResult(call: call, ret: true)
+            return
+        } catch CapacitorDataStorageSqliteError.failed(let message) {
+            let msg = "isJsonValid: \(message)"
+            retHandler.rResult(call: call, message: msg)
+            return
+        } catch let error {
+            let msg = "isJsonValid: \(error.localizedDescription)"
+            retHandler.rResult(call: call, message: msg)
+            return
+        }
+    }
+
+    // MARK: - ImportFromJson
+
+    @objc func importFromJson(_ call: CAPPluginCall) {
+        let parsingData: String = call.getString("jsonstring") ?? ""
+        if parsingData.count == 0 {
+            retHandler.rChanges(call: call, ret: ["changes": -1],
+                                message: "ImportFromJson: " +
+                                    "Must provide a Stringify Json Object")
+            return
+        }
+        do {
+            let res: [String: Int]  = try implementation.importFromJson(parsingData)
+            retHandler.rChanges(call: call, ret: res)
+            return
+        } catch CapacitorDataStorageSqliteError.failed(let message) {
+            retHandler.rChanges(
+                call: call, ret: ["changes": -1],
+                message: "importFromJson: \(message)")
+            return
+        } catch let error {
+            let msg = "importFromJson: " +
+                "\(error.localizedDescription)"
+            retHandler.rChanges(
+                call: call, ret: ["changes": -1],
+                message: msg)
+            return
+        }
+
+    }
+
+    // MARK: - ExportToJson
+
+    @objc func exportToJson(_ call: CAPPluginCall) {
+
+        do {
+            let res: [String: Any] = try implementation.exportToJson()
+            retHandler.rJsonStore(call: call, ret: res)
+            return
+        } catch CapacitorDataStorageSqliteError.failed(let message) {
+            let msg = "exportToJson: \(message)"
+            retHandler.rJsonStore(call: call, ret: [:],
+                                  message: msg)
+            return
+        } catch let error {
+            let msg = "exportToJson: \(error.localizedDescription)"
+            retHandler.rJsonStore(call: call, ret: [:],
+                                  message: msg)
+            return
+        }
+
+    }
+
 }
 // swiftlint:enable type_body_length
 // swiftlint:enable file_length

@@ -1,3 +1,11 @@
+## 3.2.0 (2021-09-07)
+
+### Added Features
+
+- add importFromJson, isJsonValid, exportToJson methods issue#41
+- add isTable, tables methods to Web platform
+- add ImportExportJson.md documentation
+
 ## 3.2.0-3 (2021-08-31)
 
 ### Bug Fixes

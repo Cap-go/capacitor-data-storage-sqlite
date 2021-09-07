@@ -1,3 +1,9 @@
+import type {
+  capDataStorageOptions,
+  JsonStore,
+  JsonTable,
+} from '../../../src/definitions';
+
 import { Data } from './Data';
 import { UtilsSQLite } from './UtilsSQLite';
 
@@ -399,7 +405,7 @@ export class StorageDatabaseHelper {
   public async isTable(table: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (this.db == null) {
-        reject(`this.db is null in clear`);
+        reject(`isTable: this.db is null`);
       }
       try {
         let ret = false;
@@ -452,7 +458,7 @@ export class StorageDatabaseHelper {
   }
   public async deleteTable(table: string): Promise<void> {
     if (this.db == null) {
-      return Promise.reject(`this.db is null in clear`);
+      return Promise.reject(`this.db is null in deleteTable`);
     }
     try {
       const ret = await this.isTable(table);
@@ -468,6 +474,51 @@ export class StorageDatabaseHelper {
       } else {
         return Promise.resolve();
       }
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  public async importJson(values: capDataStorageOptions[]): Promise<number> {
+    let changes = 0;
+    for (const val of values) {
+      try {
+        const data: Data = new Data();
+        data.name = val.key;
+        data.value = val.value;
+        await this.set(data);
+        changes += 1;
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    }
+    return Promise.resolve(changes);
+  }
+
+  public async exportJson(): Promise<JsonStore> {
+    const retJson: JsonStore = {} as JsonStore;
+    try {
+      const prevTableName: string = this.tableName;
+      retJson.database = this.dbName.slice(0, -9);
+      retJson.encrypted = false;
+      retJson.tables = [];
+      // get the table list
+      const tables: string[] = await this.tables();
+      for (const table of tables) {
+        this.tableName = table;
+        const retTable: JsonTable = {} as JsonTable;
+        retTable.name = table;
+        retTable.values = [];
+        const dataTable: Data[] = await this.keysvalues();
+        for (const tdata of dataTable) {
+          const retData: capDataStorageOptions = {} as capDataStorageOptions;
+          retData.key = tdata.name;
+          retData.value = tdata.value;
+          retTable.values = [...retTable.values, retData];
+        }
+        retJson.tables = [...retJson.tables, retTable];
+      }
+      this.tableName = prevTableName;
+      return Promise.resolve(retJson);
     } catch (err) {
       return Promise.reject(err);
     }

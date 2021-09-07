@@ -54,15 +54,12 @@ npm install --save @capacitor-community/electron
 npx cap add @capacitor-community/electron
 ```
 Go to the Electron folder of your application
-open your package.json and check to you have the following script
-`"rebuild-deps": "electron-rebuild"`
-otherwise add it
 
 ```bash
 cd electron
 npm install --save sqlite3
-npm install --save-dev @types/sqlite3 electron-rebuild
-npm run rebuild-deps
+npm install --save-dev @types/sqlite3
+npm run build
 cd ..
 npx cap sync @capacitor-community/electron
 ```
@@ -103,9 +100,12 @@ No configuration required for this plugin
 | keysvalues                   | ✅      | ✅  | ✅       | ✅  |
 | remove                       | ✅      | ✅  | ✅       | ✅  |
 | clear                        | ✅      | ✅  | ✅       | ✅  |
-| isTable                      | ✅      | ✅  | ✅       | ❌  |
-| tables                       | ✅      | ✅  | ✅       | ❌  |
+| isTable                      | ✅      | ✅  | ✅       | ✅  |
+| tables                       | ✅      | ✅  | ✅       | ✅  |
 | deleteTable                  | ✅      | ✅  | ✅       | ❌  |
+| isJsonValid                  | ✅      | ✅  | ✅       | ✅  |
+| importFromJson               | ✅      | ✅  | ✅       | ✅  |
+| exportToJson                 | ✅      | ✅  | ✅       | ✅  |
 
 ## Documentation
 

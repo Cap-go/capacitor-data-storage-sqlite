@@ -39,6 +39,8 @@ enum StorageHelperError: Error {
     case isTable(message: String)
     case tables(message: String)
     case deleteTable(message: String)
+    case importFromJson(message: String)
+    case exportToJson(message: String)
 }
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
@@ -541,6 +543,61 @@ class StorageDatabaseHelper {
         }
 
     }
+
+    // MARK: - ImportFromJson
+
+    func importFromJson(values: [JsonValue]) throws -> Int {
+        var changes: Int = 0
+        do {
+            for val in values {
+                var data: Data = Data()
+                data.name = val.key
+                data.value = val.value
+                try set(data: data)
+                changes += 1
+            }
+            return changes
+        } catch StorageHelperError.setkey(let message) {
+            throw StorageHelperError.importFromJson(message: message)
+        }
+    }
+
+    // MARK: - ExportToJson
+
+    func exportToJson() throws -> [String: Any] {
+        var retObj: [String: Any] = [:]
+        do {
+            let previousTableName: String = tableName
+            retObj["database"] = String(dbName.dropLast(9))
+            retObj["encrypted"] = encrypted
+            var rTables: [Any] = []
+            retObj["tables"] = []
+            let tables: [String] = try tables()
+            for table in tables {
+                var rtable: [String: Any] = [:]
+                tableName = table
+                rtable["name"] = table
+                let dataTable: [Data] = try keysvalues()
+                var values: [Any] = []
+                for data in dataTable {
+                    var rData: [String: String] = [:]
+                    rData["key"] = data.name
+                    rData["value"] = data.value
+                    values.append(rData)
+                }
+                rtable["values"] = values
+                rTables.append(rtable)
+            }
+            retObj["tables"] = rTables
+            tableName = previousTableName
+            return retObj
+        } catch StorageHelperError.tables(let message) {
+            throw StorageHelperError.exportToJson(message: message)
+        } catch StorageHelperError.keysvalues(let message) {
+            throw StorageHelperError.exportToJson(message: message)
+        }
+    }
+
 }
 // swiftlint:enable type_body_length
 // swiftlint:enable file_length

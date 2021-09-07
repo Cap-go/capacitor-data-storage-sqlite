@@ -23,4 +23,7 @@ CAP_PLUGIN(CapacitorDataStorageSqlitePlugin, "CapacitorDataStorageSqlite",
            CAP_PLUGIN_METHOD(isTable,CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(tables,CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(deleteTable,CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(isJsonValid,CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(importFromJson,CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(exportToJson,CAPPluginReturnPromise);
 )

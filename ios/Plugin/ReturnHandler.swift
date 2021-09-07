@@ -56,4 +56,30 @@ class ReturnHandler {
         }
     }
 
+    // MARK: - rChanges
+
+    func rChanges(call: CAPPluginCall, ret: [String: Any],
+                  message: String? = nil) {
+        if let intMessage = message {
+            call.reject(intMessage)
+            return
+        } else {
+            call.resolve(["changes": ret])
+            return
+        }
+    }
+
+    // MARK: - rJsonStore
+
+    func rJsonStore(call: CAPPluginCall, ret: [String: Any],
+                    message: String? = nil) {
+        if let intMessage = message {
+            call.reject(intMessage)
+            return
+        } else {
+            call.resolve(["export": ret])
+            return
+        }
+    }
+
 }

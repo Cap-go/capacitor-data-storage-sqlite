@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import type { CapacitorDataStorageSqlitePlugin, capEchoOptions, capEchoResult, capDataStorageOptions, capDataStorageResult, capFilterStorageOptions, capKeysResult, capKeysValuesResult, capTablesResult, capOpenStorageOptions, capTableStorageOptions, capValueResult, capValuesResult, capStorageOptions } from './definitions';
+import type { CapacitorDataStorageSqlitePlugin, capEchoOptions, capEchoResult, capDataStorageOptions, capDataStorageResult, capFilterStorageOptions, capKeysResult, capKeysValuesResult, capTablesResult, capOpenStorageOptions, capTableStorageOptions, capValueResult, capValuesResult, capStorageOptions, capStoreJson, capDataStorageChanges, capStoreImportOptions } from './definitions';
 export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
     private mDb;
     echo(options: capEchoOptions): Promise<capEchoResult>;
@@ -21,4 +21,7 @@ export declare class CapacitorDataStorageSqliteWeb extends WebPlugin implements 
     isTable(options: capTableStorageOptions): Promise<capDataStorageResult>;
     tables(): Promise<capTablesResult>;
     deleteTable(options: capTableStorageOptions): Promise<void>;
+    importFromJson(options: capStoreImportOptions): Promise<capDataStorageChanges>;
+    isJsonValid(options: capStoreImportOptions): Promise<capDataStorageResult>;
+    exportToJson(): Promise<capStoreJson>;
 }

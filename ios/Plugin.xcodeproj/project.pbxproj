@@ -18,6 +18,7 @@
 		2C81FFFD2668CF0A00988608 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81FFF32668CF0A00988608 /* Data.swift */; };
 		2C81FFFE2668CF0A00988608 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81FFF42668CF0A00988608 /* Global.swift */; };
 		2C81FFFF2668CF0A00988608 /* StorageDatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81FFF52668CF0A00988608 /* StorageDatabaseHelper.swift */; };
+		2CA22B9126E4971E0042A27F /* JsonStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA22B9026E4971E0042A27F /* JsonStore.swift */; };
 		2F98D68224C9AAE500613A4C /* CapacitorDataStorageSqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */; };
 		50ADFF92201F53D600D50D53 /* Plugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADFF88201F53D600D50D53 /* Plugin.framework */; };
 		50ADFF97201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFF96201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift */; };
@@ -47,6 +48,7 @@
 		2C81FFF92668CF0A00988608 /* UtilsFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilsFile.swift; sourceTree = "<group>"; };
 		2C81FFFA2668CF0A00988608 /* UtilsEncryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilsEncryption.swift; sourceTree = "<group>"; };
 		2C81FFFB2668CF0A00988608 /* UtilsSQLCipher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilsSQLCipher.swift; sourceTree = "<group>"; };
+		2CA22B9026E4971E0042A27F /* JsonStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonStore.swift; sourceTree = "<group>"; };
 		2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapacitorDataStorageSqlite.swift; sourceTree = "<group>"; };
 		3B2A61DA5A1F2DD4F959604D /* Pods_Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ADFF88201F53D600D50D53 /* Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +101,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		2CA22B8F26E496C00042A27F /* ImportExportJson */ = {
+			isa = PBXGroup;
+			children = (
+				2CA22B9026E4971E0042A27F /* JsonStore.swift */,
+			);
+			path = ImportExportJson;
+			sourceTree = "<group>";
+		};
 		50ADFF7E201F53D600D50D53 = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +132,7 @@
 		50ADFF8A201F53D600D50D53 /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
+				2CA22B8F26E496C00042A27F /* ImportExportJson */,
 				2C81FFF62668CF0A00988608 /* Utils */,
 				50E1A94720377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift */,
 				2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */,
@@ -353,6 +364,7 @@
 				2C8100042668CF0A00988608 /* UtilsSQLCipher.swift in Sources */,
 				2C8100032668CF0A00988608 /* UtilsEncryption.swift in Sources */,
 				50E1A94820377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift in Sources */,
+				2CA22B9126E4971E0042A27F /* JsonStore.swift in Sources */,
 				2F98D68224C9AAE500613A4C /* CapacitorDataStorageSqlite.swift in Sources */,
 				50ADFFA82020EE4F00D50D53 /* CapacitorDataStorageSqlitePlugin.m in Sources */,
 			);

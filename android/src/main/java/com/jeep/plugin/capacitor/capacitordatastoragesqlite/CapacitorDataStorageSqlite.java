@@ -3,8 +3,11 @@ package com.jeep.plugin.capacitor.capacitordatastoragesqlite;
 import android.content.Context;
 import com.getcapacitor.JSObject;
 import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.Data;
+import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonStore;
+import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonTable;
 import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.StorageDatabaseHelper;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CapacitorDataStorageSqlite {
@@ -280,6 +283,85 @@ public class CapacitorDataStorageSqlite {
             return ret;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
+        }
+    }
+
+    public Boolean isJsonValid(String parsingData) throws Exception {
+        try {
+            JSObject jsonObject = new JSObject(parsingData);
+            JsonStore jsonSQL = new JsonStore();
+            Boolean isValid = jsonSQL.isJsonStore(jsonObject);
+            return isValid;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public JSObject importFromJson(String parsingData) throws Exception {
+        try {
+            JSObject retObj = new JSObject();
+            JSObject jsonObject = new JSObject(parsingData);
+            JsonStore jsonSQL = new JsonStore();
+            Boolean isValid = jsonSQL.isJsonStore(jsonObject);
+            if (!isValid) {
+                String msg = "Stringify Json Object not Valid";
+                throw new Exception(msg);
+            }
+            int totalChanges = 0;
+            String dbName = jsonSQL.getDatabase();
+            Boolean encrypted = jsonSQL.getEncrypted();
+            String inMode = "";
+            if (encrypted) {
+                inMode = "secret";
+            }
+            ArrayList<JsonTable> tables = jsonSQL.getTables();
+            for (JsonTable table : tables) {
+                // open the database
+                mDb = new StorageDatabaseHelper(context, dbName + "SQLite.db", table.getName(), encrypted, inMode, 1);
+                if (mDb != null) {
+                    mDb.open();
+                    if (mDb.isOpen) {
+                        int changes = mDb.importFromJson(table.getValues());
+                        mDb.close();
+                        if (changes < 1) {
+                            throw new Exception("changes < 1");
+                        } else {
+                            totalChanges += changes;
+                        }
+                    } else {
+                        throw new Exception("mDb is not opened");
+                    }
+                } else {
+                    throw new Exception("mDb is null");
+                }
+            }
+            retObj.put("changes", totalChanges);
+            return retObj;
+        } catch (Exception e) {
+            String msg = "importFromJson : " + e.getMessage();
+            throw new Exception(msg);
+        }
+    }
+
+    public JSObject exportToJson() throws Exception {
+        if (mDb != null && mDb.isOpen) {
+            try {
+                JSObject ret = mDb.exportToJson();
+                JsonStore jsonSQL = new JsonStore();
+                Boolean isValid = jsonSQL.isJsonStore(ret);
+                if (isValid) {
+                    return ret;
+                } else {
+                    String msg = "ExportToJson: return Obj is not a JsonStore Obj";
+                    throw new Exception(msg);
+                }
+            } catch (Exception e) {
+                String msg = "ExportToJson " + e.getMessage();
+                throw new Exception(msg);
+            }
+        } else {
+            String msg = "mDb is not opened or null ";
+            throw new Exception(msg);
         }
     }
 }

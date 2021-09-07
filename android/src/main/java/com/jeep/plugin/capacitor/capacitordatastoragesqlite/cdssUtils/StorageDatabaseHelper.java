@@ -5,6 +5,10 @@ import android.util.Log;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteStatement;
+import com.getcapacitor.JSObject;
+import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonStore;
+import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonTable;
+import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonValue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -551,6 +555,70 @@ public class StorageDatabaseHelper {
             }
         } else {
             throw new Exception("Store not opened");
+        }
+    }
+
+    /**
+     * Import from Json object
+     * @param values
+     * @return
+     * @throws Exception
+     */
+    public Integer importFromJson(ArrayList<JsonValue> values) throws Exception {
+        int changes = Integer.valueOf(0);
+        try {
+            for (JsonValue val : values) {
+                Data data = new Data();
+                data.name = val.getKey();
+                data.value = val.getValue();
+                set(data);
+                changes += 1;
+            }
+            return changes;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public JSObject exportToJson() {
+        JsonStore retJson = new JsonStore();
+        JSObject retObj = new JSObject();
+        retJson.setDatabase(_dbName.substring(0, _dbName.length() - 9));
+        retJson.setEncrypted(_encrypted);
+
+        String previousName = _tableName;
+        try {
+            List<String> tables = tables();
+            ArrayList<JsonTable> rTables = new ArrayList<JsonTable>();
+            for (String table : tables) {
+                JsonTable rTable = new JsonTable();
+                _tableName = table;
+                rTable.setName(table);
+                List<Data> dataTable = keysvalues();
+                ArrayList<JsonValue> values = new ArrayList<JsonValue>();
+                for (Data data : dataTable) {
+                    JsonValue rData = new JsonValue();
+                    rData.setKey(data.name);
+                    rData.setValue(data.value);
+                    values.add(rData);
+                }
+                rTable.setValues(values);
+                rTables.add(rTable);
+            }
+            retJson.setTables(rTables);
+            _tableName = previousName;
+            ArrayList<String> keys = retJson.getKeys();
+            if (keys.contains("tables")) {
+                if (retJson.getTables().size() > 0) {
+                    retObj.put("database", retJson.getDatabase());
+                    retObj.put("encrypted", retJson.getEncrypted());
+                    retObj.put("tables", retJson.getTablesAsJSObject());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error: exportToJson " + e.getMessage());
+        } finally {
+            return retObj;
         }
     }
 }
