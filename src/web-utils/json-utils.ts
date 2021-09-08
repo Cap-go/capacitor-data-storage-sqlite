@@ -17,7 +17,6 @@ export const isJsonStore = (obj: any): boolean => {
     if (key === 'tables') {
       for (const oKey of obj[key]) {
         const retTable: boolean = isTable(oKey);
-        console.log(`$$$ retTable ${retTable} `);
         if (!retTable) return false;
       }
     }
@@ -43,7 +42,6 @@ export const isTable = (obj: any): boolean => {
     if (key === 'values') {
       for (const oKey of obj[key]) {
         const retValue: boolean = isValue(oKey);
-        console.log(`$$$ retValue ${retValue} `);
         if (!retValue) return false;
       }
     }
