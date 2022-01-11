@@ -4,11 +4,7 @@
  */
 export const isJsonStore = (obj: any): boolean => {
   const keyFirstLevel: string[] = ['database', 'encrypted', 'tables'];
-  if (
-    obj == null ||
-    (Object.keys(obj).length === 0 && obj.constructor === Object)
-  )
-    return false;
+  if (obj == null || (Object.keys(obj).length === 0 && obj.constructor === Object)) return false;
   for (const key of Object.keys(obj)) {
     if (keyFirstLevel.indexOf(key) === -1) return false;
     if (key === 'database' && typeof obj[key] != 'string') return false;
@@ -29,10 +25,7 @@ export const isJsonStore = (obj: any): boolean => {
  */
 export const isTable = (obj: any): boolean => {
   const keyTableLevel: string[] = ['name', 'values'];
-  if (
-    obj == null ||
-    (Object.keys(obj).length === 0 && obj.constructor === Object)
-  ) {
+  if (obj == null || (Object.keys(obj).length === 0 && obj.constructor === Object)) {
     return false;
   }
   for (const key of Object.keys(obj)) {
@@ -54,10 +47,7 @@ export const isTable = (obj: any): boolean => {
  */
 export const isValue = (obj: any): boolean => {
   const keyTableLevel: string[] = ['key', 'value'];
-  if (
-    obj == null ||
-    (Object.keys(obj).length === 0 && obj.constructor === Object)
-  ) {
+  if (obj == null || (Object.keys(obj).length === 0 && obj.constructor === Object)) {
     return false;
   }
   for (const key of Object.keys(obj)) {

@@ -24,9 +24,7 @@ import { Data } from './web-utils/Data';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
 import { isJsonStore } from './web-utils/json-utils';
 
-export class CapacitorDataStorageSqliteWeb
-  extends WebPlugin
-  implements CapacitorDataStorageSqlitePlugin {
+export class CapacitorDataStorageSqliteWeb extends WebPlugin implements CapacitorDataStorageSqlitePlugin {
   private mDb!: StorageDatabaseHelper;
 
   async echo(options: capEchoOptions): Promise<capEchoResult> {
@@ -51,9 +49,7 @@ export class CapacitorDataStorageSqliteWeb
   async isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult> {
     throw new Error(`Method isStoreOpen not implemented. ${options}`);
   }
-  async isStoreExists(
-    options: capStorageOptions,
-  ): Promise<capDataStorageResult> {
+  async isStoreExists(options: capStorageOptions): Promise<capDataStorageResult> {
     throw new Error(`Method isStoreExists not implemented. ${options}`);
   }
   async setTable(options: capTableStorageOptions): Promise<void> {
@@ -156,9 +152,7 @@ export class CapacitorDataStorageSqliteWeb
       return Promise.reject(`Values: ${err.message}`);
     }
   }
-  async filtervalues(
-    options: capFilterStorageOptions,
-  ): Promise<capValuesResult> {
+  async filtervalues(options: capFilterStorageOptions): Promise<capValuesResult> {
     const filter: string = options.filter;
     if (filter == null || typeof filter != 'string') {
       return Promise.reject('Filtervalues: Must provide filter as string');
@@ -209,9 +203,7 @@ export class CapacitorDataStorageSqliteWeb
   async deleteStore(options: capOpenStorageOptions): Promise<void> {
     throw new Error(`Method deleteStore not implemented. ${options}`);
   }
-  async isTable(
-    options: capTableStorageOptions,
-  ): Promise<capDataStorageResult> {
+  async isTable(options: capTableStorageOptions): Promise<capDataStorageResult> {
     const table = options.table;
     if (table == null) {
       return Promise.reject('Must provide a Table Name');
@@ -234,9 +226,7 @@ export class CapacitorDataStorageSqliteWeb
   async deleteTable(options: capTableStorageOptions): Promise<void> {
     throw new Error(`Method deleteTable not implemented. ${options}`);
   }
-  async importFromJson(
-    options: capStoreImportOptions,
-  ): Promise<capDataStorageChanges> {
+  async importFromJson(options: capStoreImportOptions): Promise<capDataStorageChanges> {
     const keys = Object.keys(options);
     if (!keys.includes('jsonstring')) {
       return Promise.reject('Must provide a json object');
@@ -251,9 +241,7 @@ export class CapacitorDataStorageSqliteWeb
         return Promise.reject('Must provide a valid JsonSQLite Object');
       }
       const vJsonObj: JsonStore = jsonObj;
-      const dbName = vJsonObj.database
-        ? `${vJsonObj.database}IDB`
-        : 'storageIDB';
+      const dbName = vJsonObj.database ? `${vJsonObj.database}IDB` : 'storageIDB';
       for (const table of vJsonObj.tables) {
         const tableName = table.name ? table.name : 'storage_store';
         try {
@@ -267,9 +255,7 @@ export class CapacitorDataStorageSqliteWeb
               totalChanges += changes;
             }
           } else {
-            return Promise.reject(
-              `Open store: ${dbName} : table: ${tableName} failed`,
-            );
+            return Promise.reject(`Open store: ${dbName} : table: ${tableName} failed`);
           }
         } catch (err: any) {
           return Promise.reject(`ImportFromJson: ${err.message}`);
@@ -280,9 +266,7 @@ export class CapacitorDataStorageSqliteWeb
       return Promise.reject('Must provide a json object');
     }
   }
-  async isJsonValid(
-    options: capStoreImportOptions,
-  ): Promise<capDataStorageResult> {
+  async isJsonValid(options: capStoreImportOptions): Promise<capDataStorageResult> {
     const keys = Object.keys(options);
     if (!keys.includes('jsonstring')) {
       return Promise.reject('Must provide a json object');

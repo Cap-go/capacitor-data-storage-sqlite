@@ -11,12 +11,10 @@ export class UtilsSQLite {
   }
   public async connection(
     dbName: string,
-    readOnly?: boolean,
+    readOnly?: boolean
     /*,key?:string*/
   ): Promise<any> {
-    const flags = readOnly
-      ? this.SQLite3.OPEN_READONLY
-      : this.SQLite3.OPEN_CREATE | this.SQLite3.OPEN_READWRITE;
+    const flags = readOnly ? this.SQLite3.OPEN_READONLY : this.SQLite3.OPEN_CREATE | this.SQLite3.OPEN_READWRITE;
 
     // get the path for the database
     try {
@@ -29,7 +27,7 @@ export class UtilsSQLite {
   }
 
   public async getWritableDatabase(
-    dbName: string,
+    dbName: string
     /*, secret: string*/
   ): Promise<any> {
     const db: any = await this.connection(dbName, false /*,secret*/);
@@ -37,7 +35,7 @@ export class UtilsSQLite {
   }
 
   public async getReadableDatabase(
-    dbName: string,
+    dbName: string
     /*, secret: string*/
   ): Promise<any> {
     const db: any = await this.connection(dbName, true /*,secret*/);
@@ -74,9 +72,7 @@ export class UtilsSQLite {
     const path = directory.replace(/\/$/, '').split('/');
     for (let i = 1; i <= path.length; i++) {
       const segment = path.slice(0, i).join('/');
-      segment.length > 0 && !this.NodeFs.existsSync(segment)
-        ? this.NodeFs.mkdirSync(segment)
-        : null;
+      segment.length > 0 && !this.NodeFs.existsSync(segment) ? this.NodeFs.mkdirSync(segment) : null;
     }
     return;
   }

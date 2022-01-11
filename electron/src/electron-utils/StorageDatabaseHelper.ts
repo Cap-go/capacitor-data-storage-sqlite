@@ -1,8 +1,4 @@
-import type {
-  capDataStorageOptions,
-  JsonStore,
-  JsonTable,
-} from '../../../src/definitions';
+import type { capDataStorageOptions, JsonStore, JsonTable } from '../../../src/definitions';
 
 import { Data } from './Data';
 import { UtilsSQLite } from './UtilsSQLite';
@@ -31,7 +27,7 @@ export class StorageDatabaseHelper {
     try {
       this.db = await this._utils.connection(
         dbName,
-        false,
+        false
         /*,this._secret*/
       );
       if (this.db !== null) {
@@ -112,14 +108,7 @@ export class StorageDatabaseHelper {
   }
   private async _createIndex(tableName: string): Promise<void> {
     const idx = `index_${tableName}_on_${COL_NAME}`;
-    const CREATE_INDEX_NAME =
-      'CREATE INDEX IF NOT EXISTS ' +
-      idx +
-      ' ON ' +
-      tableName +
-      ' (' +
-      COL_NAME +
-      ')';
+    const CREATE_INDEX_NAME = 'CREATE INDEX IF NOT EXISTS ' + idx + ' ON ' + tableName + ' (' + COL_NAME + ')';
     try {
       if (this.db != null) {
         return this.db.run(CREATE_INDEX_NAME, async (err: Error) => {
@@ -165,17 +154,13 @@ export class StorageDatabaseHelper {
         const DATA_INSERT = `INSERT INTO "${this.tableName}" 
                                 ("${COL_NAME}", "${COL_VALUE}") 
                                 VALUES (?, ?)`;
-        return this.db.run(
-          DATA_INSERT,
-          [data.name, data.value],
-          (err: Error) => {
-            if (err) {
-              return Promise.reject(`Data INSERT: ${err.message}`);
-            } else {
-              return Promise.resolve();
-            }
-          },
-        );
+        return this.db.run(DATA_INSERT, [data.name, data.value], (err: Error) => {
+          if (err) {
+            return Promise.reject(`Data INSERT: ${err.message}`);
+          } else {
+            return Promise.resolve();
+          }
+        });
       }
     } catch (err) {
       return Promise.reject(err);
@@ -409,8 +394,7 @@ export class StorageDatabaseHelper {
       }
       try {
         let ret = false;
-        const SELECT_TABLES =
-          'SELECT name FROM sqlite_master ' + "WHERE TYPE='table';";
+        const SELECT_TABLES = 'SELECT name FROM sqlite_master ' + "WHERE TYPE='table';";
         this.db.all(SELECT_TABLES, (err: Error, rows: any) => {
           if (err) {
             reject(`isTable: ${err.message}`);
@@ -433,9 +417,7 @@ export class StorageDatabaseHelper {
   public async tables(): Promise<string[]> {
     return new Promise((resolve, reject) => {
       try {
-        const SELECT_TABLES =
-          'SELECT name FROM sqlite_master ' +
-          "WHERE TYPE='table' ORDER BY name;";
+        const SELECT_TABLES = 'SELECT name FROM sqlite_master ' + "WHERE TYPE='table' ORDER BY name;";
         this.db.all(SELECT_TABLES, (err: Error, rows: any) => {
           if (err) {
             reject(`tables: ${err.message}`);

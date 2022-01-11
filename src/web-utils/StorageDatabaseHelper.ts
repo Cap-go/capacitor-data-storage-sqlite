@@ -1,11 +1,7 @@
 //import LocalForage from 'jeep-localforage';
 import localForage from 'localforage';
 
-import type {
-  capDataStorageOptions,
-  JsonStore,
-  JsonTable,
-} from '../definitions';
+import type { capDataStorageOptions, JsonStore, JsonTable } from '../definitions';
 
 import { Data } from './Data';
 
@@ -178,7 +174,7 @@ export class StorageDatabaseHelper {
 
   async iskey(name: string): Promise<boolean> {
     return this.get(name)
-      .then(data => {
+      .then((data) => {
         if (data.value != null) {
           return Promise.resolve(true);
         } else {

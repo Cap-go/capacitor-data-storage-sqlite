@@ -1,3 +1,9 @@
+## 3.3.4 (2022-01-11)
+
+### Chore
+
+- @capacitor/core 3.3.4
+
 ## 3.2.0 (2021-09-07)
 
 ### Added Features

@@ -23,8 +23,7 @@ import { Data } from './electron-utils/Data';
 import { StorageDatabaseHelper } from './electron-utils/StorageDatabaseHelper';
 import { isJsonStore } from './electron-utils/json-utils';
 
-export class CapacitorDataStorageSqlite
-  implements CapacitorDataStorageSqlitePlugin {
+export class CapacitorDataStorageSqlite implements CapacitorDataStorageSqlitePlugin {
   mDb: StorageDatabaseHelper;
   constructor() {
     this.mDb = new StorageDatabaseHelper();
@@ -35,9 +34,7 @@ export class CapacitorDataStorageSqlite
     return Promise.resolve(ret);
   }
   async openStore(options: capOpenStorageOptions): Promise<void> {
-    const dbName = options.database
-      ? `${options.database}SQLite.db`
-      : 'storageSQLite.db';
+    const dbName = options.database ? `${options.database}SQLite.db` : 'storageSQLite.db';
     const tableName = options.table ? options.table : 'storage_store';
     try {
       await this.mDb.openStore(dbName, tableName);
@@ -47,9 +44,7 @@ export class CapacitorDataStorageSqlite
     }
   }
   async closeStore(options: capStorageOptions): Promise<void> {
-    const dbName = options.database
-      ? `${options.database}SQLite.db`
-      : 'storageSQLite.db';
+    const dbName = options.database ? `${options.database}SQLite.db` : 'storageSQLite.db';
     if (this.mDb.dbName === dbName && this.mDb.isOpen) {
       try {
         await this.mDb.closeStore(dbName);
@@ -62,21 +57,15 @@ export class CapacitorDataStorageSqlite
     }
   }
   async isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult> {
-    const dbName = options.database
-      ? `${options.database}SQLite.db`
-      : 'storageSQLite.db';
+    const dbName = options.database ? `${options.database}SQLite.db` : 'storageSQLite.db';
     let ret = false;
     if (this.mDb.dbName === dbName && this.mDb.isOpen) {
       ret = true;
     }
     return Promise.resolve({ result: ret });
   }
-  async isStoreExists(
-    options: capStorageOptions,
-  ): Promise<capDataStorageResult> {
-    const dbName = options.database
-      ? `${options.database}SQLite.db`
-      : 'storageSQLite.db';
+  async isStoreExists(options: capStorageOptions): Promise<capDataStorageResult> {
+    const dbName = options.database ? `${options.database}SQLite.db` : 'storageSQLite.db';
     let ret = false;
     try {
       ret = await this.mDb.isStoreExists(dbName);
@@ -179,9 +168,7 @@ export class CapacitorDataStorageSqlite
       return Promise.reject(err);
     }
   }
-  async filtervalues(
-    options: capFilterStorageOptions,
-  ): Promise<capValuesResult> {
+  async filtervalues(options: capFilterStorageOptions): Promise<capValuesResult> {
     const filter: string = options.filter;
     if (filter == null || typeof filter != 'string') {
       return Promise.reject('Must Must provide filter as string');
@@ -219,9 +206,7 @@ export class CapacitorDataStorageSqlite
       return Promise.reject(err);
     }
   }
-  async isTable(
-    options: capTableStorageOptions,
-  ): Promise<capDataStorageResult> {
+  async isTable(options: capTableStorageOptions): Promise<capDataStorageResult> {
     const table = options.table;
     if (table == null) {
       return Promise.reject('Must provide a Table Name');
@@ -253,9 +238,7 @@ export class CapacitorDataStorageSqlite
       return Promise.reject(err);
     }
   }
-  async importFromJson(
-    options: capStoreImportOptions,
-  ): Promise<capDataStorageChanges> {
+  async importFromJson(options: capStoreImportOptions): Promise<capDataStorageChanges> {
     const keys = Object.keys(options);
     if (!keys.includes('jsonstring')) {
       return Promise.reject('Must provide a json object');
@@ -270,9 +253,7 @@ export class CapacitorDataStorageSqlite
         return Promise.reject('Must provide a valid JsonSQLite Object');
       }
       const vJsonObj: JsonStore = jsonObj;
-      const dbName = vJsonObj.database
-        ? `${vJsonObj.database}SQLite.db`
-        : 'storageSQLite.db';
+      const dbName = vJsonObj.database ? `${vJsonObj.database}SQLite.db` : 'storageSQLite.db';
       for (const table of vJsonObj.tables) {
         const tableName = table.name ? table.name : 'storage_store';
         try {
@@ -294,9 +275,7 @@ export class CapacitorDataStorageSqlite
       return Promise.reject('Must provide a json object');
     }
   }
-  async isJsonValid(
-    options: capStoreImportOptions,
-  ): Promise<capDataStorageResult> {
+  async isJsonValid(options: capStoreImportOptions): Promise<capDataStorageResult> {
     const keys = Object.keys(options);
     if (!keys.includes('jsonstring')) {
       return Promise.reject('Must provide a json object');

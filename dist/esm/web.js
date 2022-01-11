@@ -232,9 +232,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
                 return Promise.reject('Must provide a valid JsonSQLite Object');
             }
             const vJsonObj = jsonObj;
-            const dbName = vJsonObj.database
-                ? `${vJsonObj.database}IDB`
-                : 'storageIDB';
+            const dbName = vJsonObj.database ? `${vJsonObj.database}IDB` : 'storageIDB';
             for (const table of vJsonObj.tables) {
                 const tableName = table.name ? table.name : 'storage_store';
                 try {

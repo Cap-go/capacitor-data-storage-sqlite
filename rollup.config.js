@@ -7,7 +7,7 @@ export default {
       name: 'capacitorCapacitorDataStorageSqlite',
       globals: {
         '@capacitor/core': 'capacitorExports',
-        'localforage': 'localForage',
+        localforage: 'localForage',
       },
       sourcemap: true,
       inlineDynamicImports: true,
