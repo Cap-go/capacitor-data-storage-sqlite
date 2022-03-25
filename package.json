@@ -86,7 +86,7 @@
     }
   },
   "dependencies": {
-    "electron": "~14.0.0",
+    "electron": "~14.2.4",
     "localforage": "^1.10.0"
   }
 }
