@@ -22,8 +22,7 @@ public struct Blob {
     }
 
     public func toHex() -> String {
-        return bytes.map {
-            ($0 < 16 ? "0" : "") + String($0, radix: 16, uppercase: false)
+        return bytes.map {($0 < 16 ? "0" : "") + String($0, radix: 16, uppercase: false)
         }.joined(separator: "")
     }
 
