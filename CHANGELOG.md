@@ -1,3 +1,9 @@
+## 5.0.1 (2023-05-22)
+
+### Bug Fixes
+
+- try to fix the release number with npm publish
+
 ## 5.0.0 (2023-05-22)
 
 ### Chore
