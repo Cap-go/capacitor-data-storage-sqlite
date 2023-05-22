@@ -1,3 +1,9 @@
+## 4.1.1 (2023-05-22)
+
+### Bug Fixes
+
+- update readme maintenance tag
+
 ## 4.1.0 (2023-05-22)
 
 ### Chore
