@@ -1,21 +1,24 @@
 PODS:
-  - Capacitor (5.0.3):
+  - Capacitor (6.1.1):
     - CapacitorCordova
-  - CapacitorCordova (5.0.3)
-  - SQLCipher (4.4.3):
-    - SQLCipher/standard (= 4.4.3)
-  - SQLCipher/common (4.4.3)
-  - SQLCipher/standard (4.4.3):
+  - CapacitorCordova (6.1.1)
+  - SQLCipher (4.6.0):
+    - SQLCipher/standard (= 4.6.0)
+  - SQLCipher/common (4.6.0)
+  - SQLCipher/standard (4.6.0):
     - SQLCipher/common
+  - SQLite.swift/SQLCipher (0.15.3):
+    - SQLCipher (>= 4.0.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../node_modules/@capacitor/ios`)"
-  - SQLCipher (~> 4.4.0)
+  - SQLite.swift/SQLCipher (~> 0.15.3)
 
 SPEC REPOS:
   trunk:
     - SQLCipher
+    - SQLite.swift
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -24,10 +27,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@capacitor/ios"
 
 SPEC CHECKSUMS:
-  Capacitor: 304a960e431f9e6f78556554ca71c41c1b2b9680
-  CapacitorCordova: def732a63679698df6fb392bbe6d269a0b61e937
-  SQLCipher: 155ffeafc9ac102e5c9b68e3e9a1297a98a27096
+  Capacitor: 8941aba4364ba9d1b22188569001f2ce45cc2b00
+  CapacitorCordova: 8f2cc8d8d3619c566e9418fe8772064a94266106
+  SQLCipher: 30a8e81afa6128e600b17ffa77d0f92fa05ed208
+  SQLite.swift: 8d054987f02728cc912b0eb5a9659650573a65a2
 
-PODFILE CHECKSUM: a48ced9f3b2cfab00b11bf71c472931389975976
+PODFILE CHECKSUM: 4bcdcba5eb9d3adbee779c190c87dfe8d8abeb18
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.15.2

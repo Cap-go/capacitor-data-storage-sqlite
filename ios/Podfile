@@ -9,10 +9,10 @@ end
 
 target 'Plugin' do
   capacitor_pods
-  pod 'SQLCipher', '~>4.4.0'
+  pod 'SQLite.swift/SQLCipher', '~>0.15.3'
 end
 
 target 'PluginTests' do
   capacitor_pods
-  pod 'SQLCipher', '~>4.4.0'
+  pod 'SQLite.swift/SQLCipher', '~>0.15.3'
 end

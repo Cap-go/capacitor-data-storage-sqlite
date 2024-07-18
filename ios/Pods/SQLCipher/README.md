@@ -1,13 +1,13 @@
 ## SQLCipher
 
-SQLCipher extends the [SQLite](https://www.sqlite.org) database library to add security enhancements that make it more suitable for encrypted local data storage like:
+SQLCipher is a standalone fork of the [SQLite](https://www.sqlite.org/) database library that adds 256 bit AES encryption of database files and other security features like:
 
 - on-the-fly encryption
 - tamper detection
 - memory sanitization
 - strong key derivation
 
-SQLCipher is based on SQLite and stable upstream release features are periodically integrated. 
+SQLCipher is based on SQLite and stable upstream release features are periodically integrated. While SQLCipher is maintained as a separate version of the source tree, the project minimizes alterations to core SQLite code whenever possible.
 
 SQLCipher is maintained by Zetetic, LLC, and additional information and documentation is available on the official [SQLCipher site](https://www.zetetic.net/sqlcipher/).
 
@@ -32,9 +32,9 @@ The SQLCipher team welcomes contributions to the core library. All contributions
 
 ## Compiling
 
-Building SQLCipher is similar to compiling a regular version of SQLite from source a couple small exceptions:  
+Building SQLCipher is similar to compiling a regular version of SQLite from source, with a couple of small exceptions:
 
- 1. You *must* define `SQLITE_HAS_CODEC` and either `SQLITE_TEMP_STORE=2` or SQLITE_TEMP_STORE=3` 
+ 1. You *must* define `SQLITE_HAS_CODEC` and either `SQLITE_TEMP_STORE=2` or `SQLITE_TEMP_STORE=3`
  2. You will need to link against a support cryptographic provider (OpenSSL, LibTomCrypt, CommonCrypto/Security.framework, or NSS)
  
 The following examples demonstrate linking against OpenSSL, which is a readily available provider on most Unix-like systems. 
@@ -43,32 +43,32 @@ Example 1. Static linking (replace /opt/local/lib with the path to libcrypto.a).
 example, `--enable-tempstore=yes` is setting `SQLITE_TEMP_STORE=2` for the build.
 
 ```
-	$ ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
-		LDFLAGS="/opt/local/lib/libcrypto.a"
-	$ make
+$ ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
+	LDFLAGS="/opt/local/lib/libcrypto.a"
+$ make
 ```
 
 Example 2. Dynamic linking
 
 ```
-	$ ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
-		LDFLAGS="-lcrypto"
-	$ make
+$ ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
+	LDFLAGS="-lcrypto"
+$ make
 ```
 
 ## Testing
 
 The full SQLite test suite will not complete successfully when using SQLCipher. In some cases encryption interferes with low-level tests that require access to database file data or features which are unsupported by SQLCipher. Those tests that are intended to support encryption are intended for non-SQLCipher implementations. In addition, because SQLite tests are not always isolated, if one test fails it can trigger a domino effect with other failures in later steps.
 
-As a result, the SQLCipher package includes it's own independent tests that exercise and verify the core functionality of the SQLCipher extensions. This test suite is intended to provide an abbreviated verification of SQLCipher's internal logic; it does not perform an exhaustive test of the SQLite database system as a whole or verify functionality on specific platforms. Because SQLCipher is based on stable upstream builds of SQLite, it is consider a basic assumption that the core SQLite library code is operating properly (the SQLite core is almost untouched in SQLCipher). Thus, the additional SQLCipher-specific test provide the requisite verification that the library is operating as expected with SQLCipher's security features enabled.
+As a result, the SQLCipher package includes it's own independent tests that exercise and verify the core functionality of the SQLCipher extensions. This test suite is intended to provide an abbreviated verification of SQLCipher's internal logic; it does not perform an exhaustive test of the SQLite database system as a whole or verify functionality on specific platforms. Because SQLCipher is based on stable upstream builds of SQLite, it is considered a basic assumption that the core SQLite library code is operating properly (the SQLite core is almost untouched in SQLCipher). Thus, the additional SQLCipher-specific test provide the requisite verification that the library is operating as expected with SQLCipher's security features enabled.
 
 To run SQLCipher specific tests, configure as described here and run the following to execute the tests and receive a report of the results:
 
 ```
-	$ ./configure --enable-tempstore=yes --enable-fts5 CFLAGS="-DSQLITE_HAS_CODEC -DSQLCIPHER_TEST" \
-		LDFLAGS="-lcrypto"
-  $ make testfixture
-  $ ./testfixture test/sqlcipher.test
+$ ./configure --enable-tempstore=yes --enable-fts5 CFLAGS="-DSQLITE_HAS_CODEC -DSQLCIPHER_TEST" \
+	LDFLAGS="-lcrypto"
+$ make testfixture
+$ ./testfixture test/sqlcipher.test
 ```
 
 ## Encrypting a database
@@ -162,14 +162,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <h1 align="center">SQLite Source Repository</h1>
 
-This repository contains the complete source code for the 
-[SQLite database engine](https://sqlite.org/).  Some test scripts 
+This repository contains the complete source code for the
+[SQLite database engine](https://sqlite.org/).  Some test scripts
 are also included.  However, many other test scripts
 and most of the documentation are managed separately.
 
 ## Version Control
 
-SQLite sources are managed using the
+SQLite sources are managed using
 [Fossil](https://www.fossil-scm.org/), a distributed version control system
 that was specifically designed and written to support SQLite development.
 The [Fossil repository](https://sqlite.org/src/timeline) contains the urtext.
@@ -177,7 +177,7 @@ The [Fossil repository](https://sqlite.org/src/timeline) contains the urtext.
 If you are reading this on GitHub or some other Git repository or service,
 then you are looking at a mirror.  The names of check-ins and
 other artifacts in a Git mirror are different from the official
-names for those objects.  The offical names for check-ins are
+names for those objects.  The official names for check-ins are
 found in a footer on the check-in comment for authorized mirrors.
 The official check-in name can also be seen in the `manifest.uuid` file
 in the root of the tree.  Always use the official name, not  the
@@ -187,12 +187,33 @@ If you pulled your SQLite source code from a secondary source and want to
 verify its integrity, there are hints on how to do that in the
 [Verifying Code Authenticity](#vauth) section below.
 
-## Obtaining The Code
+## Contacting The SQLite Developers
+
+The preferred way to ask questions or make comments about SQLite or to
+report bugs against SQLite is to visit the 
+[SQLite Forum](https://sqlite.org/forum) at <https://sqlite.org/forum/>.
+Anonymous postings are permitted.
+
+If you think you have found a bug that has security implications and
+you do not want to report it on the public forum, you can send a private
+email to drh at sqlite dot org.
+
+## Public Domain
+
+The SQLite source code is in the public domain.  See
+<https://sqlite.org/copyright.html> for details. 
+
+Because SQLite is in the public domain, we do not normally accept pull
+requests, because if we did take a pull request, the changes in that
+pull request might carry a copyright and the SQLite source code would
+then no longer be fully in the public domain.
+
+## Obtaining The SQLite Source Code
 
 If you do not want to use Fossil, you can download tarballs or ZIP
 archives or [SQLite archives](https://sqlite.org/cli.html#sqlar) as follows:
 
-  *  Lastest trunk check-in as
+  *  Latest trunk check-in as
      [Tarball](https://www.sqlite.org/src/tarball/sqlite.tar.gz),
      [ZIP-archive](https://www.sqlite.org/src/zip/sqlite.zip), or
      [SQLite-archive](https://www.sqlite.org/src/sqlar/sqlite.sqlar).
@@ -209,28 +230,28 @@ archives or [SQLite archives](https://sqlite.org/cli.html#sqlar) as follows:
      then click on the "Tarball" or "ZIP Archive" links on the information
      page.
 
-If you do want to use Fossil to check out the source tree, 
+If you do want to use Fossil to check out the source tree,
 first install Fossil version 2.0 or later.
 (Source tarballs and precompiled binaries available
 [here](https://www.fossil-scm.org/fossil/uv/download.html).  Fossil is
-a stand-alone program.  To install, simply download or build the single 
+a stand-alone program.  To install, simply download or build the single
 executable file and put that file someplace on your $PATH.)
 Then run commands like this:
 
-        mkdir ~/sqlite
+        mkdir -p ~/sqlite ~/Fossils
         cd ~/sqlite
-        fossil clone https://www.sqlite.org/src sqlite.fossil
-        fossil open sqlite.fossil
-    
+        fossil clone https://www.sqlite.org/src ~/Fossils/sqlite.fossil
+        fossil open ~/Fossils/sqlite.fossil
+
 After setting up a repository using the steps above, you can always
-update to the lastest version using:
+update to the latest version using:
 
         fossil update trunk   ;# latest trunk check-in
         fossil update release ;# latest official release
 
 Or type "fossil ui" to get a web-based user interface.
 
-## Compiling
+## Compiling for Unix-like systems
 
 First create a directory in which to place
 the build products.  It is recommended, but not required, that the
@@ -244,9 +265,9 @@ For example:
         mkdir bld                ;#  Build will occur in a sibling directory
         cd bld                   ;#  Change to the build directory
         ../sqlite/configure      ;#  Run the configure script
-        make                     ;#  Run the makefile.
+        make                     ;#  Builds the "sqlite3" command-line tool
         make sqlite3.c           ;#  Build the "amalgamation" source file
-        make test                ;#  Run some tests (requires Tcl)
+        make devtest             ;#  Run some tests (requires Tcl)
 
 See the makefile for additional targets.
 
@@ -256,32 +277,33 @@ script does not work out for you, there is a generic makefile named
 can copy and edit to suit your needs.  Comments on the generic makefile
 show what changes are needed.
 
-## Using MSVC
+## Compiling for Windows Using MSVC
 
 On Windows, all applicable build products can be compiled with MSVC.
-First open the command prompt window associated with the desired compiler
-version (e.g. "Developer Command Prompt for VS2013").  Next, use NMAKE
-with the provided "Makefile.msc" to build one of the supported targets.
+You will also need a working installation of TCL.
+See the [compile-for-windows.md](doc/compile-for-windows.md) document for
+additional information about how to install MSVC and TCL and configure your
+build environment.
 
-For example:
+If you want to run tests, you need to let SQLite know the location of your
+TCL library, using a command like this:
 
-        mkdir bld
-        cd bld
-        nmake /f Makefile.msc TOP=..\sqlite
-        nmake /f Makefile.msc sqlite3.c TOP=..\sqlite
-        nmake /f Makefile.msc sqlite3.dll TOP=..\sqlite
-        nmake /f Makefile.msc sqlite3.exe TOP=..\sqlite
-        nmake /f Makefile.msc test TOP=..\sqlite
+        set TCLDIR=c:\Tcl
 
-There are several build options that can be set via the NMAKE command
-line.  For example, to build for WinRT, simply add "FOR_WINRT=1" argument
-to the "sqlite3.dll" command line above.  When debugging into the SQLite
-code, adding the "DEBUG=1" argument to one of the above command lines is
-recommended.
+SQLite uses "tclsh.exe" as part of the build process, and so that utility
+program will need to be somewhere on your %PATH%.  The finished SQLite library
+does not contain any TCL code, but it does use TCL to help with the build process
+and to run tests.
 
-SQLite does not require [Tcl](http://www.tcl.tk/) to run, but a Tcl installation
-is required by the makefiles (including those for MSVC).  SQLite contains
-a lot of generated code and Tcl is used to do much of that code generation.
+Build using Makefile.msc.  Example:
+
+        nmake /f Makefile.msc
+        nmake /f Makefile.msc sqlite3.c
+        nmake /f Makefile.msc devtest
+        nmake /f Makefile.msc releasetest
+ 
+There are many other makefile targets.  See comments in Makefile.msc for
+details.
 
 ## Source Code Tour
 
@@ -298,8 +320,8 @@ the "tclsqlite.c" file which implements the
 extension and only later escaped to the wild as an independent library.)
 
 Test scripts and programs are found in the **test/** subdirectory.
-Addtional test code is found in other source repositories.
-See [How SQLite Is Tested](http://www.sqlite.org/testing.html) for
+Additional test code is found in other source repositories.
+See [How SQLite Is Tested](https://www.sqlite.org/testing.html) for
 additional information.
 
 The **ext/** subdirectory contains code for extensions.  The
@@ -323,7 +345,7 @@ manually-edited files and automatically-generated files.
 
 The SQLite interface is defined by the **sqlite3.h** header file, which is
 generated from src/sqlite.h.in, ./manifest.uuid, and ./VERSION.  The
-[Tcl script](http://www.tcl.tk) at tool/mksqlite3h.tcl does the conversion.
+[Tcl script](https://www.tcl.tk) at tool/mksqlite3h.tcl does the conversion.
 The manifest.uuid file contains the SHA3 hash of the particular check-in
 and is used to generate the SQLITE\_SOURCE\_ID macro.  The VERSION file
 contains the current SQLite version number.  The sqlite3.h header is really
@@ -332,7 +354,7 @@ at just the right spots. Note that comment text in the sqlite3.h file is
 used to generate much of the SQLite API documentation.  The Tcl scripts
 used to generate that documentation are in a separate source repository.
 
-The SQL language parser is **parse.c** which is generate from a grammar in
+The SQL language parser is **parse.c** which is generated from a grammar in
 the src/parse.y file.  The conversion of "parse.y" into "parse.c" is done
 by the [lemon](./doc/lemon.html) LALR(1) parser generator.  The source code
 for lemon is at tool/lemon.c.  Lemon uses the tool/lempar.c file as a
@@ -342,7 +364,7 @@ generates parse.c.
 
 The **opcodes.h** header file contains macros that define the numbers
 corresponding to opcodes in the "VDBE" virtual machine.  The opcodes.h
-file is generated by the scanning the src/vdbe.c source file.  The
+file is generated by scanning the src/vdbe.c source file.  The
 Tcl script at ./mkopcodeh.tcl does this scan and generates opcodes.h.
 A second Tcl script, ./mkopcodec.tcl, then scans opcodes.h to generate
 the **opcodes.c** source file, which contains a reverse mapping from
@@ -390,16 +412,16 @@ individual source file exceeds 32K lines in length.
 ## How It All Fits Together
 
 SQLite is modular in design.
-See the [architectural description](http://www.sqlite.org/arch.html)
+See the [architectural description](https://www.sqlite.org/arch.html)
 for details. Other documents that are useful in
 (helping to understand how SQLite works include the
-[file format](http://www.sqlite.org/fileformat2.html) description,
-the [virtual machine](http://www.sqlite.org/opcode.html) that runs
+[file format](https://www.sqlite.org/fileformat2.html) description,
+the [virtual machine](https://www.sqlite.org/opcode.html) that runs
 prepared statements, the description of
-[how transactions work](http://www.sqlite.org/atomiccommit.html), and
-the [overview of the query planner](http://www.sqlite.org/optoverview.html).
+[how transactions work](https://www.sqlite.org/atomiccommit.html), and
+the [overview of the query planner](https://www.sqlite.org/optoverview.html).
 
-Years of effort have gone into optimizating SQLite, both
+Years of effort have gone into optimizing SQLite, both
 for small size and high performance.  And optimizations tend to result in
 complex code.  So there is a lot of complexity in the current SQLite
 implementation.  It will not be the easiest library in the world to hack.
@@ -452,15 +474,12 @@ Key files:
      is not part of the core SQLite library.  But as most of the tests in this
      repository are written in Tcl, the Tcl language bindings are important.
 
-  *  **test*.c** - Files in the src/ folder that begin with "test" go into
+  *  **test\*.c** - Files in the src/ folder that begin with "test" go into
      building the "testfixture.exe" program.  The testfixture.exe program is
      an enhanced Tcl shell.  The testfixture.exe program runs scripts in the
      test/ folder to validate the core SQLite code.  The testfixture program
-     (and some other test programs too) is build and run when you type
+     (and some other test programs too) is built and run when you type
      "make test".
-
-  *  **ext/misc/json1.c** - This file implements the various JSON functions
-     that are build into SQLite.
 
 There are many other source files.  Each has a succinct header comment that
 describes its purpose and role within the larger system.
@@ -469,21 +488,34 @@ describes its purpose and role within the larger system.
 ## Verifying Code Authenticity
 
 The `manifest` file at the root directory of the source tree
-contains either a SHA3-256 hash (for newer files) or a SHA1 hash (for 
-older files) for every source file in the repository.
-The SHA3-256 hash of the `manifest`
-file itself is the official name of the version of the source tree that you
-have. The `manifest.uuid` file should contain the SHA3-256 hash of the
+contains either a SHA3-256 hash or a SHA1 hash
+for every source file in the repository.
+The name of the version of the entire source tree is just the
+SHA3-256 hash of the `manifest` file itself, possibly with the
+last line of that file omitted if the last line begins with
+"`# Remove this line`".
+The `manifest.uuid` file should contain the SHA3-256 hash of the
 `manifest` file. If all of the above hash comparisons are correct, then
 you can be confident that your source tree is authentic and unadulterated.
+Details on the format for the `manifest` files are available
+[on the Fossil website](https://fossil-scm.org/fossil/doc/trunk/www/fileformat.wiki#manifest).
 
-The format of the `manifest` file should be mostly self-explanatory, but
-if you want details, they are available
-[here](https://fossil-scm.org/fossil/doc/trunk/www/fileformat.wiki#manifest).
+The process of checking source code authenticity is automated by the 
+makefile:
+
+>   make verify-source
+
+Or on windows:
+
+>   nmake /f Makefile.msc verify-source
+
+Using the makefile to verify source integrity is good for detecting
+accidental changes to the source tree, but malicious changes could be
+hidden by also modifying the makefiles.
 
 ## Contacts
 
-The main SQLite website is [http://www.sqlite.org/](http://www.sqlite.org/)
+The main SQLite website is [https://sqlite.org/](https://sqlite.org/)
 with geographically distributed backups at
-[http://www2.sqlite.org/](http://www2.sqlite.org) and
-[http://www3.sqlite.org/](http://www3.sqlite.org).
+[https://www2.sqlite.org/](https://www2.sqlite.org) and
+[https://www3.sqlite.org/](https://www3.sqlite.org).
