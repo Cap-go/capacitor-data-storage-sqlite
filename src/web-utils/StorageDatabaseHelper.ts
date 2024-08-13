@@ -1,9 +1,13 @@
 //import LocalForage from 'jeep-localforage';
-import localForage from 'localforage';
+import localForage from "localforage";
 
-import type { capDataStorageOptions, JsonStore, JsonTable } from '../definitions';
+import type {
+  capDataStorageOptions,
+  JsonStore,
+  JsonTable,
+} from "../definitions";
 
-import { Data } from './Data';
+import { Data } from "./Data";
 
 //const DATABASE: string = "storageIDB";
 //const STORAGESTORE: string = "storage_store";
@@ -18,9 +22,9 @@ export class StorageDatabaseHelper {
       this._dbName = dbName;
       this._tableName = tableName;
     } else {
-      this._dbName = '';
-      this._tableName = '';
-      throw new Error('openStore return false');
+      this._dbName = "";
+      this._tableName = "";
+      throw new Error("openStore return false");
     }
   }
   openStore(dbName: string, tableName: string): boolean {
@@ -47,7 +51,7 @@ export class StorageDatabaseHelper {
     if (res) {
       return Promise.resolve();
     } else {
-      return Promise.reject(new Error('openStore return false'));
+      return Promise.reject(new Error("openStore return false"));
     }
   }
   async isTable(table: string): Promise<boolean> {
@@ -79,7 +83,7 @@ export class StorageDatabaseHelper {
         const retList = db.objectStoreNames;
         const values = Object.values(retList);
         for (const val of values) {
-          if (val.substring(0, 12) != 'local-forage') {
+          if (val.substring(0, 12) != "local-forage") {
             result = [...result, val];
           }
         }
@@ -224,7 +228,7 @@ export class StorageDatabaseHelper {
               retData.value = tdata.value;
               retTable.values = [...retTable.values, retData];
             } else {
-              return Promise.reject('Data.name is undefined');
+              return Promise.reject("Data.name is undefined");
             }
           }
           retJson.tables = [...retJson.tables, retTable];
