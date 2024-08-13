@@ -34,8 +34,6 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
       - name: Update Doc
         run: pnpm docgen
-      - name: Update Doc
-        run: pnpm docgen:api
       - name: Add doc to github
         run: |
           git add README.md
