@@ -1,3 +1,20 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [5.0.2](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/compare/v5.0.1...v5.0.2) (2024-08-13)
+
+
+### Bug Fixes
+
+* add CI/CD ([3351735](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/33517352b6ee5b6234ab5399376897ff697983f2))
+* remove dogen for now ([583f0ef](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/583f0ef6df54bbd476e352938b0e73c1030adfce))
+* remove old code ([723f906](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/723f906ad2015d0b6b53d2eca469269a912c6c01))
+* remove useless command ([95321b5](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/95321b50207b484f78f2be32718901d585ef0db3))
+* switch to pnpm ([2c2ff58](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/2c2ff588e87546fb318d117b774f48a10778b92d))
+* test ci ([32db83c](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/32db83cad26c7d74ffa88588040767f16c6c808f))
+* use latest pnpm ([d02b278](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/d02b2782048f53260c3bd1cac327391f936fff77))
+
 ## 5.0.1 (2023-05-22)
 
 ### Bug Fixes
