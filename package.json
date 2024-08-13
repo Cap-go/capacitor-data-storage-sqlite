@@ -1,6 +1,6 @@
 {
   "name": "capacitor-data-storage-sqlite",
-  "version": "5.0.6",
+  "version": "6.0.0",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -48,10 +48,10 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "^5.0.0",
-    "@capacitor/core": "^5.0.0",
-    "@capacitor/docgen": "^0.0.18",
-    "@capacitor/ios": "^5.0.0",
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/docgen": "^0.2.2",
+    "@capacitor/ios": "^6.0.0",
     "@ionic/eslint-config": "^0.4.0",
     "@ionic/prettier-config": "^2.0.0",
     "@ionic/swiftlint-config": "^1.1.2",
@@ -61,7 +61,7 @@
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
     "electron": "^22.2.0",
-    "eslint": "^9.9.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "prettier": "~3.3.3",
     "prettier-plugin-java": "~2.6.4",
@@ -71,7 +71,7 @@
     "typescript": "~5.5.4"
   },
   "peerDependencies": {
-    "@capacitor/core": "^5.0.0",
+    "@capacitor/core": "^6.0.0",
     "localforage": "^1.10.0"
   },
   "swiftlint": "@ionic/swiftlint-config",
