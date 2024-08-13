@@ -6,6 +6,8 @@
 <br>
 <!-- Note from the Owner - Start -->
 <p align="center" style="font-size:50px;color:red"><strong>Note from the Owner</strong></p>
+<p align="left" style="font-size:47px">This Plugin has been transfered to Capgo org after his original creator <a href="https://github.com/jepiqueau">@jepiqueau</a> decide to retire. 
+<br>We will foreer be thankful for the work he did. Migration to Capacitor 6 is coming soon.</p>
 <!-- Note from the Owner - End -->
 <br>
 <!-- Message below Note from the Owner - Start -->
