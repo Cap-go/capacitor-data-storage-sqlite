@@ -1,16 +1,16 @@
-import { WebPlugin } from '@capacitor/core';
-import { Data } from './web-utils/Data';
-import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
-import { isJsonStore } from './web-utils/json-utils';
+import { WebPlugin } from "@capacitor/core";
+import { Data } from "./web-utils/Data";
+import { StorageDatabaseHelper } from "./web-utils/StorageDatabaseHelper";
+import { isJsonStore } from "./web-utils/json-utils";
 export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     async echo(options) {
         const ret = {};
-        ret.value = options.value ? options.value : '';
+        ret.value = options.value ? options.value : "";
         return ret;
     }
     async openStore(options) {
-        const dbName = options.database ? `${options.database}IDB` : 'storageIDB';
-        const tableName = options.table ? options.table : 'storage_store';
+        const dbName = options.database ? `${options.database}IDB` : "storageIDB";
+        const tableName = options.table ? options.table : "storage_store";
         try {
             this.mDb = new StorageDatabaseHelper(dbName, tableName);
             return Promise.resolve();
@@ -31,7 +31,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     async setTable(options) {
         const tableName = options.table;
         if (tableName == null) {
-            return Promise.reject('SetTable: Must provide a table name');
+            return Promise.reject("SetTable: Must provide a table name");
         }
         if (this.mDb) {
             try {
@@ -43,17 +43,17 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
             }
         }
         else {
-            return Promise.reject('SetTable: Must open a store first');
+            return Promise.reject("SetTable: Must open a store first");
         }
     }
     async set(options) {
         const key = options.key;
-        if (key == null || typeof key != 'string') {
-            return Promise.reject('Set: Must provide key as string');
+        if (key == null || typeof key != "string") {
+            return Promise.reject("Set: Must provide key as string");
         }
         const value = options.value ? options.value : null;
-        if (value == null || typeof value != 'string') {
-            return Promise.reject('Set: Must provide value as string');
+        if (value == null || typeof value != "string") {
+            return Promise.reject("Set: Must provide value as string");
         }
         const data = new Data();
         data.name = key;
@@ -68,8 +68,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     }
     async get(options) {
         const key = options.key;
-        if (key == null || typeof key != 'string') {
-            return Promise.reject('Get: Must provide key as string');
+        if (key == null || typeof key != "string") {
+            return Promise.reject("Get: Must provide key as string");
         }
         try {
             const data = await this.mDb.get(key);
@@ -77,7 +77,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
                 return Promise.resolve({ value: data.value });
             }
             else {
-                return Promise.resolve({ value: '' });
+                return Promise.resolve({ value: "" });
             }
         }
         catch (err) {
@@ -86,8 +86,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     }
     async remove(options) {
         const key = options.key;
-        if (key == null || typeof key != 'string') {
-            return Promise.reject('Remove: Must provide key as string');
+        if (key == null || typeof key != "string") {
+            return Promise.reject("Remove: Must provide key as string");
         }
         try {
             await this.mDb.remove(key);
@@ -108,8 +108,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     }
     async iskey(options) {
         const key = options.key;
-        if (key == null || typeof key != 'string') {
-            return Promise.reject('Iskey: Must provide key as string');
+        if (key == null || typeof key != "string") {
+            return Promise.reject("Iskey: Must provide key as string");
         }
         try {
             const ret = await this.mDb.iskey(key);
@@ -139,18 +139,18 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     }
     async filtervalues(options) {
         const filter = options.filter;
-        if (filter == null || typeof filter != 'string') {
-            return Promise.reject('Filtervalues: Must provide filter as string');
+        if (filter == null || typeof filter != "string") {
+            return Promise.reject("Filtervalues: Must provide filter as string");
         }
         let regFilter;
-        if (filter.startsWith('%')) {
-            regFilter = new RegExp('^' + filter.substring(1), 'i');
+        if (filter.startsWith("%")) {
+            regFilter = new RegExp("^" + filter.substring(1), "i");
         }
-        else if (filter.endsWith('%')) {
-            regFilter = new RegExp(filter.slice(0, -1) + '$', 'i');
+        else if (filter.endsWith("%")) {
+            regFilter = new RegExp(filter.slice(0, -1) + "$", "i");
         }
         else {
-            regFilter = new RegExp(filter, 'i');
+            regFilter = new RegExp(filter, "i");
         }
         try {
             const ret = [];
@@ -196,7 +196,7 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     async isTable(options) {
         const table = options.table;
         if (table == null) {
-            return Promise.reject('Must provide a Table Name');
+            return Promise.reject("Must provide a Table Name");
         }
         try {
             const ret = await this.mDb.isTable(table);
@@ -220,8 +220,8 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
     }
     async importFromJson(options) {
         const keys = Object.keys(options);
-        if (!keys.includes('jsonstring')) {
-            return Promise.reject('Must provide a json object');
+        if (!keys.includes("jsonstring")) {
+            return Promise.reject("Must provide a json object");
         }
         let totalChanges = 0;
         if (options === null || options === void 0 ? void 0 : options.jsonstring) {
@@ -229,12 +229,14 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
             const jsonObj = JSON.parse(jsonStrObj);
             const isValid = isJsonStore(jsonObj);
             if (!isValid) {
-                return Promise.reject('Must provide a valid JsonSQLite Object');
+                return Promise.reject("Must provide a valid JsonSQLite Object");
             }
             const vJsonObj = jsonObj;
-            const dbName = vJsonObj.database ? `${vJsonObj.database}IDB` : 'storageIDB';
+            const dbName = vJsonObj.database
+                ? `${vJsonObj.database}IDB`
+                : "storageIDB";
             for (const table of vJsonObj.tables) {
-                const tableName = table.name ? table.name : 'storage_store';
+                const tableName = table.name ? table.name : "storage_store";
                 try {
                     this.mDb = new StorageDatabaseHelper(dbName, tableName);
                     // Open the database
@@ -257,27 +259,27 @@ export class CapacitorDataStorageSqliteWeb extends WebPlugin {
             return Promise.resolve({ changes: totalChanges });
         }
         else {
-            return Promise.reject('Must provide a json object');
+            return Promise.reject("Must provide a json object");
         }
     }
     async isJsonValid(options) {
         const keys = Object.keys(options);
-        if (!keys.includes('jsonstring')) {
-            return Promise.reject('Must provide a json object');
+        if (!keys.includes("jsonstring")) {
+            return Promise.reject("Must provide a json object");
         }
         if (options === null || options === void 0 ? void 0 : options.jsonstring) {
             const jsonStrObj = options.jsonstring;
             const jsonObj = JSON.parse(jsonStrObj);
             const isValid = isJsonStore(jsonObj);
             if (!isValid) {
-                return Promise.reject('Stringify Json Object not Valid');
+                return Promise.reject("Stringify Json Object not Valid");
             }
             else {
                 return Promise.resolve({ result: true });
             }
         }
         else {
-            return Promise.reject('Must provide in options a stringify Json Object');
+            return Promise.reject("Must provide in options a stringify Json Object");
         }
     }
     async exportToJson() {
