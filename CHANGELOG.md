@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.4](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/compare/5.0.3...5.0.4) (2024-08-13)
+
+
+### Bug Fixes
+
+* all build script and formating ([071d731](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/071d731bce3d538f625825cd305e1658f086048b))
+
 ### [5.0.3](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/compare/5.0.2...5.0.3) (2024-08-13)
 
 
