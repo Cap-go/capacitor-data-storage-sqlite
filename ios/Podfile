@@ -5,14 +5,13 @@ def capacitor_pods
   use_frameworks!
   pod 'Capacitor', :path => '../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../node_modules/@capacitor/ios'
+  pod 'SQLite.swift/SQLCipher'
 end
 
 target 'Plugin' do
   capacitor_pods
-  pod 'SQLCipher', '~>4.4.0'
 end
 
 target 'PluginTests' do
   capacitor_pods
-  pod 'SQLCipher', '~>4.4.0'
 end
