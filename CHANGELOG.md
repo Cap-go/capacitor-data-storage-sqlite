@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.3](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/compare/5.0.2...5.0.3) (2024-08-13)
+
+
+### Bug Fixes
+
+* make CI/Cd pass use correct SQLCipher dep ([2323590](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/commit/2323590874c860483604de5c977369930856dc17))
+
 ### [5.0.2](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/compare/v5.0.1...v5.0.2) (2024-08-13)
 
 
