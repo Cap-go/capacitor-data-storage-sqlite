@@ -9,25 +9,8 @@
 <!-- Note from the Owner - End -->
 <br>
 <!-- Message below Note from the Owner - Start -->
-<p align="left" style="font-size:47px">Start --></p>
 <p align="left" style="font-size:47px">This Plugin has been transfered to Capgo org after his original creator <a href="https://github.com/jepiqueau">@jepiqueau</a> decide to retire. 
 <br>We will foreer be thankful for the work he did.</p>
-<br>
-<p align="left">
-I have been dedicated to developing and maintaining this plugin for many years since the inception of Ionic Capacitor. Now, at 73+ years old, and with my MacBook Pro becoming obsolete for running Capacitor 6 for iOS, I have made the decision to cease maintenance of the plugin. If anyone wishes to take ownership of this plugin, they are welcome to do so.  
-</p>
-<br>
-<p align="left">
-It has been a great honor to be part of this development journey alongside the developer community. I am grateful to see many of you following me on this path and incorporating the plugin into your applications. Your comments and suggestions have motivated me to continuously improve it.  
-</p>
-<br>
-<p align="left">
-I have made this decision due to several family-related troubles that require my full attention and time. Therefore, I will not be stepping back. Thank you to all of you for your support.
-</p>
-<br>
-<p align="left" style="font-size:47px">End <--</p>
-<!-- Message below Note from the Owner - End -->
-<br>
 <br>
 <p align="center">
   Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of <strong>type string only</strong> to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
@@ -198,4 +181,22 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+<p align="left" style="font-size:47px">Retirement message of @jepiqueau --></p>
+<br>
+<p align="left">
+I have been dedicated to developing and maintaining this plugin for many years since the inception of Ionic Capacitor. Now, at 73+ years old, and with my MacBook Pro becoming obsolete for running Capacitor 6 for iOS, I have made the decision to cease maintenance of the plugin. If anyone wishes to take ownership of this plugin, they are welcome to do so.  
+</p>
+<br>
+<p align="left">
+It has been a great honor to be part of this development journey alongside the developer community. I am grateful to see many of you following me on this path and incorporating the plugin into your applications. Your comments and suggestions have motivated me to continuously improve it.  
+</p>
+<br>
+<p align="left">
+I have made this decision due to several family-related troubles that require my full attention and time. Therefore, I will not be stepping back. Thank you to all of you for your support.
+</p>
+<br>
+<p align="left" style="font-size:47px">End <--</p>
+<!-- Message below Note from the Owner - End -->
+<br>
 
