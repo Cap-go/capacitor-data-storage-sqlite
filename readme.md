@@ -48,6 +48,7 @@ I have made this decision due to several family-related troubles that require my
 
 | Maintainer        | GitHub                                    | Social |
 | ----------------- | ----------------------------------------- | ------ |
+| Martin Donadieu   | [riderx](https://github.com/riderx)       |        |
 | Quéau Jean Pierre | [jepiqueau](https://github.com/jepiqueau) |        |
 
 ## Browser Support
@@ -165,7 +166,7 @@ No configuration required for this plugin
 
 - [see capacitor documentation](https://capacitor.ionicframework.com/docs/getting-started/with-ionic)
 
-- [see USAGE_Documentation](https://github.com/jepiqueau/capacitor-data-storage-sqlite/blob/master/docs/USAGE.md)
+- [see USAGE_Documentation](https://github.com/Cap-go/capacitor-data-storage-sqlite/blob/master/docs/USAGE.md)
 
 ## Dependencies
 
