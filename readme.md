@@ -10,6 +10,8 @@
 <br>
 <!-- Message below Note from the Owner - Start -->
 <p align="left" style="font-size:47px">Start --></p>
+<p align="left" style="font-size:47px">This Plugin has been transfered to Capgo org after his original creator <a href="https://github.com/jepiqueau">@jepiqueau</a> decide to retire. 
+<br>We will foreer be thankful for the work he did. Migration to Capacitor 6 is coming soon.</p>
 <br>
 <p align="left">
 I have been dedicated to developing and maintaining this plugin for many years since the inception of Ionic Capacitor. Now, at 73+ years old, and with my MacBook Pro becoming obsolete for running Capacitor 6 for iOS, I have made the decision to cease maintenance of the plugin. If anyone wishes to take ownership of this plugin, they are welcome to do so.  
