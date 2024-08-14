@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0](https://github.com/Cap-go/capacitor-data-storage-sqlite.git/compare/5.0.9...6.0.0) (2024-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to capacitor 6
+
+### Features
+
+* migrate to capacitor 6 ([4fdef4a](https://github.com/Cap-go/capacitor-data-storage-sqlite.git/commit/4fdef4a9eb6a4885176880fbba55a9245e9ece63))
+
+
+### Bug Fixes
+
+* git link in npm ([ad36b03](https://github.com/Cap-go/capacitor-data-storage-sqlite.git/commit/ad36b035eca6f7730e7978cd0252eb3e55d39ea2))
+* test ci ([ed9ff21](https://github.com/Cap-go/capacitor-data-storage-sqlite.git/commit/ed9ff21e36f8a13a818b0527325a9763f92c036e))
+
 ### [5.0.9](https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/compare/5.0.8...5.0.9) (2024-08-14)
 
 
