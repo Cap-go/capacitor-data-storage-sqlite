@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-data-storage-sqlite",
+  "name": "@capgo/capacitor-data-storage-sqlite",
   "version": "6.0.0",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
@@ -14,14 +14,14 @@
     "electron/",
     "CapacitorDataStorageSqlite.podspec"
   ],
-  "author": "Jean Pierre Quéau",
+  "author": "Martin Donadieu",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jepiqueau/capacitor-data-storage-sqlite.git.git"
+    "url": "git+https://github.com/Cap-go/capacitor-data-storage-sqlite.git.git"
   },
   "bugs": {
-    "url": "https://github.com/jepiqueau/capacitor-data-storage-sqlite.git/issues"
+    "url": "https://github.com/Cap-go/capacitor-data-storage-sqlite.git/issues"
   },
   "keywords": [
     "capacitor",
