@@ -1,13 +1,13 @@
 import { registerPlugin } from "@capacitor/core";
 
-import type { CapacitorDataStorageSqlitePlugin } from "./definitions";
+import type { CapgoCapacitorDataStorageSqlitePlugin } from "./definitions";
 
-const CapacitorDataStorageSqlite =
-  registerPlugin<CapacitorDataStorageSqlitePlugin>(
-    "CapacitorDataStorageSqlite",
+const CapgoCapacitorDataStorageSqlite =
+  registerPlugin<CapgoCapacitorDataStorageSqlitePlugin>(
+    "CapgoCapacitorDataStorageSqlite",
     {
       web: () =>
-        import("./web").then((m) => new m.CapacitorDataStorageSqliteWeb()),
+        import("./web").then((m) => new m.CapgoCapacitorDataStorageSqliteWeb()),
       electron: () =>
         (window as any).CapacitorCustomPlatform.plugins
           .CapacitorDataStorageSqlite,
@@ -15,4 +15,4 @@ const CapacitorDataStorageSqlite =
   );
 
 export * from "./definitions";
-export { CapacitorDataStorageSqlite };
+export { CapgoCapacitorDataStorageSqlite };

@@ -1,21 +1,21 @@
-package com.jeep.plugin.capacitor.capacitordatastoragesqlite;
+package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite;
 
 import android.content.Context;
 import com.getcapacitor.JSObject;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.Data;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonStore;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonTable;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.StorageDatabaseHelper;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.Data;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonStore;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonTable;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.StorageDatabaseHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CapacitorDataStorageSqlite {
+public class CapgoCapacitorDataStorageSqlite {
 
   private StorageDatabaseHelper mDb;
   private Context context;
 
-  public CapacitorDataStorageSqlite(Context context) {
+  public CapgoCapacitorDataStorageSqlite(Context context) {
     this.context = context;
   }
 

@@ -22,7 +22,7 @@
 import { Injectable } from '@angular/core';
 
 import { Capacitor } from '@capacitor/core';
-import { CapacitorDataStorageSqlite,} from 'capacitor-data-storage-sqlite';
+import { CapgoCapacitorDataStorageSqlite,} from 'capacitor-data-storage-sqlite';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class StoreService {
    */
   async init(): Promise<void> {
     this.platform = Capacitor.getPlatform();
-    this.store = CapacitorDataStorageSqlite;
+    this.store = CapgoCapacitorDataStorageSqlite;
     this.isService = true;
     console.log('in init ',this.platform,this.isService)
   }
@@ -368,7 +368,7 @@ export class TeststoreComponent implements AfterViewInit {
       });
     };
 
-    // Initialize the CapacitorDataStorageSQLite plugin
+    // Initialize the CapgoCapacitorDataStorageSqlite plugin
     await this._StoreService.init();
   }
 
@@ -523,7 +523,7 @@ export class EncryptaStoreComponent implements AfterViewInit {
       });
     };
 
-    // Initialize the CapacitorDataStorageSQLite plugin
+    // Initialize the CapgoCapacitorDataStorageSqlite plugin
     await this._StoreService.init();
     this.platform = this._StoreService.platform;
   }
@@ -683,7 +683,7 @@ export class MultitablesstoreComponent implements AfterViewInit {
       });
     };
 
-    // Initialize the CapacitorDataStorageSQLite plugin
+    // Initialize the CapgoCapacitorDataStorageSqlite plugin
     await this._StoreService.init();
     this.platform = this._StoreService.platform;
   }
@@ -835,11 +835,11 @@ First a function to open the database.
 
 ```ts
 import {
-  CapacitorDataStorageSqlite,
+  CapgoCapacitorDataStorageSqlite,
   capOpenStorageOptions,
-} from "capacitor-data-storage-sqlite";
+} from "@capgo/capacitor-data-storage-sqlite";
 
-export let sqlStore = CapacitorDataStorageSqlite;
+export let sqlStore = CapgoCapacitorDataStorageSqlite;
 
 // Call this function before accessing 
 // functions like sqlStore.get sqlStore.set etc...

@@ -19,13 +19,13 @@
 		2C81FFFE2668CF0A00988608 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81FFF42668CF0A00988608 /* Global.swift */; };
 		2C81FFFF2668CF0A00988608 /* StorageDatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81FFF52668CF0A00988608 /* StorageDatabaseHelper.swift */; };
 		2CA22B9126E4971E0042A27F /* JsonStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA22B9026E4971E0042A27F /* JsonStore.swift */; };
-		2F98D68224C9AAE500613A4C /* CapacitorDataStorageSqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */; };
+		2F98D68224C9AAE500613A4C /* CapgoCapacitorDataStorageSqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F98D68124C9AAE400613A4C /* CapgoCapacitorDataStorageSqlite.swift */; };
 		50ADFF92201F53D600D50D53 /* Plugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADFF88201F53D600D50D53 /* Plugin.framework */; };
-		50ADFF97201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFF96201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift */; };
-		50ADFF99201F53D600D50D53 /* CapacitorDataStorageSqlitePlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ADFF8B201F53D600D50D53 /* CapacitorDataStorageSqlitePlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		50ADFF97201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFF96201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePluginTests.swift */; };
+		50ADFF99201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 50ADFF8B201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		50ADFFA42020D75100D50D53 /* Capacitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50ADFFA52020D75100D50D53 /* Capacitor.framework */; };
-		50ADFFA82020EE4F00D50D53 /* CapacitorDataStorageSqlitePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFFA72020EE4F00D50D53 /* CapacitorDataStorageSqlitePlugin.m */; };
-		50E1A94820377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E1A94720377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift */; };
+		50ADFFA82020EE4F00D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 50ADFFA72020EE4F00D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.m */; };
+		50E1A94820377CB70090CE1A /* CapgoCapacitorDataStorageSqlitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E1A94720377CB70090CE1A /* CapgoCapacitorDataStorageSqlitePlugin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,17 +49,17 @@
 		2C81FFFA2668CF0A00988608 /* UtilsEncryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilsEncryption.swift; sourceTree = "<group>"; };
 		2C81FFFB2668CF0A00988608 /* UtilsSQLCipher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilsSQLCipher.swift; sourceTree = "<group>"; };
 		2CA22B9026E4971E0042A27F /* JsonStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonStore.swift; sourceTree = "<group>"; };
-		2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapacitorDataStorageSqlite.swift; sourceTree = "<group>"; };
+		2F98D68124C9AAE400613A4C /* CapgoCapacitorDataStorageSqlite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapgoCapacitorDataStorageSqlite.swift; sourceTree = "<group>"; };
 		3B2A61DA5A1F2DD4F959604D /* Pods_Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ADFF88201F53D600D50D53 /* Plugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Plugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		50ADFF8B201F53D600D50D53 /* CapacitorDataStorageSqlitePlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CapacitorDataStorageSqlitePlugin.h; sourceTree = "<group>"; };
+		50ADFF8B201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CapgoCapacitorDataStorageSqlitePlugin.h; sourceTree = "<group>"; };
 		50ADFF8C201F53D600D50D53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50ADFF91201F53D600D50D53 /* PluginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PluginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		50ADFF96201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacitorDataStorageSqlitePluginTests.swift; sourceTree = "<group>"; };
+		50ADFF96201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePluginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapgoCapacitorDataStorageSqlitePluginTests.swift; sourceTree = "<group>"; };
 		50ADFF98201F53D600D50D53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50ADFFA52020D75100D50D53 /* Capacitor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Capacitor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		50ADFFA72020EE4F00D50D53 /* CapacitorDataStorageSqlitePlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CapacitorDataStorageSqlitePlugin.m; sourceTree = "<group>"; };
-		50E1A94720377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapacitorDataStorageSqlitePlugin.swift; sourceTree = "<group>"; };
+		50ADFFA72020EE4F00D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CapgoCapacitorDataStorageSqlitePlugin.m; sourceTree = "<group>"; };
+		50E1A94720377CB70090CE1A /* CapgoCapacitorDataStorageSqlitePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapgoCapacitorDataStorageSqlitePlugin.swift; sourceTree = "<group>"; };
 		5E23F77F099397094342571A /* Pods-Plugin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plugin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Plugin/Pods-Plugin.debug.xcconfig"; sourceTree = "<group>"; };
 		91781294A431A2A7CC6EB714 /* Pods-Plugin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plugin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Plugin/Pods-Plugin.release.xcconfig"; sourceTree = "<group>"; };
 		96ED1B6440D6672E406C8D19 /* Pods-PluginTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PluginTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PluginTests/Pods-PluginTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -134,10 +134,10 @@
 			children = (
 				2CA22B8F26E496C00042A27F /* ImportExportJson */,
 				2C81FFF62668CF0A00988608 /* Utils */,
-				50E1A94720377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift */,
-				2F98D68124C9AAE400613A4C /* CapacitorDataStorageSqlite.swift */,
-				50ADFF8B201F53D600D50D53 /* CapacitorDataStorageSqlitePlugin.h */,
-				50ADFFA72020EE4F00D50D53 /* CapacitorDataStorageSqlitePlugin.m */,
+				50E1A94720377CB70090CE1A /* CapgoCapacitorDataStorageSqlitePlugin.swift */,
+				2F98D68124C9AAE400613A4C /* CapgoCapacitorDataStorageSqlite.swift */,
+				50ADFF8B201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.h */,
+				50ADFFA72020EE4F00D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.m */,
 				2C81FFF32668CF0A00988608 /* Data.swift */,
 				2C81FFF42668CF0A00988608 /* Global.swift */,
 				2C81FFF22668CF0A00988608 /* ReturnHandler.swift */,
@@ -150,7 +150,7 @@
 		50ADFF95201F53D600D50D53 /* PluginTests */ = {
 			isa = PBXGroup;
 			children = (
-				50ADFF96201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift */,
+				50ADFF96201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePluginTests.swift */,
 				50ADFF98201F53D600D50D53 /* Info.plist */,
 			);
 			path = PluginTests;
@@ -184,7 +184,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50ADFF99201F53D600D50D53 /* CapacitorDataStorageSqlitePlugin.h in Headers */,
+				50ADFF99201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,10 +365,10 @@
 				2C8100002668CF0A00988608 /* Blob.swift in Sources */,
 				2C8100042668CF0A00988608 /* UtilsSQLCipher.swift in Sources */,
 				2C8100032668CF0A00988608 /* UtilsEncryption.swift in Sources */,
-				50E1A94820377CB70090CE1A /* CapacitorDataStorageSqlitePlugin.swift in Sources */,
+				50E1A94820377CB70090CE1A /* CapgoCapacitorDataStorageSqlitePlugin.swift in Sources */,
 				2CA22B9126E4971E0042A27F /* JsonStore.swift in Sources */,
-				2F98D68224C9AAE500613A4C /* CapacitorDataStorageSqlite.swift in Sources */,
-				50ADFFA82020EE4F00D50D53 /* CapacitorDataStorageSqlitePlugin.m in Sources */,
+				2F98D68224C9AAE500613A4C /* CapgoCapacitorDataStorageSqlite.swift in Sources */,
+				50ADFFA82020EE4F00D50D53 /* CapgoCapacitorDataStorageSqlitePlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,7 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50ADFF97201F53D600D50D53 /* CapacitorDataStorageSqlitePluginTests.swift in Sources */,
+				50ADFF97201F53D600D50D53 /* CapgoCapacitorDataStorageSqlitePluginTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

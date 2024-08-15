@@ -1,12 +1,12 @@
 import Foundation
 
-enum CapacitorDataStorageSqliteError: Error {
+enum CapgoCapacitorDataStorageSqliteError: Error {
     case failed(message: String)
 }
 
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
-@objc public class CapacitorDataStorageSqlite: NSObject {
+@objc public class CapgoCapacitorDataStorageSqlite: NSObject {
     var mDb: StorageDatabaseHelper?
 
     // MARK: - Echo
@@ -26,14 +26,14 @@ enum CapacitorDataStorageSqliteError: Error {
                 tableName: tableName,
                 encrypted: encrypted, mode: inMode)
         } catch StorageHelperError.initFailed(let message) {
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         } catch let error {
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: error.localizedDescription)
         }
         if !(mDb?.isOpen ?? true) {
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: "store not opened")
         } else {
             return
@@ -49,16 +49,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 try mDb?.close()
                 return
             } catch StorageHelperError.close(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
 
@@ -88,7 +88,7 @@ enum CapacitorDataStorageSqliteError: Error {
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -102,15 +102,15 @@ enum CapacitorDataStorageSqliteError: Error {
                 try mDb?.setTable(tblName: tableName)
                 return
             } catch StorageHelperError.setTable(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: error.localizedDescription)
             }
         } else {
             let message = "Must open a store first"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -123,21 +123,21 @@ enum CapacitorDataStorageSqliteError: Error {
                 do {
                     try mDb?.set(data: mData)
                 } catch StorageHelperError.setkey(let message) {
-                    throw CapacitorDataStorageSqliteError
+                    throw CapgoCapacitorDataStorageSqliteError
                     .failed(message: message)
                 } catch let error {
                     let msg = error.localizedDescription
-                    throw CapacitorDataStorageSqliteError
+                    throw CapgoCapacitorDataStorageSqliteError
                     .failed(message: msg)
                 }
             } else {
                 let message = "data is not of type Data"
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -156,23 +156,23 @@ enum CapacitorDataStorageSqliteError: Error {
                     }
                 } else {
                     let message = "No Data returned"
-                    throw CapacitorDataStorageSqliteError
+                    throw CapgoCapacitorDataStorageSqliteError
                     .failed(message: message)
                 }
-            } catch CapacitorDataStorageSqliteError.failed(let message) {
-                throw CapacitorDataStorageSqliteError
+            } catch CapgoCapacitorDataStorageSqliteError.failed(let message) {
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch StorageHelperError.getkey(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -185,16 +185,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 try mDb?.remove(name: name)
                 return
             } catch StorageHelperError.remove(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
 
@@ -208,16 +208,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 try mDb?.clear()
                 return
             } catch StorageHelperError.clear(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
 
@@ -235,16 +235,16 @@ enum CapacitorDataStorageSqliteError: Error {
                     return 0
                 }
             } catch StorageHelperError.iskey(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -257,16 +257,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 let result = try mDb?.keys() ?? []
                 return result
             } catch StorageHelperError.keys(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -279,16 +279,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 let result = try mDb?.values() ?? []
                 return result
             } catch StorageHelperError.values(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -302,16 +302,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 return result
 
             } catch StorageHelperError.filtervalues(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -331,16 +331,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 return dicArray
 
             } catch StorageHelperError.keysvalues(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -353,11 +353,11 @@ enum CapacitorDataStorageSqliteError: Error {
             return
         } catch UtilsFileError.deleteFileFailed {
             let message = "Failed in delete file"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         } catch let error {
             let msg = error.localizedDescription
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: msg)
         }
     }
@@ -374,16 +374,16 @@ enum CapacitorDataStorageSqliteError: Error {
                     return 0
                 }
             } catch StorageHelperError.isTable(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -396,16 +396,16 @@ enum CapacitorDataStorageSqliteError: Error {
                 let result = try mDb?.tables() ?? []
                 return result
             } catch StorageHelperError.tables(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
                 let msg = error.localizedDescription
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: msg)
             }
         } else {
             let message = "No database connection"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -419,15 +419,15 @@ enum CapacitorDataStorageSqliteError: Error {
                 try mDb?.deleteTable(tableName: tableName)
                 return
             } catch StorageHelperError.deleteTable(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch let error {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: error.localizedDescription)
             }
         } else {
             let message = "Must open a store first"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }
@@ -443,11 +443,11 @@ enum CapacitorDataStorageSqliteError: Error {
                 return
             } catch let error {
                 let msg: String = "\(error.localizedDescription)"
-                throw CapacitorDataStorageSqliteError.failed(message: msg)
+                throw CapgoCapacitorDataStorageSqliteError.failed(message: msg)
             }
         } else {
             let msg: String = "Stringify Json Object not Valid"
-            throw CapacitorDataStorageSqliteError.failed(message: msg)
+            throw CapgoCapacitorDataStorageSqliteError.failed(message: msg)
         }
     }
 
@@ -466,7 +466,7 @@ enum CapacitorDataStorageSqliteError: Error {
             } catch let error {
                 var msg: String = "Stringify Json Object not Valid "
                 msg.append("\(error.localizedDescription)")
-                throw CapacitorDataStorageSqliteError.failed(message: msg)
+                throw CapgoCapacitorDataStorageSqliteError.failed(message: msg)
             }
             var totalChanges = 0
             let encrypted: Bool = jsonStore[0].encrypted
@@ -480,7 +480,7 @@ enum CapacitorDataStorageSqliteError: Error {
                         tableName: table.name,
                         encrypted: encrypted, mode: mode)
                     if !(mDb.isOpen ) {
-                        throw CapacitorDataStorageSqliteError
+                        throw CapgoCapacitorDataStorageSqliteError
                         .failed(message: "store not opened")
                     }
 
@@ -489,7 +489,7 @@ enum CapacitorDataStorageSqliteError: Error {
                         .importFromJson(values: table.values)
                     if changes < 1 {
                         let msg: String = "changes < 1"
-                        throw CapacitorDataStorageSqliteError
+                        throw CapgoCapacitorDataStorageSqliteError
                         .failed(message: msg)
                     }
                     try mDb.close()
@@ -497,29 +497,29 @@ enum CapacitorDataStorageSqliteError: Error {
                 }
                 return ["changes": totalChanges]
             } catch StorageHelperError.initFailed(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch StorageHelperError.close(let message) {
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: message)
             } catch StorageHelperError.importFromJson(let message) {
                 let msg = message
                 do {
                     try closeStore(dbName)
-                    throw CapacitorDataStorageSqliteError.failed(message: msg)
+                    throw CapgoCapacitorDataStorageSqliteError.failed(message: msg)
                 } catch let error {
-                    throw CapacitorDataStorageSqliteError
+                    throw CapgoCapacitorDataStorageSqliteError
                     .failed(message: error.localizedDescription)
                 }
             } catch let error {
                 print("\(error)")
-                throw CapacitorDataStorageSqliteError
+                throw CapgoCapacitorDataStorageSqliteError
                 .failed(message: error.localizedDescription)
             }
 
         } else {
             let msg: String = "Stringify Json Object not Valid"
-            throw CapacitorDataStorageSqliteError.failed(message: msg)
+            throw CapgoCapacitorDataStorageSqliteError.failed(message: msg)
         }
     }
     // swiftlint:enable function_body_length
@@ -534,14 +534,14 @@ enum CapacitorDataStorageSqliteError: Error {
                     mDb?.exportToJson() ?? [:]
                 return res
             } catch StorageHelperError.exportToJson(let message) {
-                throw CapacitorDataStorageSqliteError.failed(message: message)
+                throw CapgoCapacitorDataStorageSqliteError.failed(message: message)
             } catch let error {
                 let msg: String = "\(error.localizedDescription)"
-                throw CapacitorDataStorageSqliteError.failed(message: msg)
+                throw CapgoCapacitorDataStorageSqliteError.failed(message: msg)
             }
         } else {
             let message = "Must open a store first"
-            throw CapacitorDataStorageSqliteError
+            throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         }
     }

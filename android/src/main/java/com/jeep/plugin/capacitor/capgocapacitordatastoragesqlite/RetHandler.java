@@ -1,4 +1,4 @@
-package com.jeep.plugin.capacitor.capacitordatastoragesqlite;
+package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite;
 
 import android.util.Log;
 import com.getcapacitor.JSArray;

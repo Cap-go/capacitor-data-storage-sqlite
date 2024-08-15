@@ -12,7 +12,7 @@
     "dist/",
     "ios/Plugin/",
     "electron/",
-    "CapacitorDataStorageSqlite.podspec"
+    "CapgoCapacitorDataStorageSqlite.podspec"
   ],
   "author": "Martin Donadieu",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "eslint": "eslint .",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
     "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api CapacitorDataStorageSqlitePlugin --output-readme docs/API.md --output-json dist/docs.json",
+    "docgen": "docgen --api CapgoCapacitorDataStorageSqlitePlugin --output-readme docs/API.md --output-json dist/docs.json",
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs && npm run build-electron",
     "build-electron": "tsc --project electron/tsconfig.json && rollup -c electron/rollup.config.mjs && rimraf ./electron/build",
     "clean": "rimraf ./dist",

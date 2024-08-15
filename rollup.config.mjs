@@ -4,7 +4,7 @@ export default {
     {
       file: 'dist/plugin.js',
       format: 'iife',
-      name: 'capacitorCapacitorDataStorageSqlite',
+      name: 'capacitorCapgoCapacitorDataStorageSqlite',
       globals: {
         '@capacitor/core': 'capacitorExports',
         localforage: 'localForage',

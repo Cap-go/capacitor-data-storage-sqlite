@@ -1,7 +1,7 @@
 import { WebPlugin } from "@capacitor/core";
 
 import type {
-  CapacitorDataStorageSqlitePlugin,
+  CapgoCapacitorDataStorageSqlitePlugin,
   capEchoOptions,
   capEchoResult,
   capDataStorageOptions,
@@ -24,9 +24,9 @@ import { Data } from "./web-utils/Data";
 import { StorageDatabaseHelper } from "./web-utils/StorageDatabaseHelper";
 import { isJsonStore } from "./web-utils/json-utils";
 
-export class CapacitorDataStorageSqliteWeb
+export class CapgoCapacitorDataStorageSqliteWeb
   extends WebPlugin
-  implements CapacitorDataStorageSqlitePlugin
+  implements CapgoCapacitorDataStorageSqlitePlugin
 {
   private mDb!: StorageDatabaseHelper;
 

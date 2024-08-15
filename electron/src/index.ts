@@ -1,5 +1,5 @@
 import type {
-  CapacitorDataStorageSqlitePlugin,
+  CapgoCapacitorDataStorageSqlitePlugin,
   capEchoOptions,
   capEchoResult,
   capDataStorageOptions,
@@ -23,8 +23,8 @@ import { Data } from "./electron-utils/Data";
 import { StorageDatabaseHelper } from "./electron-utils/StorageDatabaseHelper";
 import { isJsonStore } from "./electron-utils/json-utils";
 
-export class CapacitorDataStorageSqlite
-  implements CapacitorDataStorageSqlitePlugin
+export class CapgoCapacitorDataStorageSqlite
+  implements CapgoCapacitorDataStorageSqlitePlugin
 {
   mDb: StorageDatabaseHelper;
   constructor() {

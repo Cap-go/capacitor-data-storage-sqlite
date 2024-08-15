@@ -1,4 +1,4 @@
-package com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils;
+package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils;
 
 public class Global {
 

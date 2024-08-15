@@ -1,4 +1,4 @@
-package com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils;
+package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,9 +6,9 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import com.getcapacitor.JSObject;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonStore;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonTable;
-import com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonValue;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonStore;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonTable;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonValue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;

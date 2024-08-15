@@ -1,4 +1,4 @@
-package com.jeep.plugin.capacitor.capacitordatastoragesqlite;
+package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite;
 
 import android.content.Context;
 import com.getcapacitor.JSArray;
@@ -8,10 +8,10 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
-@CapacitorPlugin(name = "CapacitorDataStorageSqlite")
-public class CapacitorDataStorageSqlitePlugin extends Plugin {
+@CapacitorPlugin(name = "CapgoCapacitorDataStorageSqlite")
+public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
 
-  private CapacitorDataStorageSqlite implementation;
+  private CapgoCapacitorDataStorageSqlite implementation;
   private RetHandler rHandler = new RetHandler();
   private Context context;
 
@@ -21,7 +21,7 @@ public class CapacitorDataStorageSqlitePlugin extends Plugin {
    */
   public void load() {
     context = getContext();
-    implementation = new CapacitorDataStorageSqlite(context);
+    implementation = new CapgoCapacitorDataStorageSqlite(context);
   }
 
   @PluginMethod

@@ -1,4 +1,4 @@
-package com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils.ImportExportJson;
+package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson;
 
 import android.util.Log;
 import com.getcapacitor.JSObject;

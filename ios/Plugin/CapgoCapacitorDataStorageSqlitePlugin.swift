@@ -3,9 +3,9 @@ import Capacitor
 
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
-@objc(CapacitorDataStorageSqlitePlugin)
-public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
-    private let implementation = CapacitorDataStorageSqlite()
+@objc(CapgoCapacitorDataStorageSqlitePlugin)
+public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin {
+    private let implementation = CapgoCapacitorDataStorageSqlite()
     private let retHandler: ReturnHandler = ReturnHandler()
 
     // MARK: - Echo
@@ -45,7 +45,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
                            encrypted: encrypted, inMode: inMode)
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "openStore: \(message)"
             retHandler.rResult(call: call, message: msg)
@@ -72,7 +72,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.closeStore(database)
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError.failed(let message) {
+        } catch CapgoCapacitorDataStorageSqliteError.failed(let message) {
             let msg = "closeStore: \(message)"
             retHandler.rResult(call: call, ret: false, message: msg)
             return
@@ -98,7 +98,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             let ret = res == 1 ? true : false
             retHandler.rResult(call: call, ret: ret)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "isStoreOpen: \(message)"
             retHandler.rResult(call: call, ret: false, message: msg)
@@ -125,7 +125,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             let ret = res == 1 ? true : false
             retHandler.rResult(call: call, ret: ret)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "isStoreExists: \(message)"
             retHandler.rResult(call: call, ret: false, message: msg)
@@ -151,7 +151,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.setTable(tableName)
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "setTable: \(message)"
             retHandler.rResult(call: call, message: msg)
@@ -186,7 +186,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.set(data)
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "set: \(message)"
             retHandler.rResult(call: call, message: msg)
@@ -212,7 +212,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             let ret = try implementation.get(key)
             retHandler.rValue(call: call, ret: ret)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "get: \(message)"
             retHandler.rValue(call: call, ret: "", message: msg)
@@ -238,7 +238,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.remove(key)
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "remove: \(message)"
             retHandler.rResult(call: call, message: msg)
@@ -259,7 +259,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.clear()
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "clear: \(message)"
             retHandler.rResult(call: call, message: msg)
@@ -285,7 +285,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             let ret = res == 1 ? true : false
             retHandler.rResult(call: call, ret: ret)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "iskey: \(message)"
             retHandler.rResult(call: call, ret: false, message: msg)
@@ -304,7 +304,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         do {
             let ret = try implementation.keys()
             retHandler.rDict(call: call, ret: ["keys": ret])
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "keys: \(message)"
             retHandler.rDict(call: call, ret: ["keys": []], message: msg)
@@ -322,7 +322,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         do {
             let ret = try implementation.values()
             retHandler.rDict(call: call, ret: ["values": ret])
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "values: \(message)"
             retHandler.rDict(call: call, ret: ["values": []], message: msg)
@@ -346,7 +346,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         do {
             let ret = try implementation.filtervalues(filter: filter)
             retHandler.rDict(call: call, ret: ["values": ret])
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "values: \(message)"
             retHandler.rDict(call: call, ret: ["values": []], message: msg)
@@ -364,7 +364,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         do {
             let ret = try implementation.keysvalues()
             retHandler.rDict(call: call, ret: ["keysvalues": ret])
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "keysvalues: \(message)"
             retHandler.rDict(call: call, ret: ["keysvalues": []],
@@ -387,7 +387,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.deleteStore(storeName: storeName)
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "set: \(message)"
             retHandler.rResult(call: call, message: msg)
@@ -413,7 +413,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             let ret = res == 1 ? true : false
             retHandler.rResult(call: call, ret: ret)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "istable: \(message)"
             retHandler.rResult(call: call, ret: false, message: msg)
@@ -431,7 +431,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
         do {
             let ret = try implementation.tables()
             retHandler.rDict(call: call, ret: ["tables": ret])
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "tables: \(message)"
             retHandler.rDict(call: call, ret: ["tables": []], message: msg)
@@ -456,7 +456,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.deleteTable(table)
             retHandler.rResult(call: call)
             return
-        } catch CapacitorDataStorageSqliteError
+        } catch CapgoCapacitorDataStorageSqliteError
                     .failed(let message) {
             let msg = "clear: \(message)"
             retHandler.rResult(call: call, message: msg)
@@ -482,7 +482,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             try implementation.isJsonValid(parsingData)
             retHandler.rResult(call: call, ret: true)
             return
-        } catch CapacitorDataStorageSqliteError.failed(let message) {
+        } catch CapgoCapacitorDataStorageSqliteError.failed(let message) {
             let msg = "isJsonValid: \(message)"
             retHandler.rResult(call: call, message: msg)
             return
@@ -507,7 +507,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             let res: [String: Int]  = try implementation.importFromJson(parsingData)
             retHandler.rChanges(call: call, ret: res)
             return
-        } catch CapacitorDataStorageSqliteError.failed(let message) {
+        } catch CapgoCapacitorDataStorageSqliteError.failed(let message) {
             retHandler.rChanges(
                 call: call, ret: ["changes": -1],
                 message: "importFromJson: \(message)")
@@ -531,7 +531,7 @@ public class CapacitorDataStorageSqlitePlugin: CAPPlugin {
             let res: [String: Any] = try implementation.exportToJson()
             retHandler.rJsonStore(call: call, ret: res)
             return
-        } catch CapacitorDataStorageSqliteError.failed(let message) {
+        } catch CapgoCapacitorDataStorageSqliteError.failed(let message) {
             let msg = "exportToJson: \(message)"
             retHandler.rJsonStore(call: call, ret: [:],
                                   message: msg)

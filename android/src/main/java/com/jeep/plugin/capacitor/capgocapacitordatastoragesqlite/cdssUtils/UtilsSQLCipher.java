@@ -1,4 +1,4 @@
-package com.jeep.plugin.capacitor.capacitordatastoragesqlite.cdssUtils;
+package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils;
 
 import android.content.Context;
 import java.io.File;

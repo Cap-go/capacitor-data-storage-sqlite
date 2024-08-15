@@ -3,7 +3,7 @@
 
 // Define the plugin using the CAP_PLUGIN Macro, and
 // each method the plugin supports using the CAP_PLUGIN_METHOD macro.
-CAP_PLUGIN(CapacitorDataStorageSqlitePlugin, "CapacitorDataStorageSqlite",
+CAP_PLUGIN(CapgoCapacitorDataStorageSqlitePlugin, "CapgoCapacitorDataStorageSqlite",
            CAP_PLUGIN_METHOD(echo, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(openStore, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(closeStore, CAPPluginReturnPromise);
