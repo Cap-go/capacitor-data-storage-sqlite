@@ -1,6 +1,6 @@
 <p align="center"><br><img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" /></p>
 <h3 align="center">DATA STORAGE SQLITE</h3>
-<p align="center"><strong><code>capacitor-data-storage-sqlite</code></strong></p>
+<p align="center"><strong><code>@capgo/capacitor-data-storage-sqlite</code></strong></p>
 <br>
 <p align="center" style="font-size:50px;color:red"><strong>CAPACITOR 6</strong></p><br>
 <br>
@@ -17,11 +17,11 @@
 
 <p align="center">
   <img src="https://img.shields.io/maintenance/yes/2023?style=flat-square" />
-  <a href="https://github.com/jepiqueau/capacitor-data-storage-sqlite/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/workflow/status/jepiqueau/capacitor-data-storage-sqlite/CI?style=flat-square" /></a>
-  <a href="https://www.npmjs.com/package/jepiqueau/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/l/capacitor-data-storage-sqlite.svg?style=flat-square" /></a>
+  <a href="https://github.com/Cap-go/capacitor-data-storage-sqlite/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/workflow/status/Cap-go/capacitor-data-storage-sqlite/CI?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/Cap-go/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/l/capacitor-data-storage-sqlite.svg?style=flat-square" /></a>
 <br>
-  <a href="https://www.npmjs.com/package/jepiqueau/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/dw/capacitor-data-storage-sqlite?style=flat-square" /></a>
-  <a href="https://www.npmjs.com/package/jepiqueau/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/v/capacitor-data-storage-sqlite?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/Cap-go/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/dw/capacitor-data-storage-sqlite?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/Cap-go/capacitor-data-storage-sqlite"><img src="https://img.shields.io/npm/v/capacitor-data-storage-sqlite?style=flat-square" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 <a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-4-orange?style=flat-square" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -45,7 +45,7 @@ meaning that it will not work in IE11 without additional JavaScript transformati
 ## Installation
 
 ```bash
-npm install --save capacitor-data-storage-sqlite
+npm install --save @capgo/capacitor-data-storage-sqlite
 npx cap sync
 ```
 
@@ -127,23 +127,23 @@ No configuration required for this plugin
 
 ### Ionic/Angular
 
-- [angular-data-storage-sqlite-app-starter](https://github.com/jepiqueau/angular-data-storage-sqlite-app-starter)
+- [angular-data-storage-sqlite-app-starter](https://github.com/Cap-go/angular-data-storage-sqlite-app-starter)
 
 ### Ionic/React
 
-- [react-data-storage-sqlite-app-starter](https://github.com/jepiqueau/react-data-storage-sqlite-app-starter)
+- [react-data-storage-sqlite-app-starter](https://github.com/Cap-go/react-data-storage-sqlite-app-starter)
 
 ### React
 
-- [react-datastoragesqlite-app](https://github.com/jepiqueau/react-datastoragesqlite-app)
+- [react-datastoragesqlite-app](https://github.com/Cap-go/react-datastoragesqlite-app)
 
 ### Ionic/Vue
 
-- [vue-data-storage-sqlite-app-starter](https://github.com/jepiqueau/vue-data-storage-sqlite-app-starter)
+- [vue-data-storage-sqlite-app-starter](https://github.com/Cap-go/vue-data-storage-sqlite-app-starter)
 
 ### Vue
 
-- [vue-datastoragesqlite-app](https://github.com/jepiqueau/vue-datastoragesqlite-app)
+- [vue-datastoragesqlite-app](https://github.com/Cap-go/vue-datastoragesqlite-app)
 
 ## Usage
 

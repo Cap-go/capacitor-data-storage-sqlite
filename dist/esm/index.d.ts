@@ -1,4 +1,4 @@
-import type { CapacitorDataStorageSqlitePlugin } from "./definitions";
-declare const CapacitorDataStorageSqlite: CapacitorDataStorageSqlitePlugin;
+import type { CapgoCapacitorDataStorageSqlitePlugin } from "./definitions";
+declare const CapgoCapacitorDataStorageSqlite: CapgoCapacitorDataStorageSqlitePlugin;
 export * from "./definitions";
-export { CapacitorDataStorageSqlite };
+export { CapgoCapacitorDataStorageSqlite };

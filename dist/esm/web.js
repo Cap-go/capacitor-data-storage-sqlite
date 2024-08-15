@@ -2,7 +2,7 @@ import { WebPlugin } from "@capacitor/core";
 import { Data } from "./web-utils/Data";
 import { StorageDatabaseHelper } from "./web-utils/StorageDatabaseHelper";
 import { isJsonStore } from "./web-utils/json-utils";
-export class CapacitorDataStorageSqliteWeb extends WebPlugin {
+export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin {
     async echo(options) {
         const ret = {};
         ret.value = options.value ? options.value : "";

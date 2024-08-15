@@ -1,4 +1,4 @@
-export interface CapacitorDataStorageSqlitePlugin {
+export interface CapgoCapacitorDataStorageSqlitePlugin {
     /**
      *
      * @param options: capEchoOptions
