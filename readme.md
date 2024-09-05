@@ -17,7 +17,7 @@
 <br>
 <!-- Message below Note from the Owner - Start -->
 <p align="left" style="font-size:47px">This Plugin has been transfered to Capgo org after his original creator <a href="https://github.com/jepiqueau">@jepiqueau</a> decide to retire. 
-<br>We will foreer be thankful for the work he did.</p>
+<br>We will forever be thankful for the work he did.</p>
 <br>
 <p align="center">
   Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of <strong>type string only</strong> to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
