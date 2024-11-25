@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.38](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/6.0.37...6.0.38) (2024-11-25)
+
 ### [6.0.37](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/6.0.36...6.0.37) (2024-11-18)
 
 ### [6.0.36](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/6.0.35...6.0.36) (2024-11-18)
