@@ -1,12 +1,5 @@
 export interface CapgoCapacitorDataStorageSqlitePlugin {
     /**
-     *
-     * @param options: capEchoOptions
-     * @return Promise<capEchoResult>
-     * @since 0.0.1
-     */
-    echo(options: capEchoOptions): Promise<capEchoResult>;
-    /**
      * Open a store
      * @param options: capOpenStorageOptions
      * @returns Promise<void>
@@ -148,12 +141,6 @@ export interface CapgoCapacitorDataStorageSqlitePlugin {
      */
     exportToJson(): Promise<capStoreJson>;
 }
-export interface capEchoOptions {
-    /**
-     *  String to be echoed
-     */
-    value?: string;
-}
 export interface capOpenStorageOptions {
     /**
      * The storage database name
@@ -203,12 +190,6 @@ export interface capFilterStorageOptions {
      * [starts with filter, contains filter, ends with filter]
      */
     filter: string;
-}
-export interface capEchoResult {
-    /**
-     * String returned
-     */
-    value: string;
 }
 export interface capDataStorageResult {
     /**

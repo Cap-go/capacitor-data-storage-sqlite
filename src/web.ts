@@ -2,8 +2,6 @@ import { WebPlugin } from "@capacitor/core";
 
 import type {
   CapgoCapacitorDataStorageSqlitePlugin,
-  capEchoOptions,
-  capEchoResult,
   capDataStorageOptions,
   capDataStorageResult,
   capFilterStorageOptions,
@@ -29,12 +27,6 @@ export class CapgoCapacitorDataStorageSqliteWeb
   implements CapgoCapacitorDataStorageSqlitePlugin
 {
   private mDb!: StorageDatabaseHelper;
-
-  async echo(options: capEchoOptions): Promise<capEchoResult> {
-    const ret: capEchoResult = {} as capEchoResult;
-    ret.value = options.value ? options.value : "";
-    return ret;
-  }
 
   async openStore(options: capOpenStorageOptions): Promise<void> {
     const dbName = options.database ? `${options.database}IDB` : "storageIDB";

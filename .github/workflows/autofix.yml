@@ -2,8 +2,6 @@ name: autofix.ci  # needed to securely identify the workflow
 
 on:
   pull_request:
-  push:
-    branches: [ "main" ]
 permissions:
   contents: read
 
@@ -14,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup bun
-        uses: oven-sh/setup-bun@v1.2.2
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
       - name: Install dependencies
@@ -22,4 +20,4 @@ jobs:
       - name: Lint 
         id: lint_code
         run: npm run fmt
-      - uses: autofix-ci/action@ff86a557419858bb967097bfc916833f5647fa8c
+      - uses: autofix-ci/action@551dded8c6cc8a1054039c8bc0b8b48c51dfc6ef

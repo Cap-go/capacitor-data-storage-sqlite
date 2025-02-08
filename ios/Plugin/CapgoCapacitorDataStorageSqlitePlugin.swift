@@ -5,17 +5,34 @@ import Capacitor
 // swiftlint:disable type_body_length
 @objc(CapgoCapacitorDataStorageSqlitePlugin)
 public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin {
+    public let identifier = "CapgoCapacitorDataStorageSqlitePlugin"
+    public let jsName = "CapgoCapacitorDataStorageSqlite"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "openStore", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "closeStore", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "isStoreOpen", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "isStoreExists", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setTable", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "set", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "get", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "remove", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "clear", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "keys", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "values", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "filtervalues", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "keysvalues", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "iskey", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "deleteStore", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "isTable", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "tables", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "deleteTable", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "isJsonValid", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "importFromJson", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "exportToJson", returnType: CAPPluginReturnPromise)
+
+    ]
     private let implementation = CapgoCapacitorDataStorageSqlite()
     private let retHandler: ReturnHandler = ReturnHandler()
-
-    // MARK: - Echo
-
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.resolve([
-            "value": implementation.echo(value)
-        ])
-    }
 
     // MARK: - OpenStore
 

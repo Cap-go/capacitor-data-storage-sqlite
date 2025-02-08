@@ -25,15 +25,6 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
   }
 
   @PluginMethod
-  public void echo(PluginCall call) {
-    String value = call.getString("value");
-
-    JSObject ret = new JSObject();
-    ret.put("value", implementation.echo(value));
-    call.resolve(ret);
-  }
-
-  @PluginMethod
   public void openStore(PluginCall call) {
     String dbName = call.getString("database", "storage");
     String tableName = call.getString("table", "storage_table");

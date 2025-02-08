@@ -19,16 +19,6 @@ public class CapgoCapacitorDataStorageSqlite {
     this.context = context;
   }
 
-  /**
-   * Echo
-   *
-   * @param value
-   * @return String
-   */
-  public String echo(String value) {
-    return value;
-  }
-
   public void openStore(
     String dbName,
     String tableName,

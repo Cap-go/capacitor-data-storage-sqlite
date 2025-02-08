@@ -1,8 +1,7 @@
 import { WebPlugin } from "@capacitor/core";
-import type { CapgoCapacitorDataStorageSqlitePlugin, capEchoOptions, capEchoResult, capDataStorageOptions, capDataStorageResult, capFilterStorageOptions, capKeysResult, capKeysValuesResult, capTablesResult, capOpenStorageOptions, capTableStorageOptions, capValueResult, capValuesResult, capStorageOptions, capStoreJson, capDataStorageChanges, capStoreImportOptions } from "./definitions";
+import type { CapgoCapacitorDataStorageSqlitePlugin, capDataStorageOptions, capDataStorageResult, capFilterStorageOptions, capKeysResult, capKeysValuesResult, capTablesResult, capOpenStorageOptions, capTableStorageOptions, capValueResult, capValuesResult, capStorageOptions, capStoreJson, capDataStorageChanges, capStoreImportOptions } from "./definitions";
 export declare class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements CapgoCapacitorDataStorageSqlitePlugin {
     private mDb;
-    echo(options: capEchoOptions): Promise<capEchoResult>;
     openStore(options: capOpenStorageOptions): Promise<void>;
     closeStore(options: capStorageOptions): Promise<void>;
     isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult>;

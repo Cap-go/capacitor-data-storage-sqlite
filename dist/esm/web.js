@@ -3,11 +3,6 @@ import { Data } from "./web-utils/Data";
 import { StorageDatabaseHelper } from "./web-utils/StorageDatabaseHelper";
 import { isJsonStore } from "./web-utils/json-utils";
 export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin {
-    async echo(options) {
-        const ret = {};
-        ret.value = options.value ? options.value : "";
-        return ret;
-    }
     async openStore(options) {
         const dbName = options.database ? `${options.database}IDB` : "storageIDB";
         const tableName = options.table ? options.table : "storage_store";

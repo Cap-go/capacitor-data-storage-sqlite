@@ -14,7 +14,7 @@
     "electron/",
     "CapgoCapacitorDataStorageSqlite.podspec"
   ],
-  "author": "Martin Donadieu",
+  "author": "Martin Donadieu <martin@capgo.app>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -31,52 +31,53 @@
     "storage",
     "data"
   ],
-  "scripts": {
+ "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
-    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
+    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -sdk iphoneos -scheme Plugin && cd ..",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
-    "verify:electron": "npm run build-electron",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
     "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --autocorrect --format",
     "eslint": "eslint .",
-    "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
+    "prettier": "prettier --config .prettierrc.js \"**/*.{css,html,ts,js,java}\"",
     "swiftlint": "node-swiftlint",
-    "docgen": "docgen --api CapgoCapacitorDataStorageSqlitePlugin --output-readme docs/API.md --output-json dist/docs.json",
-    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs && npm run build-electron",
-    "build-electron": "tsc --project electron/tsconfig.json && rollup -c electron/rollup.config.mjs && rimraf ./electron/build",
+    "docgen": "docgen --api CapgoCapacitorDataStorageSqlitePlugin --output-readme README.md --output-json dist/docs.json",
+    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "test": "echo \"No test specified\"",
     "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "localforage": "^1.10.0"
   },
   "devDependencies": {
     "@capacitor/android": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
     "@capacitor/core": "^7.0.0",
     "@capacitor/docgen": "^0.3.0",
     "@capacitor/ios": "^7.0.0",
     "@ionic/eslint-config": "^0.4.0",
     "@ionic/prettier-config": "^4.0.0",
     "@ionic/swiftlint-config": "^2.0.0",
-    "@rollup/plugin-commonjs": "^26.0.1",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@types/node": "^20.14.15",
-    "@typescript-eslint/eslint-plugin": "^8.1.0",
-    "@typescript-eslint/parser": "^8.1.0",
-    "electron": "^22.2.0",
+    "@types/node": "^22.13.1",
     "eslint": "^8.57.0",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-import": "^2.31.0",
+    "husky": "^9.1.7",
     "prettier": "^3.4.2",
-    "prettier-plugin-java": "^2.6.6",
+    "prettier-plugin-java": "^2.6.7",
     "rimraf": "^6.0.1",
-    "rollup": "^4.30.1",
+    "rollup": "^4.34.6",
     "swiftlint": "^2.0.0",
-    "typescript": "~5.7.0"
+    "typescript": "^5.7.3"
   },
   "peerDependencies": {
     "@capacitor/core": ">=7.0.0",
     "localforage": "^1.10.0"
   },
+  "eslintConfig": {
+    "extends": "@ionic/eslint-config/recommended"
+  },
+  "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
   "capacitor": {
     "ios": {
@@ -84,13 +85,6 @@
     },
     "android": {
       "src": "android"
-    },
-    "electron": {
-      "src": "electron"
     }
-  },
-  "dependencies": {
-    "localforage": "^1.10.0"
-  },
-  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
+  }
 }
