@@ -69,12 +69,12 @@ jobs:
       - name: Verify
         id: verify_code
         run: bun run verify:web
-      - uses: JS-DevTools/npm-publish@v3
+      - uses: JS-DevTools/npm-publish@v4
         if: ${{ !contains(github.ref, '-alpha.') }}
         with:
           token: ${{ secrets.NPM_TOKEN }}
           provenance: true
-      - uses: JS-DevTools/npm-publish@v3
+      - uses: JS-DevTools/npm-publish@v4
         if: ${{ contains(github.ref, '-alpha.') }}
         with:
           token: ${{ secrets.NPM_TOKEN }}
