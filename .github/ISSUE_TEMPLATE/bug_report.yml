@@ -64,7 +64,7 @@ body:
       required: true
   - type: checkboxes
     attributes:
-      label:  Before submitting 
+      label:  Before submitting
       description: |
         A well-written bug report allows the maintainers to quickly recreate the necessary conditions to inspect the bug and quickly find its root cause.
         Please ensure your bug report fulfills all of the following requirements.
@@ -77,7 +77,7 @@ body:
         required: true
   - type: checkboxes
     attributes:
-      label: Fastest way to fix this issue 
+      label: Fastest way to fix this issue
       description: |
         Founding is a great way to get your issue fixed fast. This make community contributions more likely to happen and discharge the maintainers from the burden of being the only one fixing all issues.
       options:
