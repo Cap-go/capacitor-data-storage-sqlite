@@ -57,7 +57,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.3.0"
-    implementation 'net.zetetic:android-database-sqlcipher:4.4.3@aar'
+    implementation 'net.zetetic:android-database-sqlcipher:4.5.4@aar'
     implementation "androidx.sqlite:sqlite:2.6.0"
 
 }
