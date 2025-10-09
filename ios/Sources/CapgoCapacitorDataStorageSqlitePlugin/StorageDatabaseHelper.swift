@@ -86,7 +86,7 @@ class StorageDatabaseHelper {
     // MARK: - Open
 
     // swiftlint:disable function_body_length
-    func open () throws {
+    func open() throws {
         var password: String = ""
         if encrypted && (mode == "secret" || mode == "newsecret"
                             || mode == "encryption") {

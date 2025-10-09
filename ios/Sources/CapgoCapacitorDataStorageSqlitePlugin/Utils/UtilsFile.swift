@@ -222,7 +222,7 @@ class UtilsFile {
 
     // MARK: - RenameFile
 
-    class func renameFile (filePath: String, toFilePath: String)
+    class func renameFile(filePath: String, toFilePath: String)
     throws {
         let fileManager = FileManager.default
         do {

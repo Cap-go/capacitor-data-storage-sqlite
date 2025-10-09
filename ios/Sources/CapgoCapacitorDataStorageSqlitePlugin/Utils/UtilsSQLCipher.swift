@@ -451,7 +451,7 @@ class UtilsSQLCipher {
 
     // MARK: - CreateTable
 
-    class func createTable (mDB: StorageDatabaseHelper, tableName: String,
+    class func createTable(mDB: StorageDatabaseHelper, tableName: String,
                             ifNotExists: Bool) throws {
         let exist: String = ifNotExists ? "IF NOT EXISTS" : ""
         let crTable: String = "CREATE TABLE \(exist) \(tableName) (" +
@@ -557,7 +557,7 @@ class UtilsSQLCipher {
 
     // MARK: - DropTable
 
-    class func dropTable (mDB: StorageDatabaseHelper, tableName: String) throws {
+    class func dropTable(mDB: StorageDatabaseHelper, tableName: String) throws {
         let dropStatement: String = "DROP TABLE IF EXISTS \(tableName)"
         do {
             try UtilsSQLCipher.execute(mDB: mDB, sql: dropStatement)
