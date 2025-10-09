@@ -76,30 +76,63 @@ public class UtilsSQLCipher {
 
         if (originalFile.exists()) {
             File newFile = File.createTempFile("sqlcipherutils", "tmp", ctxt.getCacheDir());
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(originalFile.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READWRITE);
-            int version = db.getVersion();
+            SQLiteDatabase plainDb = null;
+            SQLiteDatabase encDb = null;
+            try {
+                // Open plaintext as main
+                plainDb = SQLiteDatabase.openDatabase(
+                    originalFile.getAbsolutePath(),
+                    "",
+                    null,
+                    SQLiteDatabase.OPEN_READWRITE
+                );
+                int version = plainDb.getVersion();
 
-            db.close();
+                // Attach encrypted target and export into it
+                final String newPath = newFile.getAbsolutePath().replace("'", "''");
+                final String passphraseStr = new String(
+                    passphrase,
+                    java.nio.charset.StandardCharsets.UTF_8
+                ).replace("'", "''");
+                plainDb.rawExecSQL(
+                    "ATTACH DATABASE '" + newPath + "' AS encrypted KEY '" + passphraseStr + "';"
+                );
+                plainDb.rawExecSQL("SELECT sqlcipher_export('encrypted');");
+                plainDb.rawExecSQL("DETACH DATABASE encrypted;");
+                plainDb.close();
+                plainDb = null;
 
-            db = SQLiteDatabase.openDatabase(newFile.getAbsolutePath(), passphrase, null, SQLiteDatabase.OPEN_READWRITE, null, null);
-            StringBuilder sql = new StringBuilder();
-            sql.append("ATTACH DATABASE ? AS plaintext KEY ");
-            sql.append("'';");
-            final SQLiteStatement st = db.compileStatement(sql.toString());
+                // Reopen encrypted DB to set the original version
+                encDb = SQLiteDatabase.openDatabase(
+                    newFile.getAbsolutePath(),
+                    passphrase,
+                    null,
+                    SQLiteDatabase.OPEN_READWRITE,
+                    null,
+                    null
+                );
+                encDb.setVersion(version);
+            } finally {
+                if (encDb != null) encDb.close();
+                if (plainDb != null) plainDb.close();
+            }
 
-            st.bindString(1, originalFile.getAbsolutePath());
-            st.execute();
-
-            db.rawExecSQL("SELECT sqlcipher_export('main', 'plaintext')");
-            db.rawExecSQL("DETACH DATABASE plaintext");
-            db.setVersion(version);
-            st.close();
-            db.close();
-
-            originalFile.delete();
-            newFile.renameTo(originalFile);
+            // Replace original with encrypted copy; verify rename
+            if (!originalFile.delete()) {
+                throw new IOException(
+                    "Failed to delete original file: " + originalFile.getAbsolutePath()
+                );
+            }
+            boolean renamed = newFile.renameTo(originalFile);
+            if (!renamed) {
+                throw new IOException(
+                    "Failed to rename temp encrypted file to original path"
+                );
+            }
         } else {
-            throw new FileNotFoundException(originalFile.getAbsolutePath() + " not found");
+            throw new FileNotFoundException(
+                originalFile.getAbsolutePath() + " not found"
+            );
         }
     }
 
