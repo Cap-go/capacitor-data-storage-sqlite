@@ -140,15 +140,27 @@ public class UtilsSQLCipher {
         SQLiteDatabase.loadLibs(ctxt);
 
         if (file.exists()) {
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), password, null, SQLiteDatabase.OPEN_READWRITE);
-
-            if (!db.isOpen()) {
-                throw new SQLiteException("database " + file.getAbsolutePath() + " open failed");
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(
+                file.getAbsolutePath(),
+                password,
+                null,
+                SQLiteDatabase.OPEN_READWRITE
+            );
+            try {
+                if (!db.isOpen()) {
+                    throw new SQLiteException(
+                        "database " + file.getAbsolutePath() + " open failed"
+                    );
+                }
+                db.changePassword(nwpassword);
+            } finally {
+                if (db != null) db.close();
             }
-            db.changePassword(nwpassword);
-            db.close();
         } else {
-            throw new FileNotFoundException(file.getAbsolutePath() + " not found");
+            throw new FileNotFoundException(
+                file.getAbsolutePath() + " not found"
+            );
         }
+    }
     }
 }
