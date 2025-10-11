@@ -1,6 +1,6 @@
 {
-  "appId": "com.example.capgo.capacitor.data.storage.sqlite",
-  "appName": "@capgo/capacitor-data-storage-sqlite example",
+  "appId": "app.capgo.data.storage.sqlite",
+  "appName": "Data Storage SQLite Example",
   "webDir": "dist",
   "plugins": {
     "SplashScreen": {

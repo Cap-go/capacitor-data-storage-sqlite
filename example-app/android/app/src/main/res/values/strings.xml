@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Data Storage SQLite Example</string>
+    <string name="title_activity_main">Data Storage SQLite Example</string>
+    <string name="package_name">app.capgo.data.storage.sqlite</string>
+    <string name="custom_url_scheme">app.capgo.data.storage.sqlite</string>
+</resources>
