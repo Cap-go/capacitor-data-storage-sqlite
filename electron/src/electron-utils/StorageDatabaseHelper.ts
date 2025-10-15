@@ -1,15 +1,11 @@
-import type {
-  capDataStorageOptions,
-  JsonStore,
-  JsonTable,
-} from "../../../src/definitions";
+import type { capDataStorageOptions, JsonStore, JsonTable } from '../../../src/definitions';
 
-import { Data } from "./Data";
-import { UtilsSQLite } from "./UtilsSQLite";
+import { Data } from './Data';
+import { UtilsSQLite } from './UtilsSQLite';
 
-const COL_ID = "id";
-const COL_NAME = "name";
-const COL_VALUE = "value";
+const COL_ID = 'id';
+const COL_NAME = 'name';
+const COL_VALUE = 'value';
 
 export class StorageDatabaseHelper {
   Path: any = null;
@@ -22,8 +18,8 @@ export class StorageDatabaseHelper {
   private _utils: UtilsSQLite;
 
   constructor() {
-    this.Path = require("path");
-    this.NodeFs = require("fs");
+    this.Path = require('path');
+    this.NodeFs = require('fs');
     this._utils = new UtilsSQLite();
   }
 
@@ -41,14 +37,14 @@ export class StorageDatabaseHelper {
         this.isOpen = true;
         return Promise.resolve();
       } else {
-        this.dbName = "";
-        this.tableName = "";
+        this.dbName = '';
+        this.tableName = '';
         this.isOpen = false;
         return Promise.reject(`connection to store ${dbName}`);
       }
     } catch (err) {
-      this.dbName = "";
-      this.tableName = "";
+      this.dbName = '';
+      this.tableName = '';
       this.isOpen = false;
       return Promise.reject(err);
     }
@@ -57,8 +53,8 @@ export class StorageDatabaseHelper {
     if (dbName === this.dbName && this.isOpen && this.db != null) {
       try {
         await this.db.close();
-        this.dbName = "";
-        this.tableName = "";
+        this.dbName = '';
+        this.tableName = '';
         this.isOpen = false;
         return Promise.resolve();
       } catch (err) {
@@ -79,16 +75,16 @@ export class StorageDatabaseHelper {
   }
   private async _createTable(tableName: string): Promise<void> {
     const CREATE_STORAGE_TABLE =
-      "CREATE TABLE IF NOT EXISTS " +
+      'CREATE TABLE IF NOT EXISTS ' +
       tableName +
-      "(" +
+      '(' +
       COL_ID +
-      " INTEGER PRIMARY KEY AUTOINCREMENT," + // Define a primary key
+      ' INTEGER PRIMARY KEY AUTOINCREMENT,' + // Define a primary key
       COL_NAME +
-      " TEXT NOT NULL UNIQUE," +
+      ' TEXT NOT NULL UNIQUE,' +
       COL_VALUE +
-      " TEXT" +
-      ")";
+      ' TEXT' +
+      ')';
     try {
       if (this.db != null) {
         return this.db.run(CREATE_STORAGE_TABLE, async (err: Error) => {
@@ -112,14 +108,7 @@ export class StorageDatabaseHelper {
   }
   private async _createIndex(tableName: string): Promise<void> {
     const idx = `index_${tableName}_on_${COL_NAME}`;
-    const CREATE_INDEX_NAME =
-      "CREATE INDEX IF NOT EXISTS " +
-      idx +
-      " ON " +
-      tableName +
-      " (" +
-      COL_NAME +
-      ")";
+    const CREATE_INDEX_NAME = 'CREATE INDEX IF NOT EXISTS ' + idx + ' ON ' + tableName + ' (' + COL_NAME + ')';
     try {
       if (this.db != null) {
         return this.db.run(CREATE_INDEX_NAME, async (err: Error) => {
@@ -143,7 +132,7 @@ export class StorageDatabaseHelper {
       this.tableName = tableName;
       return Promise.resolve();
     } catch (err) {
-      this.tableName = "";
+      this.tableName = '';
       return Promise.reject(err);
     }
   }
@@ -165,17 +154,13 @@ export class StorageDatabaseHelper {
         const DATA_INSERT = `INSERT INTO "${this.tableName}" 
                                 ("${COL_NAME}", "${COL_VALUE}") 
                                 VALUES (?, ?)`;
-        return this.db.run(
-          DATA_INSERT,
-          [data.name, data.value],
-          (err: Error) => {
-            if (err) {
-              return Promise.reject(`Data INSERT: ${err.message}`);
-            } else {
-              return Promise.resolve();
-            }
-          },
-        );
+        return this.db.run(DATA_INSERT, [data.name, data.value], (err: Error) => {
+          if (err) {
+            return Promise.reject(`Data INSERT: ${err.message}`);
+          } else {
+            return Promise.resolve();
+          }
+        });
       }
     } catch (err) {
       return Promise.reject(err);
@@ -346,8 +331,8 @@ export class StorageDatabaseHelper {
         reject(`this.db is null in clear`);
       }
       try {
-        if (!filter.startsWith("%") && !filter.endsWith("%")) {
-          filter = "%" + filter + "%";
+        if (!filter.startsWith('%') && !filter.endsWith('%')) {
+          filter = '%' + filter + '%';
         }
         let SELECT_VALUES = `SELECT "${COL_VALUE}" FROM `;
         SELECT_VALUES += `"${this.tableName}" WHERE name `;
@@ -409,8 +394,7 @@ export class StorageDatabaseHelper {
       }
       try {
         let ret = false;
-        const SELECT_TABLES =
-          "SELECT name FROM sqlite_master " + "WHERE TYPE='table';";
+        const SELECT_TABLES = 'SELECT name FROM sqlite_master ' + "WHERE TYPE='table';";
         this.db.all(SELECT_TABLES, (err: Error, rows: any) => {
           if (err) {
             reject(`isTable: ${err.message}`);
@@ -433,16 +417,14 @@ export class StorageDatabaseHelper {
   public async tables(): Promise<string[]> {
     return new Promise((resolve, reject) => {
       try {
-        const SELECT_TABLES =
-          "SELECT name FROM sqlite_master " +
-          "WHERE TYPE='table' ORDER BY name;";
+        const SELECT_TABLES = 'SELECT name FROM sqlite_master ' + "WHERE TYPE='table' ORDER BY name;";
         this.db.all(SELECT_TABLES, (err: Error, rows: any) => {
           if (err) {
             reject(`tables: ${err.message}`);
           } else {
             let arTables: string[] = [];
             for (let i = 0; i < rows.length; i++) {
-              if (rows[i].name != "sqlite_sequence") {
+              if (rows[i].name != 'sqlite_sequence') {
                 arTables = [...arTables, rows[i].name];
               }
               if (i === rows.length - 1) {
