@@ -1,6 +1,6 @@
 {
   "name": "@capgo/capacitor-data-storage-sqlite",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -33,7 +33,7 @@
     "storage",
     "data"
   ],
- "scripts": {
+  "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
     "verify:ios": "xcodebuild -scheme CapgoCapacitorDataStorageSqlite -destination generic/platform=iOS",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",

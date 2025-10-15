@@ -1,6 +1,37 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [7.1.0](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/6.0.59...7.1.0) (2025-10-15)
+
+
+### Features
+
+* migrate to capacitor v7 ([1dc0cf1](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/1dc0cf120c2f7eca500b059d29c9afda7d5e2b65))
+
+
+### Bug Fixes
+
+* add definition inreadme ([5b6ad70](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/5b6ad7021895e424c2733cf153c8e3cd133af6d5))
+* add SMP ([028007f](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/028007fca288f0947219d5ca93f4adbccc4a3b38))
+* **deps:** update dependency androidx.coordinatorlayout:coordinatorlayout to v1.2.0 ([#138](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/138)) ([3ef5a28](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/3ef5a283d5e3f841f5bf86a301e40bb53fa5ee30))
+* **deps:** update dependency androidx.coordinatorlayout:coordinatorlayout to v1.3.0 ([#144](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/144)) ([38b10de](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/38b10deac6e65443b85dcbd974e8fa6a4020e86d))
+* **deps:** update dependency androidx.sqlite:sqlite to v2.4.0 ([#139](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/139)) ([90306aa](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/90306aa18d5dd7ed4403c124b3351291f193f6f1))
+* **deps:** update dependency androidx.sqlite:sqlite to v2.5.0 ([#147](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/147)) ([4a56f66](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/4a56f668b9195d420e76ab34d6ad96268dc938a8))
+* **deps:** update dependency androidx.sqlite:sqlite to v2.5.1 ([#149](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/149)) ([e268117](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/e26811728e1fcd931fdf34f712f70c5c4cd4b4db))
+* **deps:** update dependency androidx.sqlite:sqlite to v2.5.2 ([#155](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/155)) ([5ad35d2](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/5ad35d2952ba71a268db0c32a903ab23ad283820))
+* **deps:** update dependency androidx.sqlite:sqlite to v2.6.0 ([#164](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/164)) ([ea00b92](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/ea00b9268a69b6dd26859ecb183e492f33a4b482))
+* lint ([4759eb4](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/4759eb46ed8d1f5901e2c09fbd0c3f86b64b6b70))
+* lint config ([84b5238](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/84b5238d7d4eff4ae79c30e6affb2ab94825fe61))
+* lock and lint ([03d6754](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/03d67541a0e98b550d30c9fa75e25ccf09902e65))
+* missing class ([0a0b5be](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/0a0b5be72ef31cd4b8d3a0283b34531897ab0df3))
+* readme ([e86cb0e](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/e86cb0e91a02a7e7c0a842e0cecea3e0b70eb144))
+* readme name ([a4bdd14](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/a4bdd1473a1b5e99c02ee61e2cba09bb401f5e4b))
+* readme path ([1dfbfbd](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/1dfbfbd713f3fe4eef2914af1b684708f2e0626a))
+* script ([214fe6d](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/214fe6d30d1c892e8166ad25ac62ea6e8a2c3cfd))
+* swift version ([0f9367d](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/0f9367d6ca77f135e25bd302185f476c9a443532))
+* switch to ios new arch ([6e4983d](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/6e4983d5db7e7d77d9b4ead05345c0d13effc85b))
+* upgrade CI/CD and files ([4f63854](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/4f638546e09aba6f7b92637317510f7b6c22b177))
 
 ### [6.0.59](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/6.0.58...6.0.59) (2025-02-03)
 
