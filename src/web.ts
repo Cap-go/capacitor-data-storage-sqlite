@@ -1,4 +1,4 @@
-import { WebPlugin } from "@capacitor/core";
+import { WebPlugin } from '@capacitor/core';
 
 import type {
   CapgoCapacitorDataStorageSqlitePlugin,
@@ -17,20 +17,17 @@ import type {
   capStoreJson,
   capDataStorageChanges,
   capStoreImportOptions,
-} from "./definitions";
-import { Data } from "./web-utils/Data";
-import { StorageDatabaseHelper } from "./web-utils/StorageDatabaseHelper";
-import { isJsonStore } from "./web-utils/json-utils";
+} from './definitions';
+import { Data } from './web-utils/Data';
+import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
+import { isJsonStore } from './web-utils/json-utils';
 
-export class CapgoCapacitorDataStorageSqliteWeb
-  extends WebPlugin
-  implements CapgoCapacitorDataStorageSqlitePlugin
-{
+export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements CapgoCapacitorDataStorageSqlitePlugin {
   private mDb!: StorageDatabaseHelper;
 
   async openStore(options: capOpenStorageOptions): Promise<void> {
-    const dbName = options.database ? `${options.database}IDB` : "storageIDB";
-    const tableName = options.table ? options.table : "storage_store";
+    const dbName = options.database ? `${options.database}IDB` : 'storageIDB';
+    const tableName = options.table ? options.table : 'storage_store';
     try {
       this.mDb = new StorageDatabaseHelper(dbName, tableName);
       return Promise.resolve();
@@ -44,15 +41,13 @@ export class CapgoCapacitorDataStorageSqliteWeb
   async isStoreOpen(options: capStorageOptions): Promise<capDataStorageResult> {
     throw new Error(`Method isStoreOpen not implemented. ${options}`);
   }
-  async isStoreExists(
-    options: capStorageOptions,
-  ): Promise<capDataStorageResult> {
+  async isStoreExists(options: capStorageOptions): Promise<capDataStorageResult> {
     throw new Error(`Method isStoreExists not implemented. ${options}`);
   }
   async setTable(options: capTableStorageOptions): Promise<void> {
     const tableName = options.table;
     if (tableName == null) {
-      return Promise.reject("SetTable: Must provide a table name");
+      return Promise.reject('SetTable: Must provide a table name');
     }
     if (this.mDb) {
       try {
@@ -62,18 +57,18 @@ export class CapgoCapacitorDataStorageSqliteWeb
         return Promise.reject(`SetTable: ${err.message}`);
       }
     } else {
-      return Promise.reject("SetTable: Must open a store first");
+      return Promise.reject('SetTable: Must open a store first');
     }
   }
   async set(options: capDataStorageOptions): Promise<void> {
     const key: string = options.key;
-    if (key == null || typeof key != "string") {
-      return Promise.reject("Set: Must provide key as string");
+    if (key == null || typeof key != 'string') {
+      return Promise.reject('Set: Must provide key as string');
     }
 
     const value = options.value ? options.value : null;
-    if (value == null || typeof value != "string") {
-      return Promise.reject("Set: Must provide value as string");
+    if (value == null || typeof value != 'string') {
+      return Promise.reject('Set: Must provide value as string');
     }
     const data: Data = new Data();
     data.name = key;
@@ -87,15 +82,15 @@ export class CapgoCapacitorDataStorageSqliteWeb
   }
   async get(options: capDataStorageOptions): Promise<capValueResult> {
     const key: string = options.key;
-    if (key == null || typeof key != "string") {
-      return Promise.reject("Get: Must provide key as string");
+    if (key == null || typeof key != 'string') {
+      return Promise.reject('Get: Must provide key as string');
     }
     try {
       const data: Data = await this.mDb.get(key);
       if (data?.value != null) {
         return Promise.resolve({ value: data.value });
       } else {
-        return Promise.resolve({ value: "" });
+        return Promise.resolve({ value: '' });
       }
     } catch (err: any) {
       return Promise.reject(`Get: ${err.message}`);
@@ -103,8 +98,8 @@ export class CapgoCapacitorDataStorageSqliteWeb
   }
   async remove(options: capDataStorageOptions): Promise<void> {
     const key: string = options.key;
-    if (key == null || typeof key != "string") {
-      return Promise.reject("Remove: Must provide key as string");
+    if (key == null || typeof key != 'string') {
+      return Promise.reject('Remove: Must provide key as string');
     }
     try {
       await this.mDb.remove(key);
@@ -123,8 +118,8 @@ export class CapgoCapacitorDataStorageSqliteWeb
   }
   async iskey(options: capDataStorageOptions): Promise<capDataStorageResult> {
     const key: string = options.key;
-    if (key == null || typeof key != "string") {
-      return Promise.reject("Iskey: Must provide key as string");
+    if (key == null || typeof key != 'string') {
+      return Promise.reject('Iskey: Must provide key as string');
     }
     try {
       const ret: boolean = await this.mDb.iskey(key);
@@ -149,20 +144,18 @@ export class CapgoCapacitorDataStorageSqliteWeb
       return Promise.reject(`Values: ${err.message}`);
     }
   }
-  async filtervalues(
-    options: capFilterStorageOptions,
-  ): Promise<capValuesResult> {
+  async filtervalues(options: capFilterStorageOptions): Promise<capValuesResult> {
     const filter: string = options.filter;
-    if (filter == null || typeof filter != "string") {
-      return Promise.reject("Filtervalues: Must provide filter as string");
+    if (filter == null || typeof filter != 'string') {
+      return Promise.reject('Filtervalues: Must provide filter as string');
     }
     let regFilter: RegExp;
-    if (filter.startsWith("%")) {
-      regFilter = new RegExp("^" + filter.substring(1), "i");
-    } else if (filter.endsWith("%")) {
-      regFilter = new RegExp(filter.slice(0, -1) + "$", "i");
+    if (filter.startsWith('%')) {
+      regFilter = new RegExp('^' + filter.substring(1), 'i');
+    } else if (filter.endsWith('%')) {
+      regFilter = new RegExp(filter.slice(0, -1) + '$', 'i');
     } else {
-      regFilter = new RegExp(filter, "i");
+      regFilter = new RegExp(filter, 'i');
     }
     try {
       const ret: string[] = [];
@@ -202,12 +195,10 @@ export class CapgoCapacitorDataStorageSqliteWeb
   async deleteStore(options: capOpenStorageOptions): Promise<void> {
     throw new Error(`Method deleteStore not implemented. ${options}`);
   }
-  async isTable(
-    options: capTableStorageOptions,
-  ): Promise<capDataStorageResult> {
+  async isTable(options: capTableStorageOptions): Promise<capDataStorageResult> {
     const table = options.table;
     if (table == null) {
-      return Promise.reject("Must provide a Table Name");
+      return Promise.reject('Must provide a Table Name');
     }
     try {
       const ret = await this.mDb.isTable(table);
@@ -227,12 +218,10 @@ export class CapgoCapacitorDataStorageSqliteWeb
   async deleteTable(options: capTableStorageOptions): Promise<void> {
     throw new Error(`Method deleteTable not implemented. ${options}`);
   }
-  async importFromJson(
-    options: capStoreImportOptions,
-  ): Promise<capDataStorageChanges> {
+  async importFromJson(options: capStoreImportOptions): Promise<capDataStorageChanges> {
     const keys = Object.keys(options);
-    if (!keys.includes("jsonstring")) {
-      return Promise.reject("Must provide a json object");
+    if (!keys.includes('jsonstring')) {
+      return Promise.reject('Must provide a json object');
     }
     let totalChanges = 0;
 
@@ -241,14 +230,12 @@ export class CapgoCapacitorDataStorageSqliteWeb
       const jsonObj = JSON.parse(jsonStrObj);
       const isValid = isJsonStore(jsonObj);
       if (!isValid) {
-        return Promise.reject("Must provide a valid JsonSQLite Object");
+        return Promise.reject('Must provide a valid JsonSQLite Object');
       }
       const vJsonObj: JsonStore = jsonObj;
-      const dbName = vJsonObj.database
-        ? `${vJsonObj.database}IDB`
-        : "storageIDB";
+      const dbName = vJsonObj.database ? `${vJsonObj.database}IDB` : 'storageIDB';
       for (const table of vJsonObj.tables) {
-        const tableName = table.name ? table.name : "storage_store";
+        const tableName = table.name ? table.name : 'storage_store';
         try {
           this.mDb = new StorageDatabaseHelper(dbName, tableName);
           // Open the database
@@ -260,9 +247,7 @@ export class CapgoCapacitorDataStorageSqliteWeb
               totalChanges += changes;
             }
           } else {
-            return Promise.reject(
-              `Open store: ${dbName} : table: ${tableName} failed`,
-            );
+            return Promise.reject(`Open store: ${dbName} : table: ${tableName} failed`);
           }
         } catch (err: any) {
           return Promise.reject(`ImportFromJson: ${err.message}`);
@@ -270,27 +255,25 @@ export class CapgoCapacitorDataStorageSqliteWeb
       }
       return Promise.resolve({ changes: totalChanges });
     } else {
-      return Promise.reject("Must provide a json object");
+      return Promise.reject('Must provide a json object');
     }
   }
-  async isJsonValid(
-    options: capStoreImportOptions,
-  ): Promise<capDataStorageResult> {
+  async isJsonValid(options: capStoreImportOptions): Promise<capDataStorageResult> {
     const keys = Object.keys(options);
-    if (!keys.includes("jsonstring")) {
-      return Promise.reject("Must provide a json object");
+    if (!keys.includes('jsonstring')) {
+      return Promise.reject('Must provide a json object');
     }
     if (options?.jsonstring) {
       const jsonStrObj: string = options.jsonstring;
       const jsonObj = JSON.parse(jsonStrObj);
       const isValid = isJsonStore(jsonObj);
       if (!isValid) {
-        return Promise.reject("Stringify Json Object not Valid");
+        return Promise.reject('Stringify Json Object not Valid');
       } else {
         return Promise.resolve({ result: true });
       }
     } else {
-      return Promise.reject("Must provide in options a stringify Json Object");
+      return Promise.reject('Must provide in options a stringify Json Object');
     }
   }
   async exportToJson(): Promise<capStoreJson> {

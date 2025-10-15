@@ -126,9 +126,7 @@ export interface CapgoCapacitorDataStorageSqlitePlugin {
    * @returns Promise<capDataStorageChanges>
    * @since 3.2.0
    */
-  importFromJson(
-    options: capStoreImportOptions,
-  ): Promise<capDataStorageChanges>;
+  importFromJson(options: capStoreImportOptions): Promise<capDataStorageChanges>;
   /**
    * Check the validity of a JSON Object
    * @param jsonstring string
