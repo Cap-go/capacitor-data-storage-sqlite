@@ -186,6 +186,520 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 
+
+<docgen-index>
+
+* [`openStore(...)`](#openstore)
+* [`closeStore(...)`](#closestore)
+* [`isStoreOpen(...)`](#isstoreopen)
+* [`isStoreExists(...)`](#isstoreexists)
+* [`deleteStore(...)`](#deletestore)
+* [`setTable(...)`](#settable)
+* [`set(...)`](#set)
+* [`get(...)`](#get)
+* [`remove(...)`](#remove)
+* [`clear()`](#clear)
+* [`iskey(...)`](#iskey)
+* [`keys()`](#keys)
+* [`values()`](#values)
+* [`filtervalues(...)`](#filtervalues)
+* [`keysvalues()`](#keysvalues)
+* [`isTable(...)`](#istable)
+* [`tables()`](#tables)
+* [`deleteTable(...)`](#deletetable)
+* [`importFromJson(...)`](#importfromjson)
+* [`isJsonValid(...)`](#isjsonvalid)
+* [`exportToJson()`](#exporttojson)
+* [Interfaces](#interfaces)
+
+</docgen-index>
+
+<docgen-api>
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+
+### openStore(...)
+
+```typescript
+openStore(options: capOpenStorageOptions) => Promise<void>
+```
+
+Open a store
+
+| Param         | Type                                                                    | Description                                                  |
+| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### closeStore(...)
+
+```typescript
+closeStore(options: capStorageOptions) => Promise<void>
+```
+
+Close the Store
+
+| Param         | Type                                                            | Description                                          |
+| ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### isStoreOpen(...)
+
+```typescript
+isStoreOpen(options: capStorageOptions) => Promise<capDataStorageResult>
+```
+
+Check if the Store is opened
+
+| Param         | Type                                                            | Description                                          |
+| ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### isStoreExists(...)
+
+```typescript
+isStoreExists(options: capStorageOptions) => Promise<capDataStorageResult>
+```
+
+Check if the Store exists
+
+| Param         | Type                                                            | Description                                          |
+| ------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| **`options`** | <code><a href="#capstorageoptions">capStorageOptions</a></code> | : <a href="#capstorageoptions">capStorageOptions</a> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### deleteStore(...)
+
+```typescript
+deleteStore(options: capOpenStorageOptions) => Promise<void>
+```
+
+Delete a store
+
+| Param         | Type                                                                    | Description                                                  |
+| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **`options`** | <code><a href="#capopenstorageoptions">capOpenStorageOptions</a></code> | : <a href="#capopenstorageoptions">capOpenStorageOptions</a> |
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### setTable(...)
+
+```typescript
+setTable(options: capTableStorageOptions) => Promise<void>
+```
+
+Set or Add a table to an existing store
+
+| Param         | Type                                                                      | Description                                                    |
+| ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### set(...)
+
+```typescript
+set(options: capDataStorageOptions) => Promise<void>
+```
+
+Store a data with given key and value
+
+| Param         | Type                                                                    | Description                                                  |
+| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### get(...)
+
+```typescript
+get(options: capDataStorageOptions) => Promise<capValueResult>
+```
+
+Retrieve a data value for a given data key
+
+| Param         | Type                                                                    | Description                                                  |
+| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
+
+**Returns:** <code>Promise&lt;<a href="#capvalueresult">capValueResult</a>&gt;</code>
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### remove(...)
+
+```typescript
+remove(options: capDataStorageOptions) => Promise<void>
+```
+
+Remove a data with given key
+
+| Param         | Type                                                                    | Description                                                  |
+| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### clear()
+
+```typescript
+clear() => Promise<void>
+```
+
+Clear the Data Store (delete all keys)
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### iskey(...)
+
+```typescript
+iskey(options: capDataStorageOptions) => Promise<capDataStorageResult>
+```
+
+Check if a data key exists
+
+| Param         | Type                                                                    | Description                                                  |
+| ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **`options`** | <code><a href="#capdatastorageoptions">capDataStorageOptions</a></code> | : <a href="#capdatastorageoptions">capDataStorageOptions</a> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### keys()
+
+```typescript
+keys() => Promise<capKeysResult>
+```
+
+Get the data key list
+
+**Returns:** <code>Promise&lt;<a href="#capkeysresult">capKeysResult</a>&gt;</code>
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### values()
+
+```typescript
+values() => Promise<capValuesResult>
+```
+
+Get the data value list
+
+**Returns:** <code>Promise&lt;<a href="#capvaluesresult">capValuesResult</a>&gt;</code>
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### filtervalues(...)
+
+```typescript
+filtervalues(options: capFilterStorageOptions) => Promise<capValuesResult>
+```
+
+Get the data value list for filter keys
+
+| Param         | Type                                                                        | Description                                                      |
+| ------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **`options`** | <code><a href="#capfilterstorageoptions">capFilterStorageOptions</a></code> | : <a href="#capfilterstorageoptions">capFilterStorageOptions</a> |
+
+**Returns:** <code>Promise&lt;<a href="#capvaluesresult">capValuesResult</a>&gt;</code>
+
+**Since:** 2.4.2
+
+--------------------
+
+
+### keysvalues()
+
+```typescript
+keysvalues() => Promise<capKeysValuesResult>
+```
+
+Get the data key/value pair list
+
+**Returns:** <code>Promise&lt;<a href="#capkeysvaluesresult">capKeysValuesResult</a>&gt;</code>
+
+**Since:** 0.0.1
+
+--------------------
+
+
+### isTable(...)
+
+```typescript
+isTable(options: capTableStorageOptions) => Promise<capDataStorageResult>
+```
+
+Check if a table exists
+
+| Param         | Type                                                                      | Description                                                    |
+| ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### tables()
+
+```typescript
+tables() => Promise<capTablesResult>
+```
+
+Get the table list for the current store
+
+**Returns:** <code>Promise&lt;<a href="#captablesresult">capTablesResult</a>&gt;</code>
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### deleteTable(...)
+
+```typescript
+deleteTable(options: capTableStorageOptions) => Promise<void>
+```
+
+Delete a table
+
+| Param         | Type                                                                      | Description                                                    |
+| ------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **`options`** | <code><a href="#captablestorageoptions">capTableStorageOptions</a></code> | : <a href="#captablestorageoptions">capTableStorageOptions</a> |
+
+**Since:** 3.0.0
+
+--------------------
+
+
+### importFromJson(...)
+
+```typescript
+importFromJson(options: capStoreImportOptions) => Promise<capDataStorageChanges>
+```
+
+Import a database From a JSON
+
+| Param         | Type                                                                    |
+| ------------- | ----------------------------------------------------------------------- |
+| **`options`** | <code><a href="#capstoreimportoptions">capStoreImportOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastoragechanges">capDataStorageChanges</a>&gt;</code>
+
+**Since:** 3.2.0
+
+--------------------
+
+
+### isJsonValid(...)
+
+```typescript
+isJsonValid(options: capStoreImportOptions) => Promise<capDataStorageResult>
+```
+
+Check the validity of a JSON Object
+
+| Param         | Type                                                                    |
+| ------------- | ----------------------------------------------------------------------- |
+| **`options`** | <code><a href="#capstoreimportoptions">capStoreImportOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#capdatastorageresult">capDataStorageResult</a>&gt;</code>
+
+**Since:** 3.2.0
+
+--------------------
+
+
+### exportToJson()
+
+```typescript
+exportToJson() => Promise<capStoreJson>
+```
+
+Export the given database to a JSON Object
+
+**Returns:** <code>Promise&lt;<a href="#capstorejson">capStoreJson</a>&gt;</code>
+
+**Since:** 3.2.0
+
+--------------------
+
+
+### Interfaces
+
+
+#### capOpenStorageOptions
+
+| Prop            | Type                 | Description                                                                 |
+| --------------- | -------------------- | --------------------------------------------------------------------------- |
+| **`database`**  | <code>string</code>  | The storage database name                                                   |
+| **`table`**     | <code>string</code>  | The storage table name                                                      |
+| **`encrypted`** | <code>boolean</code> | Set to true for database encryption                                         |
+| **`mode`**      | <code>string</code>  | * Set the mode for database encryption ["encryption", "secret","newsecret"] |
+
+
+#### capStorageOptions
+
+| Prop           | Type                | Description      |
+| -------------- | ------------------- | ---------------- |
+| **`database`** | <code>string</code> | The storage name |
+
+
+#### capDataStorageResult
+
+| Prop          | Type                 | Description                                   |
+| ------------- | -------------------- | --------------------------------------------- |
+| **`result`**  | <code>boolean</code> | result set to true when successful else false |
+| **`message`** | <code>string</code>  | a returned message                            |
+
+
+#### capTableStorageOptions
+
+| Prop        | Type                | Description            |
+| ----------- | ------------------- | ---------------------- |
+| **`table`** | <code>string</code> | The storage table name |
+
+
+#### capDataStorageOptions
+
+| Prop        | Type                | Description                  |
+| ----------- | ------------------- | ---------------------------- |
+| **`key`**   | <code>string</code> | The data name                |
+| **`value`** | <code>string</code> | The data value when required |
+
+
+#### capValueResult
+
+| Prop        | Type                | Description                         |
+| ----------- | ------------------- | ----------------------------------- |
+| **`value`** | <code>string</code> | the data value for a given data key |
+
+
+#### capKeysResult
+
+| Prop       | Type                  | Description                   |
+| ---------- | --------------------- | ----------------------------- |
+| **`keys`** | <code>string[]</code> | the data key list as an Array |
+
+
+#### capValuesResult
+
+| Prop         | Type                  | Description                      |
+| ------------ | --------------------- | -------------------------------- |
+| **`values`** | <code>string[]</code> | the data values list as an Array |
+
+
+#### capFilterStorageOptions
+
+| Prop         | Type                | Description                                                                                                                     |
+| ------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **`filter`** | <code>string</code> | The filter data for filtering keys ['%filter', 'filter', 'filter%'] for [starts with filter, contains filter, ends with filter] |
+
+
+#### capKeysValuesResult
+
+| Prop             | Type               | Description                                                        |
+| ---------------- | ------------------ | ------------------------------------------------------------------ |
+| **`keysvalues`** | <code>any[]</code> | the data keys/values list as an Array of {key:string,value:string} |
+
+
+#### capTablesResult
+
+| Prop         | Type                  | Description                 |
+| ------------ | --------------------- | --------------------------- |
+| **`tables`** | <code>string[]</code> | the tables list as an Array |
+
+
+#### capDataStorageChanges
+
+| Prop          | Type                | Description                                          |
+| ------------- | ------------------- | ---------------------------------------------------- |
+| **`changes`** | <code>number</code> | the number of changes from an importFromJson command |
+
+
+#### capStoreImportOptions
+
+| Prop             | Type                | Description                   |
+| ---------------- | ------------------- | ----------------------------- |
+| **`jsonstring`** | <code>string</code> | Set the JSON object to import |
+
+
+#### capStoreJson
+
+| Prop         | Type                                            | Description           |
+| ------------ | ----------------------------------------------- | --------------------- |
+| **`export`** | <code><a href="#jsonstore">JsonStore</a></code> | an export JSON object |
+
+
+#### JsonStore
+
+| Prop            | Type                     | Description                                                  |
+| --------------- | ------------------------ | ------------------------------------------------------------ |
+| **`database`**  | <code>string</code>      | The database name                                            |
+| **`encrypted`** | <code>boolean</code>     | Set to true (database encryption) / false iOS & Android only |
+| **`tables`**    | <code>JsonTable[]</code> | * Array of Table (<a href="#jsontable">JsonTable</a>)        |
+
+
+#### JsonTable
+
+| Prop         | Type                                 | Description                                                                    |
+| ------------ | ------------------------------------ | ------------------------------------------------------------------------------ |
+| **`name`**   | <code>string</code>                  | The database name                                                              |
+| **`values`** | <code>capDataStorageOptions[]</code> | * Array of Values (<a href="#capdatastorageoptions">capDataStorageOptions</a>) |
+
+</docgen-api>
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
