@@ -1,22 +1,20 @@
 export class UtilsSQLite {
-  public pathDB = "./DataStorage";
+  public pathDB = './DataStorage';
   Path: any = null;
   NodeFs: any = null;
   SQLite3: any = null;
 
   constructor() {
-    this.Path = require("path");
-    this.NodeFs = require("fs");
-    this.SQLite3 = require("sqlite3");
+    this.Path = require('path');
+    this.NodeFs = require('fs');
+    this.SQLite3 = require('sqlite3');
   }
   public async connection(
     dbName: string,
     readOnly?: boolean,
     /*,key?:string*/
   ): Promise<any> {
-    const flags = readOnly
-      ? this.SQLite3.OPEN_READONLY
-      : this.SQLite3.OPEN_CREATE | this.SQLite3.OPEN_READWRITE;
+    const flags = readOnly ? this.SQLite3.OPEN_READONLY : this.SQLite3.OPEN_CREATE | this.SQLite3.OPEN_READWRITE;
 
     // get the path for the database
     try {
@@ -71,12 +69,10 @@ export class UtilsSQLite {
     }
   }
   private async mkdirSyncRecursive(directory: string): Promise<void> {
-    const path = directory.replace(/\/$/, "").split("/");
+    const path = directory.replace(/\/$/, '').split('/');
     for (let i = 1; i <= path.length; i++) {
-      const segment = path.slice(0, i).join("/");
-      segment.length > 0 && !this.NodeFs.existsSync(segment)
-        ? this.NodeFs.mkdirSync(segment)
-        : null;
+      const segment = path.slice(0, i).join('/');
+      segment.length > 0 && !this.NodeFs.existsSync(segment) ? this.NodeFs.mkdirSync(segment) : null;
     }
     return;
   }

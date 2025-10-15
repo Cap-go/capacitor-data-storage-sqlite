@@ -452,7 +452,7 @@ class UtilsSQLCipher {
     // MARK: - CreateTable
 
     class func createTable(mDB: StorageDatabaseHelper, tableName: String,
-                            ifNotExists: Bool) throws {
+                           ifNotExists: Bool) throws {
         let exist: String = ifNotExists ? "IF NOT EXISTS" : ""
         let crTable: String = "CREATE TABLE \(exist) \(tableName) (" +
             "\(COLID) INTEGER PRIMARY KEY AUTOINCREMENT," +
