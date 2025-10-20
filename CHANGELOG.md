@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.1.2](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.1.1...7.1.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.google.gms:google-services to v4.4.4 ([#169](https://github.com/Cap-go/capacitor-data-storage-sqlite/issues/169)) ([c7e4efe](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/c7e4efe52bb47950e51218fa0b92eebb79e5cce5))
+
 ## [7.1.1](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.1.0...7.1.1) (2025-10-16)
 
 ## [7.1.0](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/6.0.59...7.1.0) (2025-10-15)
