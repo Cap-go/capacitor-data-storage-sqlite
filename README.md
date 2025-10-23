@@ -681,6 +681,10 @@ Export the given database to a JSON Object
 | ------------ | ----------------------------------------------- | --------------------- |
 | **`export`** | <code><a href="#jsonstore">JsonStore</a></code> | an export JSON object |
 
+| Method               | Signature                                    | Description                             |
+| -------------------- | -------------------------------------------- | --------------------------------------- |
+| **getPluginVersion** | () =&gt; Promise&lt;{ version: string; }&gt; | Get the native Capacitor plugin version |
+
 
 #### JsonStore
 
