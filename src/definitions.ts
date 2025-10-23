@@ -140,6 +140,14 @@ export interface CapgoCapacitorDataStorageSqlitePlugin {
    * @since 3.2.0
    */
   exportToJson(): Promise<capStoreJson>;
+
+  /**
+   * Get the native Capacitor plugin version
+   *
+   * @returns {Promise<{ version: string }>} a Promise with version for this plugin
+   * @throws An error if something went wrong
+   */
+  getPluginVersion(): Promise<{ version: string }>;
 }
 
 export interface capOpenStorageOptions {
@@ -282,12 +290,4 @@ export interface capStoreJson {
    * an export JSON object
    */
   export?: JsonStore;
-
-  /**
-   * Get the native Capacitor plugin version
-   *
-   * @returns {Promise<{ id: string }>} an Promise with version for this device
-   * @throws An error if the something went wrong
-   */
-  getPluginVersion(): Promise<{ version: string }>;
 }

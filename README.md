@@ -210,6 +210,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 * [`importFromJson(...)`](#importfromjson)
 * [`isJsonValid(...)`](#isjsonvalid)
 * [`exportToJson()`](#exporttojson)
+* [`getPluginVersion()`](#getpluginversion)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -576,6 +577,19 @@ Export the given database to a JSON Object
 --------------------
 
 
+### getPluginVersion()
+
+```typescript
+getPluginVersion() => Promise<{ version: string; }>
+```
+
+Get the native Capacitor plugin version
+
+**Returns:** <code>Promise&lt;{ version: string; }&gt;</code>
+
+--------------------
+
+
 ### Interfaces
 
 
@@ -680,10 +694,6 @@ Export the given database to a JSON Object
 | Prop         | Type                                            | Description           |
 | ------------ | ----------------------------------------------- | --------------------- |
 | **`export`** | <code><a href="#jsonstore">JsonStore</a></code> | an export JSON object |
-
-| Method               | Signature                                    | Description                             |
-| -------------------- | -------------------------------------------- | --------------------------------------- |
-| **getPluginVersion** | () =&gt; Promise&lt;{ version: string; }&gt; | Get the native Capacitor plugin version |
 
 
 #### JsonStore
