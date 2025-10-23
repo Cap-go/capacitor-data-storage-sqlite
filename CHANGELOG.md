@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.1](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.0...7.2.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* update Discord webhook username to include repository name ([66b071b](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/66b071b300081bbf241b82fa08a051c09907ef96))
+
 ## [7.2.0](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.1.3...7.2.0) (2025-10-23)
 
 
