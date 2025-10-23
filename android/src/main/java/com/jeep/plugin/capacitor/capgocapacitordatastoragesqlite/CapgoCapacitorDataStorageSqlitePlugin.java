@@ -11,6 +11,8 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "CapgoCapacitorDataStorageSqlite")
 public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
 
+    private final String PLUGIN_VERSION = "";
+
     private CapgoCapacitorDataStorageSqlite implementation;
     private RetHandler rHandler = new RetHandler();
     private Context context;
@@ -427,6 +429,17 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
             String msg = "ExportToJson: " + e.getMessage();
             rHandler.retJsonObject(call, retObj, msg);
             return;
+        }
+    }
+
+    @PluginMethod
+    public void getPluginVersion(final PluginCall call) {
+        try {
+            final JSObject ret = new JSObject();
+            ret.put("version", this.PLUGIN_VERSION);
+            call.resolve(ret);
+        } catch (final Exception e) {
+            call.reject("Could not get plugin version", e);
         }
     }
 }

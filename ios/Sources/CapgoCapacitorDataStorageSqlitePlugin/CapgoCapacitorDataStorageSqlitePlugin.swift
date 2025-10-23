@@ -5,6 +5,7 @@ import Capacitor
 // swiftlint:disable type_body_length
 @objc(CapgoCapacitorDataStorageSqlitePlugin)
 public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin {
+    private let PLUGIN_VERSION: String = ""
     public let identifier = "CapgoCapacitorDataStorageSqlitePlugin"
     public let jsName = "CapgoCapacitorDataStorageSqlite"
     public let pluginMethods: [CAPPluginMethod] = [
@@ -28,8 +29,8 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
         CAPPluginMethod(name: "deleteTable", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "isJsonValid", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "importFromJson", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "exportToJson", returnType: CAPPluginReturnPromise)
-
+        CAPPluginMethod(name: "exportToJson", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getPluginVersion", returnType: CAPPluginReturnPromise)
     ]
     private let implementation = CapgoCapacitorDataStorageSqlite()
     private let retHandler: ReturnHandler = ReturnHandler()
@@ -560,6 +561,10 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
             return
         }
 
+    }
+
+    @objc func getPluginVersion(_ call: CAPPluginCall) {
+        call.resolve(["version": self.PLUGIN_VERSION])
     }
 
 }
