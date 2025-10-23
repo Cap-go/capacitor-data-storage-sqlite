@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.3](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.2...7.2.3) (2025-10-23)
+
+
+### Bug Fixes
+
+* add getPluginVersion method from interface ([8a77b39](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/8a77b3935f33e5fd1bcf806dd819b899a10a09de))
+
 ## [7.2.2](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.1...7.2.2) (2025-10-23)
 
 
