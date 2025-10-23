@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.0](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.1.3...7.2.0) (2025-10-23)
+
+
+### Features
+
+* add getPluginVersion method to native and web plugins, update workflows for changelog generation ([48e1d13](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/48e1d13680dfd5a64e868ae8b131984cb7740ecd))
+
+
+### Bug Fixes
+
+* remove default content message from Discord webhook ([6ea7a60](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/6ea7a6049239dae819c2ab80ec8f7b4e4e0999ce))
+
 ## [7.1.3](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.1.2...7.1.3) (2025-10-22)
 
 ## [7.1.2](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.1.1...7.1.2) (2025-10-20)
