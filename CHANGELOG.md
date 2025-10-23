@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.2](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.1...7.2.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* remove dist ([002e446](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/002e446b51f50b0ce3983f77345750da26f09fec))
+* remove footer in discord ([ba039b7](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/ba039b7d2653baa0fb6dbecac9d2223c8ee5a138))
+
 ## [7.2.1](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.0...7.2.1) (2025-10-23)
 
 
