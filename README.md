@@ -49,6 +49,10 @@ The plugin follows the guidelines from the `Capacitor Team`,
 
 meaning that it will not work in IE11 without additional JavaScript transformations, e.g. with [Babel](https://babeljs.io/).
 
+## Documentation
+
+The most complete doc is available here: https://capgo.app/docs/plugins/data-storage-sqlite/
+
 ## Installation
 
 ```bash
