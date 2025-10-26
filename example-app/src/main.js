@@ -18,7 +18,7 @@ const table = values.table || 'example_table';
 await plugin.openStore({ database, table });
 state.database = database;
 state.table = table;
-return \`Store ${database}/${table} opened.\`;
+return `Store ${database}/${table} opened.`;
               },
             },
 {
@@ -68,7 +68,7 @@ return 'Store cleared.';
               run: async (values) => {
                 const database = values.database || state.database || 'example_store';
 await plugin.closeStore({ database });
-return \`Store ${database} closed.\`;
+return `Store ${database} closed.`;
               },
             }
 ];
