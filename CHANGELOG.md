@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.6](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.5...7.2.6) (2025-10-26)
+
+
+### Bug Fixes
+
+* prevent bump for app ([7c8ff90](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/7c8ff90cae2d4bc585c3c441143eb2cc0e53d1ce))
+
 ## [7.2.5](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.4...7.2.5) (2025-10-26)
 
 ## [7.2.4](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.3...7.2.4) (2025-10-26)
