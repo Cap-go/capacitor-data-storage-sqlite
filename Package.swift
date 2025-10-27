@@ -10,8 +10,8 @@ let package = Package(
             targets: ["CapgoCapacitorDataStorageSqlitePlugin"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "7.4.4"),
-        .package(url: "https://github.com/zhuorantan/SQLiteCipher.git", from: "0.15.4")
+        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "7.0.0"),
+        .package(url: "https://github.com/zhuorantan/SQLiteCipher.git", from: "7.0.0")
     ],
     targets: [
         .target(
