@@ -9,12 +9,6 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
 @objc public class CapgoCapacitorDataStorageSqlite: NSObject {
     var mDb: StorageDatabaseHelper?
 
-    // MARK: - Echo
-
-    @objc public func echo(_ value: String) -> String {
-        return value
-    }
-
     // MARK: - OpenStore
 
     @objc func openStore(_ dbName: String, tableName: String,

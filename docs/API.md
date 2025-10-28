@@ -62,23 +62,6 @@ For both IOS and Android platforms, the store can be encrypted. The plugin uses 
 <docgen-api class="custom-css">
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
-
-```typescript
-echo(options: capEchoOptions) => Promise<capEchoResult>
-```
-
-| Param         | Type                                                      | Description                                    |
-| ------------- | --------------------------------------------------------- | ---------------------------------------------- |
-| **`options`** | <code><a href="#capechooptions">capEchoOptions</a></code> | : <a href="#capechooptions">capEchoOptions</a> |
-
-**Returns:** <code>Promise&lt;<a href="#capechoresult">capEchoResult</a>&gt;</code>
-
-**Since:** 0.0.1
-
---------------------
-
-
 ### openStore(...)
 
 ```typescript

@@ -28,11 +28,6 @@ export class CapgoCapacitorDataStorageSqlite implements CapgoCapacitorDataStorag
   constructor() {
     this.mDb = new StorageDatabaseHelper();
   }
-  async echo(options: capEchoOptions): Promise<capEchoResult> {
-    const ret: capEchoResult = {} as capEchoResult;
-    ret.value = options.value ? options.value : '';
-    return Promise.resolve(ret);
-  }
   async openStore(options: capOpenStorageOptions): Promise<void> {
     const dbName = options.database ? `${options.database}SQLite.db` : 'storageSQLite.db';
     const tableName = options.table ? options.table : 'storage_store';
