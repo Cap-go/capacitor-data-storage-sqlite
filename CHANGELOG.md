@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.2.11](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.10...7.2.11) (2025-10-29)
+
+
+### Bug Fixes
+
+* update AI model in build workflow ([e65eef1](https://github.com/Cap-go/capacitor-data-storage-sqlite/commit/e65eef16f582fcc4bff3a640fff98db1ec2b1103))
+
 ## [7.2.10](https://github.com/Cap-go/capacitor-data-storage-sqlite/compare/7.2.9...7.2.10) (2025-10-28)
 
 
