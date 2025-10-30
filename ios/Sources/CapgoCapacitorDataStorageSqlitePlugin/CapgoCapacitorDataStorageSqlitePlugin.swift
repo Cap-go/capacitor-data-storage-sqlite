@@ -5,7 +5,7 @@ import Capacitor
 // swiftlint:disable type_body_length
 @objc(CapgoCapacitorDataStorageSqlitePlugin)
 public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin {
-    private let PLUGIN_VERSION: String = "7.2.12"
+    private let pluginVersion: String = "7.2.12"
     public let identifier = "CapgoCapacitorDataStorageSqlitePlugin"
     public let jsName = "CapgoCapacitorDataStorageSqlite"
     public let pluginMethods: [CAPPluginMethod] = [
@@ -564,7 +564,7 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
     }
 
     @objc func getPluginVersion(_ call: CAPPluginCall) {
-        call.resolve(["version": self.PLUGIN_VERSION])
+        call.resolve(["version": self.pluginVersion])
     }
 
 }
