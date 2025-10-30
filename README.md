@@ -22,6 +22,18 @@
 <p align="center">
   Capacitor Data Storage SQlite Plugin is a custom Native Capacitor plugin providing a key-value permanent store for simple data of <strong>type string only</strong> to SQLite on IOS, Android and Electron platforms and to IndexDB for the Web platform.</p>
 
+## Why Data Storage SQLite?
+
+A maintained, community-driven plugin providing simple key-value storage backed by SQLite. Originally created by @jepiqueau and now maintained by Capgo:
+
+- **Simple API** - Easy key-value storage interface for string data
+- **Cross-platform** - Works on iOS, Android, Electron, and Web (IndexedDB)
+- **SQLite backing** - Reliable, encrypted storage on native platforms
+- **Import/Export** - JSON import/export for data migration
+- **Multi-table support** - Organize data across multiple tables
+
+Perfect for apps needing simple, reliable local storage without complex SQL queries.
+
 <p align="center">
   <img src="https://img.shields.io/maintenance/yes/2024?style=flat-square" />
   <a href="https://github.com/Cap-go/capacitor-data-storage-sqlite/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/workflow/status/Cap-go/capacitor-data-storage-sqlite/CI?style=flat-square" /></a>
