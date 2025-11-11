@@ -1,6 +1,6 @@
 {
   "name": "@capgo/capacitor-data-storage-sqlite",
-  "version": "7.2.15",
+  "version": "7.2.16",
   "description": "SQLite Storage of key/value strings pair",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
