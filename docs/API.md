@@ -613,4 +613,4 @@ use the `openStore` method with the following options:
 
 The secret key of the encrypted datastore will be modified with the newsecret key stored in your application and the datastore will be opened with given database and table names and newsecret key.
 
-Do not forget after this change of secret to go in the code of your app and modified in the `Global`file the `secret` paramater with the value of the `newsecret` parameter and reassign a new value of your choice to the `newsecret` parameter, before the relauch of your app.
+Do not forget after this change of secret to go in the code of your app and modified in the `Global`file the `secret` parameter with the value of the `newsecret` parameter and reassign a new value of your choice to the `newsecret` parameter, before the relauch of your app.

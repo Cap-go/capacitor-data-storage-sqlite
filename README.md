@@ -16,7 +16,7 @@
 <!-- Note from the Owner - End -->
 <br>
 <!-- Message below Note from the Owner - Start -->
-<p align="left" style="font-size:47px">This Plugin has been transfered to Capgo org after his original creator <a href="https://github.com/jepiqueau">@jepiqueau</a> decide to retire. 
+<p align="left" style="font-size:47px">This Plugin has been transferred to Capgo org after his original creator <a href="https://github.com/jepiqueau">@jepiqueau</a> decide to retire. 
 <br>We will forever be thankful for the work he did.</p>
 <br>
 <p align="center">
