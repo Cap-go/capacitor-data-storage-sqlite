@@ -25,6 +25,7 @@
   "bugs": {
     "url": "https://github.com/Cap-go/capacitor-data-storage-sqlite.git/issues"
   },
+  "homepage": "https://capgo.app/docs/plugins/data-storage-sqlite/",
   "keywords": [
     "capacitor",
     "plugin",
