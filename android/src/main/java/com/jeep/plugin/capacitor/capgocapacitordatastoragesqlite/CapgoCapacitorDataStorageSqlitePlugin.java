@@ -11,7 +11,7 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "CapgoCapacitorDataStorageSqlite")
 public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
 
-    private final String pluginVersion = "8.0.25";
+    private final String pluginVersion = "8.0.26";
 
     private CapgoCapacitorDataStorageSqlite implementation;
     private RetHandler rHandler = new RetHandler();
