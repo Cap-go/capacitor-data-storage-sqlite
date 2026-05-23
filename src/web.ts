@@ -285,6 +285,10 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
     }
   }
 
+  async vacuum(): Promise<void> {
+    return Promise.resolve();
+  }
+
   async getPluginVersion(): Promise<{ version: string }> {
     return { version: 'web' };
   }

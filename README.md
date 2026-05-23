@@ -237,8 +237,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 * [`importFromJson(...)`](#importfromjson)
 * [`isJsonValid(...)`](#isjsonvalid)
 * [`exportToJson()`](#exporttojson)
+* [`vacuum()`](#vacuum)
 * [`getPluginVersion()`](#getpluginversion)
 * [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
 
 </docgen-index>
 
@@ -604,6 +606,19 @@ Export the given database to a JSON Object
 --------------------
 
 
+### vacuum()
+
+```typescript
+vacuum() => Promise<void>
+```
+
+Rebuild the current SQLite store to reclaim unused disk space.
+
+**Since:** 8.0.32
+
+--------------------
+
+
 ### getPluginVersion()
 
 ```typescript
@@ -622,12 +637,13 @@ Get the native Capacitor plugin version
 
 #### capOpenStorageOptions
 
-| Prop            | Type                 | Description                                                                 |
-| --------------- | -------------------- | --------------------------------------------------------------------------- |
-| **`database`**  | <code>string</code>  | The storage database name                                                   |
-| **`table`**     | <code>string</code>  | The storage table name                                                      |
-| **`encrypted`** | <code>boolean</code> | Set to true for database encryption                                         |
-| **`mode`**      | <code>string</code>  | * Set the mode for database encryption ["encryption", "secret","newsecret"] |
+| Prop             | Type                                                                | Description                                                                                                                                                |
+| ---------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`database`**   | <code>string</code>                                                 | The storage database name                                                                                                                                  |
+| **`table`**      | <code>string</code>                                                 | The storage table name                                                                                                                                     |
+| **`encrypted`**  | <code>boolean</code>                                                | Set to true for database encryption                                                                                                                        |
+| **`mode`**       | <code>string</code>                                                 | * Set the mode for database encryption ["encryption", "secret","newsecret"]                                                                                |
+| **`autoVacuum`** | <code><a href="#capsqliteautovacuum">capSQLiteAutoVacuum</a></code> | Set the SQLite auto_vacuum mode for the store. Use `none`/`0`, `full`/`1`, or `incremental`/`2`. iOS, Android, and Electron only. Web ignores this option. |
 
 
 #### capStorageOptions
@@ -738,6 +754,14 @@ Get the native Capacitor plugin version
 | ------------ | ------------------------------------ | ------------------------------------------------------------------------------ |
 | **`name`**   | <code>string</code>                  | The database name                                                              |
 | **`values`** | <code>capDataStorageOptions[]</code> | * Array of Values (<a href="#capdatastorageoptions">capDataStorageOptions</a>) |
+
+
+### Type Aliases
+
+
+#### capSQLiteAutoVacuum
+
+<code>'none' | 'full' | 'incremental' | 0 | 1 | 2</code>
 
 </docgen-api>
 

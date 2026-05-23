@@ -27,6 +27,7 @@ public class StorageDatabaseHelper {
     private String _mode;
     private String _secret;
     private String _newsecret;
+    private String _autoVacuum;
     private int _dbVersion;
     private File _file;
     private Global _globVar;
@@ -39,13 +40,22 @@ public class StorageDatabaseHelper {
     private static final String COL_VALUE = "value";
     private static final String IDX_COL_NAME = "name";
 
-    public StorageDatabaseHelper(Context context, String dbName, String tableName, Boolean encrypted, String mode, int vNumber) {
+    public StorageDatabaseHelper(
+        Context context,
+        String dbName,
+        String tableName,
+        Boolean encrypted,
+        String mode,
+        int vNumber,
+        String autoVacuum
+    ) {
         this._context = context;
         this._dbName = dbName;
         this._tableName = tableName;
         this._dbVersion = vNumber;
         this._encrypted = encrypted;
         this._mode = mode;
+        this._autoVacuum = autoVacuum;
         this._file = context.getDatabasePath(dbName);
         this._globVar = new Global();
         this._uCipher = new UtilsSQLCipher();
@@ -107,6 +117,7 @@ public class StorageDatabaseHelper {
         if (_db != null) {
             if (_db.isOpen()) {
                 try {
+                    configureAutoVacuum();
                     setTable(_tableName, true);
                     isOpen = true;
                     return;
@@ -123,6 +134,51 @@ public class StorageDatabaseHelper {
         } else {
             isOpen = false;
             throw new Exception("No store returned");
+        }
+    }
+
+    private int normalizeAutoVacuum(String autoVacuum) throws Exception {
+        if (autoVacuum == null || autoVacuum.trim().isEmpty()) {
+            return -1;
+        }
+        String value = autoVacuum.trim().toLowerCase();
+        if (value.equals("0") || value.equals("none")) {
+            return 0;
+        }
+        if (value.equals("1") || value.equals("full")) {
+            return 1;
+        }
+        if (value.equals("2") || value.equals("incremental")) {
+            return 2;
+        }
+        throw new Exception("autoVacuum must be one of none, full, incremental, 0, 1, or 2");
+    }
+
+    private int getAutoVacuumMode() throws Exception {
+        Cursor c = null;
+        try {
+            c = (Cursor) _db.query("PRAGMA auto_vacuum;");
+            if (c.moveToFirst()) {
+                return c.getInt(0);
+            }
+            return 0;
+        } catch (Exception e) {
+            String msg = "Failed in getAutoVacuumMode " + e.getMessage();
+            throw new Exception(msg);
+        } finally {
+            if (c != null) c.close();
+        }
+    }
+
+    private void configureAutoVacuum() throws Exception {
+        int mode = normalizeAutoVacuum(_autoVacuum);
+        if (mode < 0) {
+            return;
+        }
+        int currentMode = getAutoVacuumMode();
+        if (currentMode != mode) {
+            _db.execSQL("PRAGMA auto_vacuum = " + mode + ";");
+            _db.execSQL("VACUUM;");
         }
     }
 
@@ -518,6 +574,20 @@ public class StorageDatabaseHelper {
                 }
             } catch (Exception e) {
                 String msg = "Failed in deleteTable" + e.getMessage();
+                throw new Exception(msg);
+            }
+        } else {
+            throw new Exception("Store not opened");
+        }
+    }
+
+    public void vacuum() throws Exception {
+        if (_db.isOpen()) {
+            try {
+                _db.execSQL("VACUUM;");
+                return;
+            } catch (Exception e) {
+                String msg = "Failed in vacuum" + e.getMessage();
                 throw new Exception(msg);
             }
         } else {

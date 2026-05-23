@@ -142,6 +142,13 @@ export interface CapgoCapacitorDataStorageSqlitePlugin {
   exportToJson(): Promise<capStoreJson>;
 
   /**
+   * Rebuild the current SQLite store to reclaim unused disk space.
+   * @returns Promise<void>
+   * @since 8.0.32
+   */
+  vacuum(): Promise<void>;
+
+  /**
    * Get the native Capacitor plugin version
    *
    * @returns {Promise<{ version: string }>} a Promise with version for this plugin
@@ -172,7 +179,15 @@ export interface capOpenStorageOptions {
    * ["encryption", "secret","newsecret"]
    */
   mode?: string; // only for ios and android
+  /**
+   * Set the SQLite auto_vacuum mode for the store.
+   *
+   * Use `none`/`0`, `full`/`1`, or `incremental`/`2`.
+   * iOS, Android, and Electron only. Web ignores this option.
+   */
+  autoVacuum?: capSQLiteAutoVacuum;
 }
+export type capSQLiteAutoVacuum = 'none' | 'full' | 'incremental' | 0 | 1 | 2;
 export interface capDataStorageOptions {
   /**
    * The data name
