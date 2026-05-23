@@ -106,7 +106,7 @@ class StorageDatabaseHelper {
 
             }
         }
-        if mode == "encryption" {
+        if mode == "encryption" && UtilsFile.isFileExist(filePath: path) {
             do {
                 let ret: Bool = try UtilsEncryption
                     .encryptDatabase(filePath: path, password: password)
