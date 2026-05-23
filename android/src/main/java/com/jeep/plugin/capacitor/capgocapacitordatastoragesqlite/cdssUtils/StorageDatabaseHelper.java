@@ -1,6 +1,7 @@
 package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -10,11 +11,11 @@ import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.Impor
 import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonTable;
 import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonValue;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.sqlcipher.Cursor;
-import net.sqlcipher.database.SQLiteDatabase;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
 
 public class StorageDatabaseHelper {
 
@@ -63,7 +64,7 @@ public class StorageDatabaseHelper {
      */
     private void InitializeSQLCipher() {
         Log.d(TAG, " in InitializeSQLCipher: ");
-        SQLiteDatabase.loadLibs(_context);
+        System.loadLibrary("sqlcipher");
     }
 
     /**
@@ -95,7 +96,7 @@ public class StorageDatabaseHelper {
         }
         if (_mode.equals("encryption")) {
             try {
-                _uCipher.encrypt(_context, _file, SQLiteDatabase.getBytes(password.toCharArray()));
+                _uCipher.encrypt(_context, _file, password.getBytes(StandardCharsets.UTF_8));
             } catch (Exception e) {
                 String msg = "Failed in encryption " + e.getMessage();
                 Log.v(TAG, msg);
@@ -103,7 +104,7 @@ public class StorageDatabaseHelper {
             }
         }
 
-        _db = SQLiteDatabase.openOrCreateDatabase(_file, password, null);
+        _db = SQLiteDatabase.openOrCreateDatabase(_file, password, null, null, null);
         if (_db != null) {
             if (_db.isOpen()) {
                 try {
