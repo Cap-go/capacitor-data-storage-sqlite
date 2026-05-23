@@ -1,12 +1,12 @@
 package com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteException;
-import net.sqlcipher.database.SQLiteStatement;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
+import net.zetetic.database.sqlcipher.SQLiteStatement;
 
 public class UtilsSQLCipher {
 
@@ -37,14 +37,14 @@ public class UtilsSQLCipher {
             SQLiteDatabase db = null;
 
             try {
-                db = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READONLY);
+                db = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READONLY, null);
 
                 db.getVersion();
 
                 return (State.UNENCRYPTED);
             } catch (Exception e) {
                 try {
-                    db = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), globVar.secret, null, SQLiteDatabase.OPEN_READONLY);
+                    db = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), globVar.secret, null, SQLiteDatabase.OPEN_READONLY, null);
                     return (State.ENCRYPTED_SECRET);
                 } catch (Exception e1) {
                     return (State.ENCRYPTED_NEW_SECRET);
@@ -72,11 +72,11 @@ public class UtilsSQLCipher {
      * @throws IOException
      */
     public void encrypt(Context ctxt, File originalFile, byte[] passphrase) throws IOException {
-        SQLiteDatabase.loadLibs(ctxt);
+        System.loadLibrary("sqlcipher");
 
         if (originalFile.exists()) {
             File newFile = File.createTempFile("sqlcipherutils", "tmp", ctxt.getCacheDir());
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(originalFile.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READWRITE);
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(originalFile.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READWRITE, null);
             int version = db.getVersion();
 
             db.close();
@@ -104,10 +104,10 @@ public class UtilsSQLCipher {
     }
 
     public void changePassword(Context ctxt, File file, String password, String nwpassword) throws IOException {
-        SQLiteDatabase.loadLibs(ctxt);
+        System.loadLibrary("sqlcipher");
 
         if (file.exists()) {
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), password, null, SQLiteDatabase.OPEN_READWRITE);
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(file.getAbsolutePath(), password, null, SQLiteDatabase.OPEN_READWRITE, null);
 
             if (!db.isOpen()) {
                 throw new SQLiteException("database " + file.getAbsolutePath() + " open failed");
