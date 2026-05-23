@@ -34,6 +34,8 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
         String secret = null;
         String newsecret = null;
         String inMode = null;
+        Object autoVacuumValue = call.getData().opt("autoVacuum");
+        String autoVacuum = autoVacuumValue != null ? autoVacuumValue.toString() : null;
 
         if (encrypted) {
             inMode = call.getString("mode", "no-encryption");
@@ -52,7 +54,7 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
             inMode = "no-encryption";
         }
         try {
-            implementation.openStore(dbName, tableName, encrypted, inMode, 1);
+            implementation.openStore(dbName, tableName, encrypted, inMode, 1, autoVacuum);
             rHandler.retResult(call, null, null);
             return;
         } catch (Exception e) {
@@ -428,6 +430,19 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
         } catch (Exception e) {
             String msg = "ExportToJson: " + e.getMessage();
             rHandler.retJsonObject(call, retObj, msg);
+            return;
+        }
+    }
+
+    @PluginMethod
+    public void vacuum(PluginCall call) {
+        try {
+            implementation.vacuum();
+            rHandler.retResult(call, null, null);
+            return;
+        } catch (Exception e) {
+            String msg = "Vacuum: " + e.getMessage();
+            rHandler.retResult(call, null, msg);
             return;
         }
     }

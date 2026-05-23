@@ -30,6 +30,7 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
         CAPPluginMethod(name: "isJsonValid", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "importFromJson", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "exportToJson", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "vacuum", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getPluginVersion", returnType: CAPPluginReturnPromise)
     ]
     private let implementation = CapgoCapacitorDataStorageSqlite()
@@ -41,6 +42,7 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
         let dbName = call.options["database"] as? String ?? "storage"
         let tableName = call.options["table"] as? String ?? "storage_table"
         let encrypted = call.options["encrypted"] as? Bool ?? false
+        let autoVacuum = call.options["autoVacuum"].map { "\($0)" }
         var inMode: String = ""
         if encrypted {
             inMode = call.options["mode"] as? String ?? "no-encryption"
@@ -60,7 +62,8 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
             try implementation
                 .openStore(dbName,
                            tableName: tableName,
-                           encrypted: encrypted, inMode: inMode)
+                           encrypted: encrypted, inMode: inMode,
+                           autoVacuum: autoVacuum)
             retHandler.rResult(call: call)
             return
         } catch CapgoCapacitorDataStorageSqliteError
@@ -561,6 +564,22 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
             return
         }
 
+    }
+
+    @objc func vacuum(_ call: CAPPluginCall) {
+        do {
+            try implementation.vacuum()
+            retHandler.rResult(call: call)
+            return
+        } catch CapgoCapacitorDataStorageSqliteError.failed(let message) {
+            let msg = "vacuum: \(message)"
+            retHandler.rResult(call: call, message: msg)
+            return
+        } catch let error {
+            let msg = "vacuum: \(error.localizedDescription)"
+            retHandler.rResult(call: call, message: msg)
+            return
+        }
     }
 
     @objc func getPluginVersion(_ call: CAPPluginCall) {

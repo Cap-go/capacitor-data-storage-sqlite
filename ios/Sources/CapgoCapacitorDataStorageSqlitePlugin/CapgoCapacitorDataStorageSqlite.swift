@@ -12,14 +12,19 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
     // MARK: - OpenStore
 
     @objc func openStore(_ dbName: String, tableName: String,
-                         encrypted: Bool, inMode: String
+                         encrypted: Bool, inMode: String,
+                         autoVacuum: String?
     ) throws {
         do {
             mDb = try StorageDatabaseHelper(
                 databaseName: "\(dbName)SQLite.db",
                 tableName: tableName,
-                encrypted: encrypted, mode: inMode)
+                encrypted: encrypted, mode: inMode,
+                autoVacuum: autoVacuum)
         } catch StorageHelperError.initFailed(let message) {
+            throw CapgoCapacitorDataStorageSqliteError
+            .failed(message: message)
+        } catch StorageHelperError.autoVacuum(let message) {
             throw CapgoCapacitorDataStorageSqliteError
             .failed(message: message)
         } catch let error {
@@ -426,6 +431,28 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
         }
     }
 
+    // MARK: - vacuum
+
+    @objc func vacuum() throws {
+
+        if mDb != nil {
+            do {
+                try mDb?.vacuum()
+                return
+            } catch StorageHelperError.vacuum(let message) {
+                throw CapgoCapacitorDataStorageSqliteError
+                .failed(message: message)
+            } catch let error {
+                throw CapgoCapacitorDataStorageSqliteError
+                .failed(message: error.localizedDescription)
+            }
+        } else {
+            let message = "Must open a store first"
+            throw CapgoCapacitorDataStorageSqliteError
+            .failed(message: message)
+        }
+    }
+
     // MARK: - isJsonValid
 
     @objc func isJsonValid(_ parsingData: String) throws {
@@ -472,7 +499,8 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
                     mDb = try StorageDatabaseHelper(
                         databaseName: "\(dbName)SQLite.db",
                         tableName: table.name,
-                        encrypted: encrypted, mode: mode)
+                        encrypted: encrypted, mode: mode,
+                        autoVacuum: nil)
                     if !(mDb.isOpen ) {
                         throw CapgoCapacitorDataStorageSqliteError
                         .failed(message: "store not opened")

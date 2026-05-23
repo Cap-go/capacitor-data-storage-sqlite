@@ -1,7 +1,5 @@
 import type {
   CapgoCapacitorDataStorageSqlitePlugin,
-  capEchoOptions,
-  capEchoResult,
   capDataStorageOptions,
   capDataStorageResult,
   capFilterStorageOptions,
@@ -17,6 +15,7 @@ import type {
   capStoreJson,
   capDataStorageChanges,
   capStoreImportOptions,
+  capSQLiteAutoVacuum,
 } from '../../src/definitions';
 
 import { Data } from './electron-utils/Data';
@@ -31,8 +30,9 @@ export class CapgoCapacitorDataStorageSqlite implements CapgoCapacitorDataStorag
   async openStore(options: capOpenStorageOptions): Promise<void> {
     const dbName = options.database ? `${options.database}SQLite.db` : 'storageSQLite.db';
     const tableName = options.table ? options.table : 'storage_store';
+    const autoVacuum: capSQLiteAutoVacuum | undefined = options.autoVacuum;
     try {
-      await this.mDb.openStore(dbName, tableName);
+      await this.mDb.openStore(dbName, tableName, autoVacuum);
       return Promise.resolve();
     } catch (err) {
       return Promise.reject(err);
@@ -294,6 +294,15 @@ export class CapgoCapacitorDataStorageSqlite implements CapgoCapacitorDataStorag
       return Promise.resolve({ export: ret });
     } catch (err) {
       return Promise.reject(`exportToJson: ${err.message}`);
+    }
+  }
+
+  async vacuum(): Promise<void> {
+    try {
+      await this.mDb.vacuum();
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`vacuum: ${err.message}`);
     }
   }
 }

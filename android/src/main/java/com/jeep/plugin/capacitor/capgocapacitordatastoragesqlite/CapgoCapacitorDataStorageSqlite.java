@@ -19,9 +19,10 @@ public class CapgoCapacitorDataStorageSqlite {
         this.context = context;
     }
 
-    public void openStore(String dbName, String tableName, Boolean encrypted, String inMode, int version) throws Exception {
+    public void openStore(String dbName, String tableName, Boolean encrypted, String inMode, int version, String autoVacuum)
+        throws Exception {
         try {
-            mDb = new StorageDatabaseHelper(context, dbName + "SQLite.db", tableName, encrypted, inMode, version);
+            mDb = new StorageDatabaseHelper(context, dbName + "SQLite.db", tableName, encrypted, inMode, version, autoVacuum);
             if (mDb != null) {
                 mDb.open();
                 if (mDb.isOpen) {
@@ -250,6 +251,19 @@ public class CapgoCapacitorDataStorageSqlite {
         }
     }
 
+    public void vacuum() throws Exception {
+        if (mDb != null && mDb.isOpen) {
+            try {
+                mDb.vacuum();
+                return;
+            } catch (Exception e) {
+                throw new Exception(e.getMessage());
+            }
+        } else {
+            throw new Exception("mDb is not opened or null");
+        }
+    }
+
     public void deleteStore(String dbName) throws Exception {
         try {
             context.deleteDatabase(dbName + "SQLite.db");
@@ -307,7 +321,7 @@ public class CapgoCapacitorDataStorageSqlite {
             ArrayList<JsonTable> tables = jsonSQL.getTables();
             for (JsonTable table : tables) {
                 // open the database
-                mDb = new StorageDatabaseHelper(context, dbName + "SQLite.db", table.getName(), encrypted, inMode, 1);
+                mDb = new StorageDatabaseHelper(context, dbName + "SQLite.db", table.getName(), encrypted, inMode, 1, null);
                 if (mDb != null) {
                     mDb.open();
                     if (mDb.isOpen) {

@@ -1,4 +1,4 @@
-import type { capDataStorageOptions, JsonStore, JsonTable } from '../../../src/definitions';
+import type { capDataStorageOptions, capSQLiteAutoVacuum, JsonStore, JsonTable } from '../../../src/definitions';
 
 import { Data } from './Data';
 import { UtilsSQLite } from './UtilsSQLite';
@@ -23,7 +23,7 @@ export class StorageDatabaseHelper {
     this._utils = new UtilsSQLite();
   }
 
-  public async openStore(dbName: string, tableName: string): Promise<void> {
+  public async openStore(dbName: string, tableName: string, autoVacuum?: capSQLiteAutoVacuum): Promise<void> {
     try {
       this.db = await this._utils.connection(
         dbName,
@@ -31,6 +31,7 @@ export class StorageDatabaseHelper {
         /*,this._secret*/
       );
       if (this.db !== null) {
+        await this._configureAutoVacuum(autoVacuum);
         await this._createTable(tableName);
         this.dbName = dbName;
         this.tableName = tableName;
@@ -48,6 +49,64 @@ export class StorageDatabaseHelper {
       this.isOpen = false;
       return Promise.reject(err);
     }
+  }
+  private _normalizeAutoVacuum(autoVacuum?: capSQLiteAutoVacuum): number | null {
+    if (autoVacuum == null) {
+      return null;
+    }
+    const value = `${autoVacuum}`.trim().toLowerCase();
+    if (value === '0' || value === 'none') {
+      return 0;
+    }
+    if (value === '1' || value === 'full') {
+      return 1;
+    }
+    if (value === '2' || value === 'incremental') {
+      return 2;
+    }
+    throw new Error('autoVacuum must be one of none, full, incremental, 0, 1, or 2');
+  }
+  private async _execSQL(sql: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.db == null) {
+        reject(`this.db is null in execSQL`);
+        return;
+      }
+      this.db.exec(sql, (err: Error) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+  private async _getAutoVacuumMode(): Promise<number> {
+    return new Promise((resolve, reject) => {
+      if (this.db == null) {
+        reject(`this.db is null in getAutoVacuumMode`);
+        return;
+      }
+      this.db.get('PRAGMA auto_vacuum;', (err: Error, row: Record<string, number>) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(Number(Object.values(row ?? {})[0] ?? 0));
+        }
+      });
+    });
+  }
+  private async _configureAutoVacuum(autoVacuum?: capSQLiteAutoVacuum): Promise<void> {
+    const mode = this._normalizeAutoVacuum(autoVacuum);
+    if (mode == null) {
+      return Promise.resolve();
+    }
+    const currentMode = await this._getAutoVacuumMode();
+    if (currentMode !== mode) {
+      await this._execSQL(`PRAGMA auto_vacuum = ${mode};`);
+      await this._execSQL('VACUUM;');
+    }
+    return Promise.resolve();
   }
   public async closeStore(dbName: string): Promise<void> {
     if (dbName === this.dbName && this.isOpen && this.db != null) {
@@ -456,6 +515,17 @@ export class StorageDatabaseHelper {
       } else {
         return Promise.resolve();
       }
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  public async vacuum(): Promise<void> {
+    if (this.db == null) {
+      return Promise.reject(`this.db is null in vacuum`);
+    }
+    try {
+      await this._execSQL('VACUUM;');
+      return Promise.resolve();
     } catch (err) {
       return Promise.reject(err);
     }

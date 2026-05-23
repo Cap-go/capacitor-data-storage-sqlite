@@ -39,6 +39,8 @@ enum StorageHelperError: Error {
     case isTable(message: String)
     case tables(message: String)
     case deleteTable(message: String)
+    case autoVacuum(message: String)
+    case vacuum(message: String)
     case importFromJson(message: String)
     case exportToJson(message: String)
 }
@@ -51,6 +53,7 @@ class StorageDatabaseHelper {
     var encrypted: Bool
     var dbName: String
     var mode: String
+    var autoVacuum: String?
     // define the path for the database
     var path: String = ""
     var globalData: Global = Global()
@@ -58,9 +61,10 @@ class StorageDatabaseHelper {
     // MARK: - Init
 
     init(databaseName: String, tableName: String, encrypted: Bool,
-         mode: String) throws {
+         mode: String, autoVacuum: String?) throws {
         self.tableName = tableName
         self.mode = mode
+        self.autoVacuum = autoVacuum
         self.encrypted = encrypted
         self.dbName = databaseName
         do {
@@ -128,6 +132,7 @@ class StorageDatabaseHelper {
                                       readonly: false)
             if mDB != nil {
                 isOpen = true
+                try configureAutoVacuum()
                 try setTable(tblName: self.tableName)
                 return
             } else {
@@ -135,6 +140,9 @@ class StorageDatabaseHelper {
                 throw StorageHelperError.open(message: "No store returned" )
             }
         } catch StorageHelperError.setTable(let message) {
+            isOpen = false
+            throw StorageHelperError.open(message: message )
+        } catch StorageHelperError.autoVacuum(let message) {
             isOpen = false
             throw StorageHelperError.open(message: message )
         } catch UtilsSQLCipherError.openOrCreateDatabase(let message) {
@@ -145,6 +153,60 @@ class StorageDatabaseHelper {
         }
     }
     // swiftlint:enable function_body_length
+
+    private func normalizeAutoVacuumMode() throws -> Int? {
+        guard let autoVacuum = autoVacuum?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !autoVacuum.isEmpty else {
+            return nil
+        }
+        switch autoVacuum.lowercased() {
+        case "0", "none":
+            return 0
+        case "1", "full":
+            return 1
+        case "2", "incremental":
+            return 2
+        default:
+            throw StorageHelperError
+                .autoVacuum(message: "autoVacuum must be one of none, full, incremental, 0, 1, or 2")
+        }
+    }
+
+    private func getAutoVacuumMode() throws -> Int {
+        guard let mDB = mDB else {
+            throw StorageHelperError.autoVacuum(message: "No store returned")
+        }
+        var statement: OpaquePointer?
+        let prepareCode = sqlite3_prepare_v2(mDB, "PRAGMA auto_vacuum;", -1, &statement, nil)
+        if prepareCode != SQLITE_OK {
+            let msg = String(cString: sqlite3_errmsg(mDB))
+            throw StorageHelperError.autoVacuum(message: msg)
+        }
+        defer {
+            sqlite3_finalize(statement)
+        }
+        if sqlite3_step(statement) == SQLITE_ROW {
+            return Int(sqlite3_column_int(statement, 0))
+        }
+        return 0
+    }
+
+    private func configureAutoVacuum() throws {
+        guard let mode = try normalizeAutoVacuumMode() else {
+            return
+        }
+        let currentMode = try getAutoVacuumMode()
+        if currentMode != mode {
+            do {
+                try UtilsSQLCipher.execute(mDB: self,
+                                           sql: "PRAGMA auto_vacuum = \(mode);")
+                try UtilsSQLCipher.execute(mDB: self, sql: "VACUUM;")
+            } catch UtilsSQLCipherError.execute(let message) {
+                throw StorageHelperError.autoVacuum(message: message)
+            }
+        }
+    }
+
     // MARK: - Close
 
     func close() throws {
@@ -542,6 +604,19 @@ class StorageDatabaseHelper {
             .deleteTable(message: error.localizedDescription)
         }
 
+    }
+
+    // MARK: - Vacuum
+
+    func vacuum() throws {
+        do {
+            try UtilsSQLCipher.execute(mDB: self, sql: "VACUUM;")
+            return
+        } catch UtilsSQLCipherError.execute(let message) {
+            throw StorageHelperError.vacuum(message: message)
+        } catch let error {
+            throw StorageHelperError.vacuum(message: error.localizedDescription)
+        }
     }
 
     // MARK: - ImportFromJson
