@@ -93,7 +93,7 @@ public class StorageDatabaseHelper {
                 throw new Exception(msg);
             }
         }
-        if (_mode.equals("encryption")) {
+        if (_mode.equals("encryption") && _file.exists()) {
             try {
                 _uCipher.encrypt(_context, _file, SQLiteDatabase.getBytes(password.toCharArray()));
             } catch (Exception e) {
