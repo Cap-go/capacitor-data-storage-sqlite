@@ -40,17 +40,13 @@ bun run build
 
 case "$platform" in
   android)
-    if [ ! -d android ]; then
-      bunx cap add android
-    fi
+    bunx cap add android
     bunx cap sync android
     cd android
     ./gradlew build test
     ;;
   ios)
-    if [ ! -d ios ]; then
-      bunx cap add ios
-    fi
+    bunx cap add ios
     bunx cap sync ios
     xcodebuild -project ios/App/App.xcodeproj -scheme App -destination generic/platform=iOS CODE_SIGNING_ALLOWED=NO
     ;;
