@@ -6,73 +6,87 @@ import { CapgoCapacitorDataStorageSqlite } from '@capgo/capacitor-data-storage-s
 
 const plugin = CapgoCapacitorDataStorageSqlite;
 const state = {};
-state.database = undefined; state.table = undefined;
+state.database = undefined;
+state.table = undefined;
 
 const actions = [
-{
-              id: 'open-store',
-              label: 'Open store',
-              description: 'Opens (or creates) a store. Call this before other operations.',
-              inputs: [{ name: 'database', label: 'Database name', type: 'text', value: 'example_store' }, { name: 'table', label: 'Table name', type: 'text', value: 'example_table' }],
-              run: async (values) => {
-                const database = values.database || 'example_store';
-const table = values.table || 'example_table';
-await plugin.openStore({ database, table });
-state.database = database;
-state.table = table;
-return `Store ${database}/${table} opened.`;
-              },
-            },
-{
-              id: 'set-value',
-              label: 'Set key/value',
-              description: 'Persists a key/value pair in the current store.',
-              inputs: [{ name: 'key', label: 'Key', type: 'text', value: 'greeting' }, { name: 'value', label: 'Value', type: 'text', value: 'Hello from example-app' }],
-              run: async (values) => {
-                await plugin.set({ key: values.key || 'greeting', value: values.value ?? '' });
-return 'Value saved.';
-              },
-            },
-{
-              id: 'get-value',
-              label: 'Get value',
-              description: 'Reads a value for the provided key.',
-              inputs: [{ name: 'key', label: 'Key', type: 'text', value: 'greeting' }],
-              run: async (values) => {
-                const result = await plugin.get({ key: values.key || 'greeting' });
-return result;
-              },
-            },
-{
-  id: 'list-keys-values',
-  label: 'List keys/values',
-  description: 'Returns all stored key/value pairs.',
-  inputs: [],
-  run: async (values) => {
-    return await plugin.keysvalues();
+  {
+    id: 'open-store',
+    label: 'Open store',
+    description: 'Opens (or creates) a store. Call this before other operations.',
+    inputs: [
+      { name: 'database', label: 'Database name', type: 'text', value: 'example_store' },
+      { name: 'table', label: 'Table name', type: 'text', value: 'example_table' },
+    ],
+    run: async (values) => {
+      const database = values.database || 'example_store';
+      const table = values.table || 'example_table';
+      await plugin.openStore({ database, table });
+      state.database = database;
+      state.table = table;
+      return `Store ${database}/${table} opened.`;
+    },
   },
-},
-{
-              id: 'clear-store',
-              label: 'Clear store',
-              description: 'Removes all keys from the currently opened store.',
-              inputs: [],
-              run: async (values) => {
-                await plugin.clear();
-return 'Store cleared.';
-              },
-            },
-{
-              id: 'close-store',
-              label: 'Close store',
-              description: 'Closes the opened store.',
-              inputs: [{ name: 'database', label: 'Database name', type: 'text', placeholder: 'Leave blank to reuse last opened store' }],
-              run: async (values) => {
-                const database = values.database || state.database || 'example_store';
-await plugin.closeStore({ database });
-return `Store ${database} closed.`;
-              },
-            }
+  {
+    id: 'set-value',
+    label: 'Set key/value',
+    description: 'Persists a key/value pair in the current store.',
+    inputs: [
+      { name: 'key', label: 'Key', type: 'text', value: 'greeting' },
+      { name: 'value', label: 'Value', type: 'text', value: 'Hello from example-app' },
+    ],
+    run: async (values) => {
+      await plugin.set({ key: values.key || 'greeting', value: values.value ?? '' });
+      return 'Value saved.';
+    },
+  },
+  {
+    id: 'get-value',
+    label: 'Get value',
+    description: 'Reads a value for the provided key.',
+    inputs: [{ name: 'key', label: 'Key', type: 'text', value: 'greeting' }],
+    run: async (values) => {
+      const result = await plugin.get({ key: values.key || 'greeting' });
+      return result;
+    },
+  },
+  {
+    id: 'list-keys-values',
+    label: 'List keys/values',
+    description: 'Returns all stored key/value pairs.',
+    inputs: [],
+    run: async (values) => {
+      return await plugin.keysvalues();
+    },
+  },
+  {
+    id: 'clear-store',
+    label: 'Clear store',
+    description: 'Removes all keys from the currently opened store.',
+    inputs: [],
+    run: async (values) => {
+      await plugin.clear();
+      return 'Store cleared.';
+    },
+  },
+  {
+    id: 'close-store',
+    label: 'Close store',
+    description: 'Closes the opened store.',
+    inputs: [
+      {
+        name: 'database',
+        label: 'Database name',
+        type: 'text',
+        placeholder: 'Leave blank to reuse last opened store',
+      },
+    ],
+    run: async (values) => {
+      const database = values.database || state.database || 'example_store';
+      await plugin.closeStore({ database });
+      return `Store ${database} closed.`;
+    },
+  },
 ];
 
 const actionSelect = document.getElementById('action-select');
