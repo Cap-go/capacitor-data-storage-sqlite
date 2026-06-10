@@ -44,36 +44,27 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
 @objc public class CapgoCapacitorDataStorageSqlite: NSObject {
     private static let sqliteSuffix = "SQLite.db"
     private static let changeLock = NSRecursiveLock()
-    private static var changeListeners: [WeakChangeListener] = []
-
-    private final class WeakChangeListener {
-        weak var value: CapgoDataStorageChangeListener?
-
-        init(_ value: CapgoDataStorageChangeListener) {
-            self.value = value
-        }
-    }
+    private static var changeListeners: [CapgoDataStorageChangeListener] = []
 
     var mDb: StorageDatabaseHelper?
 
     @objc public static func addChangeListener(_ listener: CapgoDataStorageChangeListener) {
         changeLock.lock()
         defer { changeLock.unlock() }
-        changeListeners.removeAll { $0.value == nil || $0.value === listener }
-        changeListeners.append(WeakChangeListener(listener))
+        changeListeners.removeAll { $0 === listener }
+        changeListeners.append(listener)
     }
 
     @objc public static func removeChangeListener(_ listener: CapgoDataStorageChangeListener) {
         changeLock.lock()
         defer { changeLock.unlock() }
-        changeListeners.removeAll { $0.value == nil || $0.value === listener }
+        changeListeners.removeAll { $0 === listener }
     }
 
     private static func notifyDataStorageChange(_ change: CapgoCapacitorDataStorageSqliteChange) {
         DispatchQueue.main.async {
             changeLock.lock()
-            changeListeners.removeAll { $0.value == nil }
-            let snapshot = changeListeners.compactMap { $0.value }
+            let snapshot = changeListeners
             changeLock.unlock()
 
             for listener in snapshot {

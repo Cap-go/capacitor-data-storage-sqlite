@@ -10,7 +10,6 @@ import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.Impor
 import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.ImportExportJson.JsonValue;
 import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.StorageDatabaseHelper;
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class CapgoCapacitorDataStorageSqlite {
 
     private static final String SQLITE_SUFFIX = "SQLite.db";
     private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
-    private static final List<WeakReference<DataStorageChangeListener>> dataStorageChangeListeners = new ArrayList<>();
+    private static final List<DataStorageChangeListener> dataStorageChangeListeners = new ArrayList<>();
 
     public interface DataStorageChangeListener {
         void onDataStorageChange(DataStorageChange change);
@@ -80,27 +79,18 @@ public class CapgoCapacitorDataStorageSqlite {
             return;
         }
         removeChangeListener(listener);
-        dataStorageChangeListeners.add(new WeakReference<>(listener));
+        dataStorageChangeListeners.add(listener);
     }
 
     public static synchronized void removeChangeListener(DataStorageChangeListener listener) {
-        dataStorageChangeListeners.removeIf((ref) -> {
-            DataStorageChangeListener value = ref.get();
-            return value == null || value == listener;
-        });
+        dataStorageChangeListeners.removeIf((value) -> value == listener);
     }
 
     private static void notifyDataStorageChange(DataStorageChange change) {
         MAIN_HANDLER.post(() -> {
             List<DataStorageChangeListener> snapshot = new ArrayList<>();
             synchronized (CapgoCapacitorDataStorageSqlite.class) {
-                dataStorageChangeListeners.removeIf((ref) -> ref.get() == null);
-                for (WeakReference<DataStorageChangeListener> ref : dataStorageChangeListeners) {
-                    DataStorageChangeListener listener = ref.get();
-                    if (listener != null) {
-                        snapshot.add(listener);
-                    }
-                }
+                snapshot.addAll(dataStorageChangeListeners);
             }
             for (DataStorageChangeListener listener : snapshot) {
                 listener.onDataStorageChange(change);
