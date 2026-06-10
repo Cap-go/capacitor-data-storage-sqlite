@@ -214,6 +214,45 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-end -->
 
 
+## Native key change listeners
+
+Native iOS and Android code can subscribe to storage key changes without keeping the WebView running. This is useful for app extensions, CarPlay, Android Auto, widgets, and other native entry points that need to react when web code updates persisted storage.
+
+Listeners are called on the main thread after `set`, `remove`, `clear`, `deleteTable` for the current table, and `importFromJson` changes. The event includes `database`, `table`, `key`, `value`, and `deleted`. `value` is omitted when `deleted` is true.
+
+Android:
+
+```java
+CapgoCapacitorDataStorageSqlite.addChangeListener(change -> {
+    if ("settings".equals(change.getKey()) && !change.isDeleted()) {
+        String value = change.getValue();
+    }
+});
+```
+
+iOS:
+
+```swift
+final class StorageObserver: NSObject, CapgoDataStorageChangeListener {
+    func onDataStorageChange(_ change: CapgoCapacitorDataStorageSqliteChange) {
+        if change.key == "settings", !change.deleted {
+            let value = change.value
+        }
+    }
+}
+
+let observer = StorageObserver()
+CapgoCapacitorDataStorageSqlite.addChangeListener(observer)
+```
+
+JavaScript can also listen to one key by using the key as the event name:
+
+```typescript
+const handle = await CapgoCapacitorDataStorageSqlite.addListener('settings', (change) => {
+  console.log(change.value)
+})
+```
+
 <docgen-index>
 
 * [`openStore(...)`](#openstore)
@@ -238,6 +277,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 * [`isJsonValid(...)`](#isjsonvalid)
 * [`exportToJson()`](#exporttojson)
 * [`vacuum()`](#vacuum)
+* [`addListener(string, ...)`](#addlistenerstring-)
 * [`getPluginVersion()`](#getpluginversion)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
@@ -619,6 +659,30 @@ Rebuild the current SQLite store to reclaim unused disk space.
 --------------------
 
 
+### addListener(string, ...)
+
+```typescript
+addListener(eventName: string, listenerFunc: capDataStorageChangeListener) => Promise<PluginListenerHandle>
+```
+
+Listen for changes to one storage key.
+
+The listener event name is the storage key to observe. When that key is
+set, the listener receives the key and latest value. When the key is
+removed or cleared, `deleted` is true and `value` is omitted.
+
+| Param              | Type                                                                                  | Description                 |
+| ------------------ | ------------------------------------------------------------------------------------- | --------------------------- |
+| **`eventName`**    | <code>string</code>                                                                   | storage key to observe      |
+| **`listenerFunc`** | <code><a href="#capdatastoragechangelistener">capDataStorageChangeListener</a></code> | storage key change listener |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
+
+**Since:** 8.0.35
+
+--------------------
+
+
 ### getPluginVersion()
 
 ```typescript
@@ -756,12 +820,35 @@ Get the native Capacitor plugin version
 | **`values`** | <code>capDataStorageOptions[]</code> | * Array of Values (<a href="#capdatastorageoptions">capDataStorageOptions</a>) |
 
 
+#### PluginListenerHandle
+
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
+
+
+#### capDataStorageChangeEvent
+
+| Prop           | Type                 | Description                                   |
+| -------------- | -------------------- | --------------------------------------------- |
+| **`database`** | <code>string</code>  | The storage database that changed.            |
+| **`table`**    | <code>string</code>  | The storage table that changed.               |
+| **`key`**      | <code>string</code>  | The storage key that changed.                 |
+| **`value`**    | <code>string</code>  | The latest value for the key when it was set. |
+| **`deleted`**  | <code>boolean</code> | True when the key was removed or cleared.     |
+
+
 ### Type Aliases
 
 
 #### capSQLiteAutoVacuum
 
 <code>'none' | 'full' | 'incremental' | 0 | 1 | 2</code>
+
+
+#### capDataStorageChangeListener
+
+<code>(event: <a href="#capdatastoragechangeevent">capDataStorageChangeEvent</a>): void</code>
 
 </docgen-api>
 

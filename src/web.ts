@@ -17,6 +17,7 @@ import type {
   capStoreJson,
   capDataStorageChanges,
   capStoreImportOptions,
+  capDataStorageChangeEvent,
 } from './definitions';
 import { Data } from './web-utils/Data';
 import { StorageDatabaseHelper } from './web-utils/StorageDatabaseHelper';
@@ -24,12 +25,30 @@ import { isJsonStore } from './web-utils/json-utils';
 
 export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements CapgoCapacitorDataStorageSqlitePlugin {
   private mDb!: StorageDatabaseHelper;
+  private currentDatabase = 'storage';
+  private currentTable = 'storage_store';
+
+  private notifyStorageChange(key: string, value?: string): void {
+    const event: capDataStorageChangeEvent = {
+      database: this.currentDatabase,
+      table: this.currentTable,
+      key,
+    };
+    if (value != null) {
+      event.value = value;
+    } else {
+      event.deleted = true;
+    }
+    this.notifyListeners(key, event);
+  }
 
   async openStore(options: capOpenStorageOptions): Promise<void> {
     const dbName = options.database ? `${options.database}IDB` : 'storageIDB';
     const tableName = options.table ? options.table : 'storage_store';
     try {
       this.mDb = new StorageDatabaseHelper(dbName, tableName);
+      this.currentDatabase = options.database ? options.database : 'storage';
+      this.currentTable = tableName;
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`OpenStore: ${err.message}`);
@@ -52,6 +71,7 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
     if (this.mDb) {
       try {
         await this.mDb.setTable(tableName);
+        this.currentTable = tableName;
         return Promise.resolve();
       } catch (err: any) {
         return Promise.reject(`SetTable: ${err.message}`);
@@ -75,6 +95,7 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
     data.value = value;
     try {
       await this.mDb.set(data);
+      this.notifyStorageChange(key, value);
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`Set: ${err.message}`);
@@ -103,6 +124,7 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
     }
     try {
       await this.mDb.remove(key);
+      this.notifyStorageChange(key);
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`Remove: ${err.message}`);
@@ -110,7 +132,9 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
   }
   async clear(): Promise<void> {
     try {
+      const keys = await this.mDb.keys();
       await this.mDb.clear();
+      keys.forEach((key) => this.notifyStorageChange(key));
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`Clear: ${err.message}`);
@@ -233,11 +257,13 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
         return Promise.reject('Must provide a valid JsonSQLite Object');
       }
       const vJsonObj: JsonStore = jsonObj;
+      this.currentDatabase = vJsonObj.database ? vJsonObj.database : 'storage';
       const dbName = vJsonObj.database ? `${vJsonObj.database}IDB` : 'storageIDB';
       for (const table of vJsonObj.tables) {
         const tableName = table.name ? table.name : 'storage_store';
         try {
           this.mDb = new StorageDatabaseHelper(dbName, tableName);
+          this.currentTable = tableName;
           // Open the database
           const bRet: boolean = this.mDb.openStore(dbName, tableName);
           if (bRet) {
@@ -245,6 +271,9 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
             if (table?.values) {
               const changes = await this.mDb.importJson(table.values);
               totalChanges += changes;
+              table.values.forEach((value) => {
+                this.notifyStorageChange(value.key, value.value);
+              });
             }
           } else {
             return Promise.reject(`Open store: ${dbName} : table: ${tableName} failed`);

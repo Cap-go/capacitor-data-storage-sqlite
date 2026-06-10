@@ -1,3 +1,5 @@
+import type { PluginListenerHandle } from '@capacitor/core';
+
 export interface CapgoCapacitorDataStorageSqlitePlugin {
   /**
    * Open a store
@@ -149,6 +151,20 @@ export interface CapgoCapacitorDataStorageSqlitePlugin {
   vacuum(): Promise<void>;
 
   /**
+   * Listen for changes to one storage key.
+   *
+   * The listener event name is the storage key to observe. When that key is
+   * set, the listener receives the key and latest value. When the key is
+   * removed or cleared, `deleted` is true and `value` is omitted.
+   *
+   * @param eventName storage key to observe
+   * @param listenerFunc storage key change listener
+   * @returns Promise<PluginListenerHandle>
+   * @since 8.0.35
+   */
+  addListener(eventName: string, listenerFunc: capDataStorageChangeListener): Promise<PluginListenerHandle>;
+
+  /**
    * Get the native Capacitor plugin version
    *
    * @returns {Promise<{ version: string }>} a Promise with version for this plugin
@@ -198,6 +214,29 @@ export interface capDataStorageOptions {
    */
   value?: string;
 }
+export interface capDataStorageChangeEvent {
+  /**
+   * The storage database that changed.
+   */
+  database?: string;
+  /**
+   * The storage table that changed.
+   */
+  table?: string;
+  /**
+   * The storage key that changed.
+   */
+  key: string;
+  /**
+   * The latest value for the key when it was set.
+   */
+  value?: string;
+  /**
+   * True when the key was removed or cleared.
+   */
+  deleted?: boolean;
+}
+export type capDataStorageChangeListener = (event: capDataStorageChangeEvent) => void;
 export interface capStorageOptions {
   /**
    * The storage name

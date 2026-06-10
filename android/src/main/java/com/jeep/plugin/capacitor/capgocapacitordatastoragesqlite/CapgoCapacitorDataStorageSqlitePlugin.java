@@ -9,7 +9,7 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
 @CapacitorPlugin(name = "CapgoCapacitorDataStorageSqlite")
-public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
+public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin implements CapgoCapacitorDataStorageSqlite.DataStorageChangeListener {
 
     private final String pluginVersion = "8.0.34";
 
@@ -24,6 +24,7 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
     public void load() {
         context = getContext();
         implementation = new CapgoCapacitorDataStorageSqlite(context);
+        CapgoCapacitorDataStorageSqlite.addChangeListener(this);
     }
 
     @PluginMethod
@@ -456,5 +457,10 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
         } catch (final Exception e) {
             call.reject("Could not get plugin version", e);
         }
+    }
+
+    @Override
+    public void onDataStorageChange(CapgoCapacitorDataStorageSqlite.DataStorageChange change) {
+        notifyListeners(change.getKey(), change.toJSObject());
     }
 }

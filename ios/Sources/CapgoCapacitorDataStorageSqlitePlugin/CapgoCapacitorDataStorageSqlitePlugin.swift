@@ -4,7 +4,7 @@ import Capacitor
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 @objc(CapgoCapacitorDataStorageSqlitePlugin)
-public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin {
+public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin, CapgoDataStorageChangeListener {
     private let pluginVersion: String = "8.0.34"
     public let identifier = "CapgoCapacitorDataStorageSqlitePlugin"
     public let jsName = "CapgoCapacitorDataStorageSqlite"
@@ -35,6 +35,10 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
     ]
     private let implementation = CapgoCapacitorDataStorageSqlite()
     private let retHandler: ReturnHandler = ReturnHandler()
+
+    override public func load() {
+        CapgoCapacitorDataStorageSqlite.addChangeListener(self)
+    }
 
     // MARK: - OpenStore
 
@@ -584,6 +588,10 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
 
     @objc func getPluginVersion(_ call: CAPPluginCall) {
         call.resolve(["version": self.pluginVersion])
+    }
+
+    public func onDataStorageChange(_ change: CapgoCapacitorDataStorageSqliteChange) {
+        notifyListeners(change.key, data: change.dictionary)
     }
 
 }

@@ -4,10 +4,119 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
     case failed(message: String)
 }
 
+@objc public protocol CapgoDataStorageChangeListener: AnyObject {
+    func onDataStorageChange(_ change: CapgoCapacitorDataStorageSqliteChange)
+}
+
+@objc public class CapgoCapacitorDataStorageSqliteChange: NSObject {
+    @objc public let database: String
+    @objc public let table: String
+    @objc public let key: String
+    @objc public let value: String?
+    @objc public let deleted: Bool
+
+    @objc public init(database: String, table: String, key: String, value: String?, deleted: Bool) {
+        self.database = database
+        self.table = table
+        self.key = key
+        self.value = value
+        self.deleted = deleted
+    }
+
+    var dictionary: [String: Any] {
+        var ret: [String: Any] = [
+            "database": database,
+            "table": table,
+            "key": key
+        ]
+        if let value = value {
+            ret["value"] = value
+        }
+        if deleted {
+            ret["deleted"] = true
+        }
+        return ret
+    }
+}
+
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 @objc public class CapgoCapacitorDataStorageSqlite: NSObject {
+    private static let sqliteSuffix = "SQLite.db"
+    private static let changeLock = NSRecursiveLock()
+    private static var changeListeners: [WeakChangeListener] = []
+
+    private final class WeakChangeListener {
+        weak var value: CapgoDataStorageChangeListener?
+
+        init(_ value: CapgoDataStorageChangeListener) {
+            self.value = value
+        }
+    }
+
     var mDb: StorageDatabaseHelper?
+
+    @objc public static func addChangeListener(_ listener: CapgoDataStorageChangeListener) {
+        changeLock.lock()
+        defer { changeLock.unlock() }
+        changeListeners.removeAll { $0.value == nil || $0.value === listener }
+        changeListeners.append(WeakChangeListener(listener))
+    }
+
+    @objc public static func removeChangeListener(_ listener: CapgoDataStorageChangeListener) {
+        changeLock.lock()
+        defer { changeLock.unlock() }
+        changeListeners.removeAll { $0.value == nil || $0.value === listener }
+    }
+
+    private static func notifyDataStorageChange(_ change: CapgoCapacitorDataStorageSqliteChange) {
+        DispatchQueue.main.async {
+            changeLock.lock()
+            changeListeners.removeAll { $0.value == nil }
+            let snapshot = changeListeners.compactMap { $0.value }
+            changeLock.unlock()
+
+            for listener in snapshot {
+                listener.onDataStorageChange(change)
+            }
+        }
+    }
+
+    private func currentDatabaseName() -> String {
+        guard let dbName = mDb?.dbName else {
+            return ""
+        }
+        if dbName.hasSuffix(Self.sqliteSuffix) {
+            return String(dbName.dropLast(Self.sqliteSuffix.count))
+        }
+        return dbName
+    }
+
+    private func notifyCurrentDataStorageChange(key: String, value: String?, deleted: Bool) {
+        Self.notifyDataStorageChange(
+            CapgoCapacitorDataStorageSqliteChange(
+                database: currentDatabaseName(),
+                table: mDb?.tableName ?? "",
+                key: key,
+                value: value,
+                deleted: deleted
+            )
+        )
+    }
+
+    private static func notifyImportedValues(database: String, table: JsonTable) {
+        for value in table.values {
+            notifyDataStorageChange(
+                CapgoCapacitorDataStorageSqliteChange(
+                    database: database,
+                    table: table.name,
+                    key: value.key,
+                    value: value.value,
+                    deleted: false
+                )
+            )
+        }
+    }
 
     // MARK: - OpenStore
 
@@ -121,6 +230,9 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
             if let mData = data as? Data {
                 do {
                     try mDb?.set(data: mData)
+                    if let key = mData.name {
+                        notifyCurrentDataStorageChange(key: key, value: mData.value, deleted: false)
+                    }
                 } catch StorageHelperError.setkey(let message) {
                     throw CapgoCapacitorDataStorageSqliteError
                     .failed(message: message)
@@ -182,6 +294,7 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
         if mDb != nil {
             do {
                 try mDb?.remove(name: name)
+                notifyCurrentDataStorageChange(key: name, value: nil, deleted: true)
                 return
             } catch StorageHelperError.remove(let message) {
                 throw CapgoCapacitorDataStorageSqliteError
@@ -204,7 +317,11 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
     @objc func clear() throws {
         if mDb != nil {
             do {
+                let keys = try mDb?.keys() ?? []
                 try mDb?.clear()
+                for key in keys {
+                    notifyCurrentDataStorageChange(key: key, value: nil, deleted: true)
+                }
                 return
             } catch StorageHelperError.clear(let message) {
                 throw CapgoCapacitorDataStorageSqliteError
@@ -415,7 +532,11 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
 
         if mDb != nil {
             do {
+                let keys = mDb?.tableName == tableName ? (try mDb?.keys() ?? []) : []
                 try mDb?.deleteTable(tableName: tableName)
+                for key in keys {
+                    notifyCurrentDataStorageChange(key: key, value: nil, deleted: true)
+                }
                 return
             } catch StorageHelperError.deleteTable(let message) {
                 throw CapgoCapacitorDataStorageSqliteError
@@ -516,6 +637,7 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
                     }
                     try mDb.close()
                     totalChanges += changes
+                    Self.notifyImportedValues(database: dbName, table: table)
                 }
                 return ["changes": totalChanges]
             } catch StorageHelperError.initFailed(let message) {

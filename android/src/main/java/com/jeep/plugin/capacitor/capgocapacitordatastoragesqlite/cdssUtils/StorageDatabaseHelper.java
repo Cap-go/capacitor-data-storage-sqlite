@@ -87,6 +87,15 @@ public class StorageDatabaseHelper {
     }
 
     /**
+     * GetTableName
+     * Return the current table name
+     * @return
+     */
+    public String getTableName() {
+        return this._tableName;
+    }
+
+    /**
      * Open Method
      * Open the store
      */
