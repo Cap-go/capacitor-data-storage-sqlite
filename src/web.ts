@@ -28,17 +28,9 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
   private currentDatabase = 'storage';
   private currentTable = 'storage_store';
 
-  private notifyStorageChange(key: string, value?: string): void {
-    const event: capDataStorageChangeEvent = {
-      database: this.currentDatabase,
-      table: this.currentTable,
-      key,
-    };
-    if (value != null) {
-      event.value = value;
-    } else {
-      event.deleted = true;
-    }
+  private notifyStorageChange(database: string, table: string, key: string, value?: string): void {
+    const event: capDataStorageChangeEvent =
+      value != null ? { database, table, key, value } : { database, table, key, deleted: true };
     this.notifyListeners(key, event);
   }
 
@@ -93,9 +85,11 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
     const data: Data = new Data();
     data.name = key;
     data.value = value;
+    const database = this.currentDatabase;
+    const table = this.currentTable;
     try {
       await this.mDb.set(data);
-      this.notifyStorageChange(key, value);
+      this.notifyStorageChange(database, table, key, value);
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`Set: ${err.message}`);
@@ -122,19 +116,23 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
     if (key == null || typeof key != 'string') {
       return Promise.reject('Remove: Must provide key as string');
     }
+    const database = this.currentDatabase;
+    const table = this.currentTable;
     try {
       await this.mDb.remove(key);
-      this.notifyStorageChange(key);
+      this.notifyStorageChange(database, table, key);
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`Remove: ${err.message}`);
     }
   }
   async clear(): Promise<void> {
+    const database = this.currentDatabase;
+    const table = this.currentTable;
     try {
       const keys = await this.mDb.keys();
       await this.mDb.clear();
-      keys.forEach((key) => this.notifyStorageChange(key));
+      keys.forEach((key) => this.notifyStorageChange(database, table, key));
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`Clear: ${err.message}`);
@@ -257,7 +255,8 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
         return Promise.reject('Must provide a valid JsonSQLite Object');
       }
       const vJsonObj: JsonStore = jsonObj;
-      this.currentDatabase = vJsonObj.database ? vJsonObj.database : 'storage';
+      const database = vJsonObj.database ? vJsonObj.database : 'storage';
+      this.currentDatabase = database;
       const dbName = vJsonObj.database ? `${vJsonObj.database}IDB` : 'storageIDB';
       for (const table of vJsonObj.tables) {
         const tableName = table.name ? table.name : 'storage_store';
@@ -272,7 +271,7 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
               const changes = await this.mDb.importJson(table.values);
               totalChanges += changes;
               table.values.forEach((value) => {
-                this.notifyStorageChange(value.key, value.value);
+                this.notifyStorageChange(database, tableName, value.key, value.value);
               });
             }
           } else {

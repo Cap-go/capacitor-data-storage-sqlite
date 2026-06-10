@@ -27,6 +27,12 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin implements Cap
         CapgoCapacitorDataStorageSqlite.addChangeListener(this);
     }
 
+    @Override
+    protected void handleOnDestroy() {
+        CapgoCapacitorDataStorageSqlite.removeChangeListener(this);
+        super.handleOnDestroy();
+    }
+
     @PluginMethod
     public void openStore(PluginCall call) {
         String dbName = call.getString("database", "storage");

@@ -87,13 +87,24 @@ public class CapgoCapacitorDataStorageSqlite {
     }
 
     private static void notifyDataStorageChange(DataStorageChange change) {
+        List<DataStorageChange> changes = new ArrayList<>();
+        changes.add(change);
+        notifyDataStorageChanges(changes);
+    }
+
+    private static void notifyDataStorageChanges(List<DataStorageChange> changes) {
+        if (changes.isEmpty()) {
+            return;
+        }
         MAIN_HANDLER.post(() -> {
             List<DataStorageChangeListener> snapshot = new ArrayList<>();
             synchronized (CapgoCapacitorDataStorageSqlite.class) {
                 snapshot.addAll(dataStorageChangeListeners);
             }
-            for (DataStorageChangeListener listener : snapshot) {
-                listener.onDataStorageChange(change);
+            for (DataStorageChange change : changes) {
+                for (DataStorageChangeListener listener : snapshot) {
+                    listener.onDataStorageChange(change);
+                }
             }
         });
     }
@@ -120,8 +131,20 @@ public class CapgoCapacitorDataStorageSqlite {
         return mDb != null ? mDb.getTableName() : "";
     }
 
+    private DataStorageChange createCurrentDataStorageChange(String key, String value, boolean deleted) {
+        return new DataStorageChange(getCurrentDatabaseName(), getCurrentTableName(), key, value, deleted);
+    }
+
     private void notifyCurrentDataStorageChange(String key, String value, boolean deleted) {
-        notifyDataStorageChange(new DataStorageChange(getCurrentDatabaseName(), getCurrentTableName(), key, value, deleted));
+        notifyDataStorageChange(createCurrentDataStorageChange(key, value, deleted));
+    }
+
+    private List<DataStorageChange> createCurrentDataStorageChanges(List<String> keys, String value, boolean deleted) {
+        List<DataStorageChange> changes = new ArrayList<>();
+        for (String key : keys) {
+            changes.add(createCurrentDataStorageChange(key, value, deleted));
+        }
+        return changes;
     }
 
     public void openStore(String dbName, String tableName, Boolean encrypted, String inMode, int version, String autoVacuum)
@@ -203,8 +226,11 @@ public class CapgoCapacitorDataStorageSqlite {
     public void remove(String name) throws Exception {
         if (mDb != null && mDb.isOpen) {
             try {
+                boolean existed = mDb.iskey(name);
                 mDb.remove(name);
-                notifyCurrentDataStorageChange(name, null, true);
+                if (existed) {
+                    notifyCurrentDataStorageChange(name, null, true);
+                }
                 return;
             } catch (Exception e) {
                 throw new Exception(e.getMessage());
@@ -217,11 +243,9 @@ public class CapgoCapacitorDataStorageSqlite {
     public void clear() throws Exception {
         if (mDb != null && mDb.isOpen) {
             try {
-                List<String> keys = mDb.keys();
+                List<DataStorageChange> changes = createCurrentDataStorageChanges(mDb.keys(), null, true);
                 mDb.clear();
-                for (String key : keys) {
-                    notifyCurrentDataStorageChange(key, null, true);
-                }
+                notifyDataStorageChanges(changes);
                 return;
             } catch (Exception e) {
                 throw new Exception(e.getMessage());
@@ -352,11 +376,11 @@ public class CapgoCapacitorDataStorageSqlite {
     public void deleteTable(String table) throws Exception {
         if (mDb != null && mDb.isOpen) {
             try {
-                List<String> keys = mDb.getTableName().equals(table) ? mDb.keys() : new ArrayList<>();
+                List<DataStorageChange> changes = mDb.getTableName().equals(table)
+                    ? createCurrentDataStorageChanges(mDb.keys(), null, true)
+                    : new ArrayList<>();
                 mDb.deleteTable(table);
-                for (String key : keys) {
-                    notifyCurrentDataStorageChange(key, null, true);
-                }
+                notifyDataStorageChanges(changes);
                 return;
             } catch (Exception e) {
                 throw new Exception(e.getMessage());
@@ -446,11 +470,13 @@ public class CapgoCapacitorDataStorageSqlite {
                             throw new Exception("changes < 1");
                         } else {
                             totalChanges += changes;
+                            List<DataStorageChange> importedChanges = new ArrayList<>();
                             for (JsonValue value : table.getValues()) {
-                                notifyDataStorageChange(
+                                importedChanges.add(
                                     new DataStorageChange(dbName, table.getName(), value.getKey(), value.getValue(), false)
                                 );
                             }
+                            notifyDataStorageChanges(importedChanges);
                         }
                     } else {
                         throw new Exception("mDb is not opened");

@@ -223,11 +223,16 @@ Listeners are called on the main thread after `set`, `remove`, `clear`, `deleteT
 Android:
 
 ```java
-CapgoCapacitorDataStorageSqlite.addChangeListener(change -> {
+CapgoCapacitorDataStorageSqlite.DataStorageChangeListener listener = change -> {
     if ("settings".equals(change.getKey()) && !change.isDeleted()) {
         String value = change.getValue();
     }
-});
+};
+
+CapgoCapacitorDataStorageSqlite.addChangeListener(listener);
+
+// Later, when done listening:
+CapgoCapacitorDataStorageSqlite.removeChangeListener(listener);
 ```
 
 iOS:
@@ -243,14 +248,20 @@ final class StorageObserver: NSObject, CapgoDataStorageChangeListener {
 
 let observer = StorageObserver()
 CapgoCapacitorDataStorageSqlite.addChangeListener(observer)
+
+// Later, when done listening:
+CapgoCapacitorDataStorageSqlite.removeChangeListener(observer)
 ```
 
 JavaScript can also listen to one key by using the key as the event name:
 
 ```typescript
 const handle = await CapgoCapacitorDataStorageSqlite.addListener('settings', (change) => {
-  console.log(change.value)
-})
+  console.log(change.value);
+});
+
+// Later, when done listening:
+await handle.remove();
 ```
 
 <docgen-index>
@@ -827,17 +838,6 @@ Get the native Capacitor plugin version
 | **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 
-#### capDataStorageChangeEvent
-
-| Prop           | Type                 | Description                                   |
-| -------------- | -------------------- | --------------------------------------------- |
-| **`database`** | <code>string</code>  | The storage database that changed.            |
-| **`table`**    | <code>string</code>  | The storage table that changed.               |
-| **`key`**      | <code>string</code>  | The storage key that changed.                 |
-| **`value`**    | <code>string</code>  | The latest value for the key when it was set. |
-| **`deleted`**  | <code>boolean</code> | True when the key was removed or cleared.     |
-
-
 ### Type Aliases
 
 
@@ -849,6 +849,11 @@ Get the native Capacitor plugin version
 #### capDataStorageChangeListener
 
 <code>(event: <a href="#capdatastoragechangeevent">capDataStorageChangeEvent</a>): void</code>
+
+
+#### capDataStorageChangeEvent
+
+<code>{ /** * The storage database that changed. */ database?: string; /** * The storage table that changed. */ table?: string; /** * The storage key that changed. */ key: string; /** * The latest value for the key when it was set. */ value: string; /** * False or omitted when the key was set. */ deleted?: false; } | { /** * The storage database that changed. */ database?: string; /** * The storage table that changed. */ table?: string; /** * The storage key that changed. */ key: string; /** * Omitted when the key was removed or cleared. */ value?: never; /** * True when the key was removed or cleared. */ deleted: true; }</code>
 
 </docgen-api>
 

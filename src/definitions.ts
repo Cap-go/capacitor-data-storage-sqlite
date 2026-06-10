@@ -214,28 +214,51 @@ export interface capDataStorageOptions {
    */
   value?: string;
 }
-export interface capDataStorageChangeEvent {
-  /**
-   * The storage database that changed.
-   */
-  database?: string;
-  /**
-   * The storage table that changed.
-   */
-  table?: string;
-  /**
-   * The storage key that changed.
-   */
-  key: string;
-  /**
-   * The latest value for the key when it was set.
-   */
-  value?: string;
-  /**
-   * True when the key was removed or cleared.
-   */
-  deleted?: boolean;
-}
+export type capDataStorageChangeEvent =
+  | {
+      /**
+       * The storage database that changed.
+       */
+      database?: string;
+      /**
+       * The storage table that changed.
+       */
+      table?: string;
+      /**
+       * The storage key that changed.
+       */
+      key: string;
+      /**
+       * The latest value for the key when it was set.
+       */
+      value: string;
+      /**
+       * False or omitted when the key was set.
+       */
+      deleted?: false;
+    }
+  | {
+      /**
+       * The storage database that changed.
+       */
+      database?: string;
+      /**
+       * The storage table that changed.
+       */
+      table?: string;
+      /**
+       * The storage key that changed.
+       */
+      key: string;
+      /**
+       * Omitted when the key was removed or cleared.
+       */
+      value?: never;
+      /**
+       * True when the key was removed or cleared.
+       */
+      deleted: true;
+    };
 export type capDataStorageChangeListener = (event: capDataStorageChangeEvent) => void;
 export interface capStorageOptions {
   /**

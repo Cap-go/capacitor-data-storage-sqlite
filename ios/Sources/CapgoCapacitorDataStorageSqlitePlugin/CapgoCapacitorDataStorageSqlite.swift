@@ -44,31 +44,68 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
 @objc public class CapgoCapacitorDataStorageSqlite: NSObject {
     private static let sqliteSuffix = "SQLite.db"
     private static let changeLock = NSRecursiveLock()
-    private static var changeListeners: [CapgoDataStorageChangeListener] = []
+    private static var changeListeners: [ChangeListenerEntry] = []
+
+    private final class ChangeListenerEntry {
+        let strongValue: CapgoDataStorageChangeListener?
+        weak var weakValue: CapgoDataStorageChangeListener?
+
+        var value: CapgoDataStorageChangeListener? {
+            strongValue ?? weakValue
+        }
+
+        init(_ value: CapgoDataStorageChangeListener, retained: Bool) {
+            if retained {
+                self.strongValue = value
+                self.weakValue = nil
+            } else {
+                self.strongValue = nil
+                self.weakValue = value
+            }
+        }
+    }
 
     var mDb: StorageDatabaseHelper?
 
     @objc public static func addChangeListener(_ listener: CapgoDataStorageChangeListener) {
+        addChangeListener(listener, retained: true)
+    }
+
+    static func addWeakChangeListener(_ listener: CapgoDataStorageChangeListener) {
+        addChangeListener(listener, retained: false)
+    }
+
+    private static func addChangeListener(_ listener: CapgoDataStorageChangeListener, retained: Bool) {
         changeLock.lock()
         defer { changeLock.unlock() }
-        changeListeners.removeAll { $0 === listener }
-        changeListeners.append(listener)
+        changeListeners.removeAll { $0.value == nil || $0.value === listener }
+        changeListeners.append(ChangeListenerEntry(listener, retained: retained))
     }
 
     @objc public static func removeChangeListener(_ listener: CapgoDataStorageChangeListener) {
         changeLock.lock()
         defer { changeLock.unlock() }
-        changeListeners.removeAll { $0 === listener }
+        changeListeners.removeAll { $0.value == nil || $0.value === listener }
     }
 
     private static func notifyDataStorageChange(_ change: CapgoCapacitorDataStorageSqliteChange) {
+        notifyDataStorageChanges([change])
+    }
+
+    private static func notifyDataStorageChanges(_ changes: [CapgoCapacitorDataStorageSqliteChange]) {
+        guard !changes.isEmpty else {
+            return
+        }
         DispatchQueue.main.async {
             changeLock.lock()
-            let snapshot = changeListeners
+            changeListeners.removeAll { $0.value == nil }
+            let snapshot = changeListeners.compactMap { $0.value }
             changeLock.unlock()
 
-            for listener in snapshot {
-                listener.onDataStorageChange(change)
+            for change in changes {
+                for listener in snapshot {
+                    listener.onDataStorageChange(change)
+                }
             }
         }
     }
@@ -83,28 +120,32 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
         return dbName
     }
 
-    private func notifyCurrentDataStorageChange(key: String, value: String?, deleted: Bool) {
-        Self.notifyDataStorageChange(
-            CapgoCapacitorDataStorageSqliteChange(
-                database: currentDatabaseName(),
-                table: mDb?.tableName ?? "",
-                key: key,
-                value: value,
-                deleted: deleted
-            )
+    private func currentDataStorageChange(key: String, value: String?, deleted: Bool) -> CapgoCapacitorDataStorageSqliteChange {
+        CapgoCapacitorDataStorageSqliteChange(
+            database: currentDatabaseName(),
+            table: mDb?.tableName ?? "",
+            key: key,
+            value: value,
+            deleted: deleted
         )
     }
 
-    private static func notifyImportedValues(database: String, table: JsonTable) {
-        for value in table.values {
-            notifyDataStorageChange(
-                CapgoCapacitorDataStorageSqliteChange(
-                    database: database,
-                    table: table.name,
-                    key: value.key,
-                    value: value.value,
-                    deleted: false
-                )
+    private func notifyCurrentDataStorageChange(key: String, value: String?, deleted: Bool) {
+        Self.notifyDataStorageChange(currentDataStorageChange(key: key, value: value, deleted: deleted))
+    }
+
+    private func currentDataStorageChanges(keys: [String], value: String?, deleted: Bool) -> [CapgoCapacitorDataStorageSqliteChange] {
+        keys.map { currentDataStorageChange(key: $0, value: value, deleted: deleted) }
+    }
+
+    private static func importedChanges(database: String, table: JsonTable) -> [CapgoCapacitorDataStorageSqliteChange] {
+        table.values.map {
+            CapgoCapacitorDataStorageSqliteChange(
+                database: database,
+                table: table.name,
+                key: $0.key,
+                value: $0.value,
+                deleted: false
             )
         }
     }
@@ -284,8 +325,11 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
     @objc func remove(_ name: String) throws {
         if mDb != nil {
             do {
+                let existed = try mDb?.iskey(name: name) ?? false
                 try mDb?.remove(name: name)
-                notifyCurrentDataStorageChange(key: name, value: nil, deleted: true)
+                if existed {
+                    notifyCurrentDataStorageChange(key: name, value: nil, deleted: true)
+                }
                 return
             } catch StorageHelperError.remove(let message) {
                 throw CapgoCapacitorDataStorageSqliteError
@@ -308,11 +352,9 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
     @objc func clear() throws {
         if mDb != nil {
             do {
-                let keys = try mDb?.keys() ?? []
+                let changes = currentDataStorageChanges(keys: try mDb?.keys() ?? [], value: nil, deleted: true)
                 try mDb?.clear()
-                for key in keys {
-                    notifyCurrentDataStorageChange(key: key, value: nil, deleted: true)
-                }
+                Self.notifyDataStorageChanges(changes)
                 return
             } catch StorageHelperError.clear(let message) {
                 throw CapgoCapacitorDataStorageSqliteError
@@ -523,11 +565,11 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
 
         if mDb != nil {
             do {
-                let keys = mDb?.tableName == tableName ? (try mDb?.keys() ?? []) : []
+                let changes = mDb?.tableName == tableName
+                    ? currentDataStorageChanges(keys: try mDb?.keys() ?? [], value: nil, deleted: true)
+                    : []
                 try mDb?.deleteTable(tableName: tableName)
-                for key in keys {
-                    notifyCurrentDataStorageChange(key: key, value: nil, deleted: true)
-                }
+                Self.notifyDataStorageChanges(changes)
                 return
             } catch StorageHelperError.deleteTable(let message) {
                 throw CapgoCapacitorDataStorageSqliteError
@@ -628,7 +670,7 @@ enum CapgoCapacitorDataStorageSqliteError: Error {
                     }
                     try mDb.close()
                     totalChanges += changes
-                    Self.notifyImportedValues(database: dbName, table: table)
+                    Self.notifyDataStorageChanges(Self.importedChanges(database: dbName, table: table))
                 }
                 return ["changes": totalChanges]
             } catch StorageHelperError.initFailed(let message) {

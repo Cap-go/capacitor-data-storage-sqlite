@@ -37,7 +37,11 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin,
     private let retHandler: ReturnHandler = ReturnHandler()
 
     override public func load() {
-        CapgoCapacitorDataStorageSqlite.addChangeListener(self)
+        CapgoCapacitorDataStorageSqlite.addWeakChangeListener(self)
+    }
+
+    deinit {
+        CapgoCapacitorDataStorageSqlite.removeChangeListener(self)
     }
 
     // MARK: - OpenStore
