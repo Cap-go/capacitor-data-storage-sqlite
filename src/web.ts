@@ -119,8 +119,11 @@ export class CapgoCapacitorDataStorageSqliteWeb extends WebPlugin implements Cap
     const database = this.currentDatabase;
     const table = this.currentTable;
     try {
+      const existed = await this.mDb.iskey(key);
       await this.mDb.remove(key);
-      this.notifyStorageChange(database, table, key);
+      if (existed) {
+        this.notifyStorageChange(database, table, key);
+      }
       return Promise.resolve();
     } catch (err: any) {
       return Promise.reject(`Remove: ${err.message}`);
