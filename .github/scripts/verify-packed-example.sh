@@ -38,15 +38,23 @@ bun remove "$plugin_name"
 bun add "${packed_packages[0]}"
 bun run build
 
+ensure_platform() {
+  local platform="$1"
+
+  if [ ! -d "$platform" ]; then
+    bunx cap add "$platform"
+  fi
+}
+
 case "$platform" in
   android)
-    bunx cap add android
+    ensure_platform android
     bunx cap sync android
     cd android
     ./gradlew build test
     ;;
   ios)
-    bunx cap add ios
+    ensure_platform ios
     bunx cap sync ios
     xcodebuild -project ios/App/App.xcodeproj -scheme App -destination generic/platform=iOS CODE_SIGNING_ALLOWED=NO
     ;;
