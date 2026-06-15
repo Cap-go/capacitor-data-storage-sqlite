@@ -15,7 +15,6 @@ const config: CapacitorConfig = {
       autoUpdate: true,
       autoSplashscreen: true,
       directUpdate: 'always',
-      defaultChannel: 'production',
       version: pkg.version,
     },
   },

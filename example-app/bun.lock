@@ -8,6 +8,7 @@
         "@capacitor/android": "^8.0.0",
         "@capacitor/core": "^8.0.0",
         "@capacitor/ios": "^8.0.0",
+        "@capacitor/splash-screen": "^8.0.0",
         "@capgo/capacitor-data-storage-sqlite": "file:..",
         "@capgo/capacitor-updater": "^8.45.11",
       },
@@ -32,6 +33,8 @@
     "@capacitor/docgen": ["@capacitor/docgen@0.3.1", "", { "dependencies": { "colorette": "^2.0.20", "github-slugger": "^1.5.0", "minimist": "^1.2.8", "typescript": "~4.2.4" }, "bin": { "docgen": "bin/docgen" } }, "sha512-WBdAUquQC4hiZOVk1YbY5Rs3vlDrNdCGt3KGnMa2dc2UBa91Q7PQ/jLW/oZyfVIfiXWu7t1KUhhM3MyiZepUrQ=="],
 
     "@capacitor/ios": ["@capacitor/ios@8.3.4", "", { "peerDependencies": { "@capacitor/core": "^8.3.0" } }, "sha512-XvvnPFWWP/gwwO811ue7nEBKSZqDCIB8hxGgWV6iXA7DSVLqMOEmQdfHj94kkVxof2wL9XWHypu3ayDULo7U5w=="],
+
+    "@capacitor/splash-screen": ["@capacitor/splash-screen@8.0.1", "", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-c/ew/Z3eA7z8l06WoRAtzVF16VwYYrExmHmfGq1Cg675pVzaC/yuucB8/1xG1vhEfnW4fZ1KhSf/kzR1RiVYgg=="],
 
     "@capgo/capacitor-data-storage-sqlite": ["@capgo/capacitor-data-storage-sqlite@file:..", { "dependencies": { "localforage": "^1.10.0" }, "devDependencies": { "@capacitor/android": "^8.0.0", "@capacitor/cli": "^8.0.0", "@capacitor/core": "^8.0.0", "@capacitor/docgen": "^0.3.1", "@capacitor/ios": "^8.0.0", "@ionic/eslint-config": "^0.4.0", "@ionic/prettier-config": "^4.0.0", "@ionic/swiftlint-config": "^2.0.0", "@types/node": "^24.10.1", "eslint": "^8.57.1", "eslint-plugin-import": "^2.31.0", "husky": "^9.1.7", "prettier": "^3.6.2", "prettier-plugin-java": "^2.7.7", "prettier-pretty-check": "^0.2.0", "rimraf": "^6.1.0", "rollup": "^4.53.2", "swiftlint": "^2.0.0", "typescript": "^5.9.3" }, "peerDependencies": { "@capacitor/core": ">=8.0.0", "localforage": "^1.10.0" } }],
 
