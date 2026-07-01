@@ -8,6 +8,23 @@
 
 import Foundation
 struct Global {
-    var secret: String = "test secret"
-    var newsecret: String = "test new secret"
+    static var secretDefault: String = "test secret"
+    static var newsecretDefault: String = "test new secret"
+
+    var secret: String
+    var newsecret: String
+
+    init() {
+        secret = Global.secretDefault
+        newsecret = Global.newsecretDefault
+    }
+
+    static func configure(secret: String?, newSecret: String?) {
+        if let secret = secret, !secret.isEmpty {
+            secretDefault = secret
+        }
+        if let newSecret = newSecret, !newSecret.isEmpty {
+            newsecretDefault = newSecret
+        }
+    }
 }

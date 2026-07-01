@@ -207,6 +207,40 @@ You must manage the `close` of the database before opening a new database.
 The Web code use `localforage` package to store the datastore in the Browser.
 The Electron code use `sqlite3`package
 
+
+## Database encryption passphrases
+
+On **iOS** and **Android**, encrypted stores use SQLCipher passphrases from the plugin `Global` defaults (`test secret` / `test new secret`) unless you configure your own.
+
+**Recommended (Capacitor CLI apps):** set passphrases in `capacitor.config.ts` so they are not patched inside `node_modules`:
+
+```ts
+import type { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  plugins: {
+    CapgoCapacitorDataStorageSqlite: {
+      encryptionSecret: 'my-production-passphrase',
+      encryptionNewSecret: 'my-next-passphrase',
+    },
+  },
+};
+
+export default config;
+```
+
+Then use `openStore` with `encrypted: true` and `mode` set to `secret`, `encryption`, or `newsecret` as described in the API docs.
+
+**Advanced:** the built-in defaults live in the plugin package (not in your `android/` app tree):
+
+- Android: `node_modules/@capgo/capacitor-data-storage-sqlite/android/src/main/java/com/jeep/plugin/capacitor/capgocapacitordatastoragesqlite/cdssUtils/Global.java`
+- iOS: `node_modules/@capgo/capacitor-data-storage-sqlite/ios/Sources/CapgoCapacitorDataStorageSqlitePlugin/Global.swift`
+
+Avoid editing those files directly; they are overwritten on install. Prefer `capacitor.config` or a fork of the plugin.
+
+To open an encrypted `.db` in a desktop SQLCipher tool, use the same passphrase you configured as `encryptionSecret` (or the current secret after a `newsecret` rekey).
+
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -651,13 +685,13 @@ Get the native Capacitor plugin version
 
 #### capOpenStorageOptions
 
-| Prop             | Type                                                                | Description                                                                                                                                                |
-| ---------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`database`**   | <code>string</code>                                                 | The storage database name                                                                                                                                  |
-| **`table`**      | <code>string</code>                                                 | The storage table name                                                                                                                                     |
-| **`encrypted`**  | <code>boolean</code>                                                | Set to true for database encryption                                                                                                                        |
-| **`mode`**       | <code>string</code>                                                 | * Set the mode for database encryption ["encryption", "secret","newsecret"]                                                                                |
-| **`autoVacuum`** | <code><a href="#capsqliteautovacuum">capSQLiteAutoVacuum</a></code> | Set the SQLite auto_vacuum mode for the store. Use `none`/`0`, `full`/`1`, or `incremental`/`2`. iOS, Android, and Electron only. Web ignores this option. |
+| Prop             | Type                                                                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`database`**   | <code>string</code>                                                 | The storage database name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| **`table`**      | <code>string</code>                                                 | The storage table name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **`encrypted`**  | <code>boolean</code>                                                | Set to true for database encryption                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| **`mode`**       | <code>string</code>                                                 | Set the mode for database encryption on iOS and Android. - `encryption` — encrypt an existing plaintext database with the configured passphrase - `secret` — open or create an encrypted database with the configured passphrase - `newsecret` — rekey an encrypted database from `encryptionSecret` to `encryptionNewSecret` Passphrases are set in `capacitor.config` under `plugins.CapgoCapacitorDataStorageSqlite` (see {@link CapgoCapacitorDataStorageSqliteConfig}). Defaults are defined in the plugin's `Global` sources if you do not configure them. |
+| **`autoVacuum`** | <code><a href="#capsqliteautovacuum">capSQLiteAutoVacuum</a></code> | Set the SQLite auto_vacuum mode for the store. Use `none`/`0`, `full`/`1`, or `incremental`/`2`. iOS, Android, and Electron only. Web ignores this option.                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 
 #### capStorageOptions
