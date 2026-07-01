@@ -36,6 +36,15 @@ public class CapgoCapacitorDataStorageSqlitePlugin: CAPPlugin, CAPBridgedPlugin 
     private let implementation = CapgoCapacitorDataStorageSqlite()
     private let retHandler: ReturnHandler = ReturnHandler()
 
+    public override func load() {
+        super.load()
+        let config = getConfig()
+        Global.configure(
+            secret: config.getString("encryptionSecret"),
+            newSecret: config.getString("encryptionNewSecret")
+        )
+    }
+
     // MARK: - OpenStore
 
     @objc func openStore(_ call: CAPPluginCall) {

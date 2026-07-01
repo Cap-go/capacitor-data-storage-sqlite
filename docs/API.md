@@ -576,12 +576,25 @@ use the `openStore` method with the following options:
 
 The existing datastore will be encrypted with a secret key and opens with given database and table names.
 
-To define your own "secret" and "newsecret" keys:
+To define your own `secret` and `newsecret` passphrases (Capacitor CLI apps):
 
-- in IOS, go to the Pod/Development Pods/jeepqCapacitor/DataStorageSQLite/Global.swift file
-- in Android, go to jeepq-capacitor/java/com.jeep.plugins.capacitor/cdssUtils/Global.java
+**Recommended:** set them in `capacitor.config.ts` under `plugins.CapgoCapacitorDataStorageSqlite`:
 
-and then update the default values before building your app.
+```ts
+plugins: {
+  CapgoCapacitorDataStorageSqlite: {
+    encryptionSecret: 'my-production-passphrase',
+    encryptionNewSecret: 'my-next-passphrase',
+  },
+},
+```
+
+Run `npx cap sync` after changing config. Use `mode: "secret"` or `mode: "encryption"` with `encryptionSecret`, and `mode: "newsecret"` to rekey to `encryptionNewSecret`.
+
+**Defaults in the plugin package** (do not edit in `node_modules`; values reset on install):
+
+- iOS: `@capgo/capacitor-data-storage-sqlite` → `ios/Sources/CapgoCapacitorDataStorageSqlitePlugin/Global.swift`
+- Android: `@capgo/capacitor-data-storage-sqlite` → `android/src/main/java/com/jeep/plugin/capacitor/capgocapacitordatastoragesqlite/cdssUtils/Global.java`
 
 ### Create a New Encrypted Datastore
 

@@ -6,7 +6,9 @@ import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
+import com.getcapacitor.PluginConfig;
 import com.getcapacitor.annotation.CapacitorPlugin;
+import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.Global;
 
 @CapacitorPlugin(name = "CapgoCapacitorDataStorageSqlite")
 public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
@@ -21,8 +23,11 @@ public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
      * Load Method
      * Load the context
      */
+    @Override
     public void load() {
         context = getContext();
+        PluginConfig config = getConfig();
+        Global.configure(config.getString("encryptionSecret"), config.getString("encryptionNewSecret"));
         implementation = new CapgoCapacitorDataStorageSqlite(context);
     }
 
