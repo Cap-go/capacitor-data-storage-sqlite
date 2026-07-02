@@ -174,9 +174,16 @@ export interface capOpenStorageOptions {
    * Set to true for database encryption
    */
   encrypted?: boolean; // only for ios and android
-  /***
-   * Set the mode for database encryption
-   * ["encryption", "secret","newsecret"]
+  /**
+   * Set the mode for database encryption on iOS and Android.
+   *
+   * - `encryption` — encrypt an existing plaintext database with the configured passphrase
+   * - `secret` — open or create an encrypted database with the configured passphrase
+   * - `newsecret` — rekey an encrypted database from `encryptionSecret` to `encryptionNewSecret`
+   *
+   * Passphrases are set in `capacitor.config` under `plugins.CapgoCapacitorDataStorageSqlite`
+   * (see {@link CapgoCapacitorDataStorageSqliteConfig}). Defaults are defined in the plugin's
+   * `Global` sources if you do not configure them.
    */
   mode?: string; // only for ios and android
   /**
@@ -305,4 +312,31 @@ export interface capStoreJson {
    * an export JSON object
    */
   export?: JsonStore;
+}
+
+/**
+ * Capacitor plugin configuration for `@capgo/capacitor-data-storage-sqlite`.
+ *
+ * Add under `plugins.CapgoCapacitorDataStorageSqlite` in `capacitor.config.ts`.
+ * iOS and Android only (SQLCipher).
+ *
+ * @example
+ * ```ts
+ * plugins: {
+ *   CapgoCapacitorDataStorageSqlite: {
+ *     encryptionSecret: 'my-production-passphrase',
+ *     encryptionNewSecret: 'my-next-passphrase',
+ *   },
+ * },
+ * ```
+ */
+export interface CapgoCapacitorDataStorageSqliteConfig {
+  /**
+   * SQLCipher passphrase used when `openStore` `mode` is `secret` or `encryption`.
+   */
+  encryptionSecret?: string;
+  /**
+   * Target passphrase when `openStore` `mode` is `newsecret` (rekey from `encryptionSecret`).
+   */
+  encryptionNewSecret?: string;
 }
