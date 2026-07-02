@@ -340,4 +340,3 @@ export interface CapgoCapacitorDataStorageSqliteConfig {
    */
   encryptionNewSecret?: string;
 }
-
