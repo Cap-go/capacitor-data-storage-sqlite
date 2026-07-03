@@ -4,7 +4,7 @@ import pkg from './package.json';
 
 const config: CapacitorConfig = {
   appId: 'app.capgo.data.storage.sqlite',
-  appName: 'Data Storage SQLite Example',
+  appName: '@capgo/capacitor-data-storage-sqlite',
   webDir: 'dist',
   plugins: {
     SplashScreen: {
