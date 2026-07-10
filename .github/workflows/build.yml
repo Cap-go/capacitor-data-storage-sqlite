@@ -34,49 +34,13 @@ jobs:
       - name: Build
         id: build_code
         run: bun run build
-      - name: Detect previous tag
-        id: previous_tag
-        shell: bash
-        run: |
-          current_tag="${GITHUB_REF##*/}"
-          echo "current=$current_tag" >> "$GITHUB_OUTPUT"
-          if previous_tag=$(git describe --tags --abbrev=0 "${current_tag}^" 2>/dev/null); then
-            echo "found=true" >> "$GITHUB_OUTPUT"
-            echo "value=$previous_tag" >> "$GITHUB_OUTPUT"
-          else
-            echo "found=false" >> "$GITHUB_OUTPUT"
-          fi
       - name: Generate AI changelog
         id: changelog
-        if: ${{ steps.previous_tag.outputs.found == 'true' }}
-        uses: mistricky/ccc@v0.2.6
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          model: claude-sonnet-4-5-20250929
-      - name: Prepare release notes
-        id: release_notes
-        shell: bash
+        continue-on-error: true
         env:
-          CURRENT_TAG: ${{ steps.previous_tag.outputs.current }}
-          PREVIOUS_TAG: ${{ steps.previous_tag.outputs.value }}
-          CHANGELOG_TEXT: ${{ steps.changelog.outputs.result }}
-        run: |
-          if [[ "${{ steps.previous_tag.outputs.found }}" == "true" ]]; then
-            {
-              printf '## 🆕 Changelog\n\n'
-              printf '%s\n\n' "$CHANGELOG_TEXT"
-              printf '%s\n\n' '---'
-              printf '🔗 **Full Changelog**: https://github.com/${{ github.repository }}/compare/%s...%s\n' "$PREVIOUS_TAG" "$CURRENT_TAG"
-            } > release-notes.md
-          else
-            {
-              printf '## 🆕 Changelog\n\n'
-              printf 'Initial release.\n\n'
-              printf '%s\n\n' '---'
-              printf '🔖 **Tag**: %s\n' "$CURRENT_TAG"
-            } > release-notes.md
-          fi
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: bun run changelog:ai
       - name: Setup Node.js for npm publish
         uses: actions/setup-node@v6
         with:
@@ -96,7 +60,14 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          body_path: release-notes.md
+          body: |
+            ## 🆕 Changelog
+            
+            ${{ steps.changelog.outputs.result || '_Changelog was not generated automatically for this release._' }}
+            
+            ---
+
+            🔗 **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.changelog.outputs.from_tag || github.ref_name }}...${{ steps.changelog.outputs.to_tag || github.ref_name }}
           make_latest: true
           token: '${{ secrets.PERSONAL_ACCESS_TOKEN }}'
           prerelease: ${{ contains(github.ref, '-alpha.') }}
