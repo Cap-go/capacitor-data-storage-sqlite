@@ -7,11 +7,13 @@
  *
  * Usage:
  *   node scripts/check-cap9-deprecated.mjs
+ *   node scripts/check-cap9-deprecated.mjs --workspace
  *   node scripts/check-cap9-deprecated.mjs --dir path
  */
 
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const SKIP_DIRS = new Set([
   "node_modules",
@@ -62,6 +64,7 @@ const RULES = [
     id: "releaseCall",
     pattern: /\breleaseCall\s*\(/,
     exts: [".java", ".kt", ".swift"],
+    ignoreLine: /\.releaseCall\s*\(\s*withID:/,
   },
   {
     id: "pluginRequestPermission",
@@ -112,9 +115,13 @@ function exists(p) {
 }
 
 function parseArgs(argv) {
-  const out = { dir: process.cwd() };
+  const out = { dir: process.cwd(), workspace: false };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
+    if (a === "--workspace") {
+      out.workspace = true;
+      continue;
+    }
     if (a === "--dir" || a === "--pluginDir") {
       out.dir = path.resolve(argv[++i] || ".");
       continue;
@@ -153,8 +160,7 @@ function walkFiles(rootDir, exts) {
   return out;
 }
 
-function collectScanRoots(pluginDir, pkg) {
-  const cap = typeof pkg.capacitor === "object" && pkg.capacitor ? pkg.capacitor : {};
+function collectScanRoots(pluginDir, cap) {
   const roots = [];
   if (cap.android) {
     const androidMain = path.join(pluginDir, "android", "src", "main");
@@ -193,61 +199,106 @@ function scanFile(filePath, rule) {
   return hits;
 }
 
+function listWorkspacePluginDirs(repoRoot) {
+  const packagesRoot = path.join(repoRoot, "packages");
+  if (!exists(packagesRoot)) return [];
+  return fs
+    .readdirSync(packagesRoot, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => path.join(packagesRoot, e.name))
+    .filter((dir) => {
+      const pkgPath = path.join(dir, "package.json");
+      if (!exists(pkgPath)) return false;
+      try {
+        const pkg = JSON.parse(readText(pkgPath));
+        const cap = typeof pkg.capacitor === "object" && pkg.capacitor ? pkg.capacitor : {};
+        return Boolean(cap.android || cap.ios);
+      } catch {
+        return false;
+      }
+    })
+    .sort();
+}
+
+/**
+ * @returns {boolean} true when the plugin passes
+ */
+function checkPluginDir(pluginDir) {
+  const pkgPath = path.join(pluginDir, "package.json");
+
+  if (!exists(pkgPath)) {
+    console.error(`[cap9-deprecated] ERROR: missing package.json in ${pluginDir}`);
+    return false;
+  }
+
+  let pkg;
+  try {
+    pkg = JSON.parse(readText(pkgPath));
+  } catch (e) {
+    console.error(`[cap9-deprecated] ERROR: invalid package.json (${pkgPath}): ${e?.message || e}`);
+    return false;
+  }
+
+  const cap = typeof pkg.capacitor === "object" && pkg.capacitor ? pkg.capacitor : {};
+  if (!cap.android && !cap.ios) {
+    return true;
+  }
+
+  const scanRoots = collectScanRoots(pluginDir, cap);
+  const allExts = [...new Set(RULES.flatMap((r) => r.exts))];
+  const files = [];
+  for (const root of scanRoots) {
+    if (root.endsWith("Package.swift")) {
+      files.push(root);
+      continue;
+    }
+    files.push(...walkFiles(root, allExts));
+  }
+
+  const violations = [];
+  for (const file of files) {
+    for (const rule of RULES) {
+      const hits = scanFile(file, rule);
+      for (const hit of hits) {
+        violations.push({
+          rule: rule.id,
+          file: path.relative(pluginDir, file),
+          line: hit.line,
+          text: hit.text,
+        });
+      }
+    }
+  }
+
+  if (violations.length) {
+    const relDir = path.relative(process.cwd(), pluginDir) || ".";
+    console.error(`[cap9-deprecated] FAIL in ${relDir}`);
+    for (const v of violations) {
+      console.error(`- ${v.rule}: ${v.file}:${v.line}: ${v.text}`);
+    }
+    return false;
+  }
+
+  return true;
+}
+
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = parseArgs(process.argv);
-const pluginDir = args.dir;
-const pkgPath = path.join(pluginDir, "package.json");
 
-if (!exists(pkgPath)) {
-  console.error(`[cap9-deprecated] ERROR: missing package.json in ${pluginDir}`);
-  process.exit(2);
-}
-
-let pkg;
-try {
-  pkg = JSON.parse(readText(pkgPath));
-} catch (e) {
-  console.error(`[cap9-deprecated] ERROR: invalid package.json (${pkgPath}): ${e?.message || e}`);
-  process.exit(2);
-}
-
-const cap = typeof pkg.capacitor === "object" && pkg.capacitor ? pkg.capacitor : {};
-if (!cap.android && !cap.ios) {
+if (args.workspace) {
+  const pluginDirs = listWorkspacePluginDirs(repoRoot);
+  if (!pluginDirs.length) {
+    console.error("[cap9-deprecated] ERROR: no Capacitor plugin packages found under packages/*");
+    process.exit(2);
+  }
+  let failed = false;
+  for (const dir of pluginDirs) {
+    if (!checkPluginDir(dir)) failed = true;
+  }
+  if (failed) process.exit(1);
+  console.log(`[cap9-deprecated] OK (${pluginDirs.length} plugin package(s) scanned)`);
   process.exit(0);
 }
 
-const scanRoots = collectScanRoots(pluginDir, pkg);
-const allExts = [...new Set(RULES.flatMap((r) => r.exts))];
-const files = [];
-for (const root of scanRoots) {
-  if (root.endsWith("Package.swift")) {
-    files.push(root);
-    continue;
-  }
-  files.push(...walkFiles(root, allExts));
-}
-
-const violations = [];
-for (const file of files) {
-  for (const rule of RULES) {
-    const hits = scanFile(file, rule);
-    for (const hit of hits) {
-      violations.push({
-        rule: rule.id,
-        file: path.relative(pluginDir, file),
-        line: hit.line,
-        text: hit.text,
-      });
-    }
-  }
-}
-
-if (violations.length) {
-  const relDir = path.relative(process.cwd(), pluginDir) || ".";
-  console.error(`[cap9-deprecated] FAIL in ${relDir}`);
-  for (const v of violations) {
-    console.error(`- ${v.rule}: ${v.file}:${v.line}: ${v.text}`);
-  }
-  process.exit(1);
-}
-
-process.exit(0);
+const ok = checkPluginDir(args.dir);
+process.exit(ok ? 0 : 1);
