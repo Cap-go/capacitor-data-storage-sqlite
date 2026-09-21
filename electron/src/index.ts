@@ -61,9 +61,8 @@ export class CapgoCapacitorDataStorageSqlite implements CapgoCapacitorDataStorag
   }
   async isStoreExists(options: capStorageOptions): Promise<capDataStorageResult> {
     const dbName = options.database ? `${options.database}SQLite.db` : 'storageSQLite.db';
-    let ret = false;
     try {
-      ret = await this.mDb.isStoreExists(dbName);
+      const ret = await this.mDb.isStoreExists(dbName);
       return Promise.resolve({ result: ret });
     } catch (err) {
       return Promise.reject(err);
@@ -77,7 +76,7 @@ export class CapgoCapacitorDataStorageSqlite implements CapgoCapacitorDataStorag
     try {
       await this.mDb.setTable(tableName);
       return Promise.resolve();
-    } catch (err) {
+    } catch {
       return Promise.reject('Must open a store first');
     }
   }
