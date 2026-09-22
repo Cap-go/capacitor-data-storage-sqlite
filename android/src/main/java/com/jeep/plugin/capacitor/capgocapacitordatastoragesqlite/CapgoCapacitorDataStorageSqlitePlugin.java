@@ -13,7 +13,7 @@ import com.jeep.plugin.capacitor.capgocapacitordatastoragesqlite.cdssUtils.Globa
 @CapacitorPlugin(name = "CapgoCapacitorDataStorageSqlite")
 public class CapgoCapacitorDataStorageSqlitePlugin extends Plugin {
 
-    private final String pluginVersion = "8.0.48";
+    private final String pluginVersion = "8.0.49";
 
     private CapgoCapacitorDataStorageSqlite implementation;
     private RetHandler rHandler = new RetHandler();
