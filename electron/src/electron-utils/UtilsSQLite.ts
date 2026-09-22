@@ -1,3 +1,7 @@
+import fs from 'fs';
+import path from 'path';
+import sqlite3 from 'sqlite3';
+
 export class UtilsSQLite {
   public pathDB = './DataStorage';
   Path: any = null;
@@ -5,9 +9,9 @@ export class UtilsSQLite {
   SQLite3: any = null;
 
   constructor() {
-    this.Path = require('path');
-    this.NodeFs = require('fs');
-    this.SQLite3 = require('sqlite3');
+    this.Path = path;
+    this.NodeFs = fs;
+    this.SQLite3 = sqlite3;
   }
   public async connection(
     dbName: string,
@@ -55,9 +59,8 @@ export class UtilsSQLite {
     }
   }
   private async getDBPath(dbName: string): Promise<string> {
-    let retPath: string = null;
     const dbFolder: string = this.pathDB;
-    retPath = this.Path.join(dbFolder, dbName);
+    const retPath = this.Path.join(dbFolder, dbName);
 
     try {
       if (!this.NodeFs.existsSync(dbFolder)) {
@@ -72,7 +75,9 @@ export class UtilsSQLite {
     const path = directory.replace(/\/$/, '').split('/');
     for (let i = 1; i <= path.length; i++) {
       const segment = path.slice(0, i).join('/');
-      segment.length > 0 && !this.NodeFs.existsSync(segment) ? this.NodeFs.mkdirSync(segment) : null;
+      if (segment.length > 0 && !this.NodeFs.existsSync(segment)) {
+        this.NodeFs.mkdirSync(segment);
+      }
     }
     return;
   }

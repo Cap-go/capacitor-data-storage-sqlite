@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 import type { capDataStorageOptions, capSQLiteAutoVacuum, JsonStore, JsonTable } from '../../../src/definitions';
 
 import { Data } from './Data';
@@ -18,8 +21,8 @@ export class StorageDatabaseHelper {
   private _utils: UtilsSQLite;
 
   constructor() {
-    this.Path = require('path');
-    this.NodeFs = require('fs');
+    this.Path = path;
+    this.NodeFs = fs;
     this._utils = new UtilsSQLite();
   }
 
@@ -124,10 +127,8 @@ export class StorageDatabaseHelper {
     }
   }
   public async isStoreExists(dbName: string): Promise<boolean> {
-    let ret = false;
     try {
-      ret = await this._utils.isFileExists(dbName);
-      return Promise.resolve(ret);
+      return await this._utils.isFileExists(dbName);
     } catch (err) {
       return Promise.reject(err);
     }
