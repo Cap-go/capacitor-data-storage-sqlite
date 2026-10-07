@@ -1,9 +1,26 @@
-<a href="https://capgo.app/"><img src="https://capgo.app/readme-banner.svg?repo=Cap-go/capacitor-data-storage-sqlite" alt="Capgo - Instant updates for Capacitor" /></a>
+Store key and value strings in SQLite from your Capacitor app, with multiple stores and tables and optional encryption on iOS and Android. A simple, persistent alternative to localStorage.
+
+<a href="https://capgo.app/?ref=plugin_data_storage_sqlite"><img src="https://capgo.app/readme-banner.svg?repo=Cap-go/capacitor-data-storage-sqlite" alt="Capgo - Instant updates for Capacitor" /></a>
 
 <div align="center">
-  <h2><a href="https://capgo.app/?ref=plugin_data_storage_sqlite"> ➡️ Get Instant updates for your App with Capgo 🚀</a></h2>
-  <h2><a href="https://capgo.app/consulting/?ref=plugin_data_storage_sqlite"> Fix your annoying bug now, Hire a Capacitor expert 💪</a></h2>
+  <p><b>Capgo</b>: open-source live updates for Ionic and Capacitor apps. Ship OTA fixes and features instantly, without waiting for app store review.</p>
+  <h2><a href="https://capgo.app/register/?ref=plugin_data_storage_sqlite">➡️ Get started for free</a></h2>
+  <p>14-day unlimited free trial. No credit card required</p>
+  <p><a href="https://capgo.app/consulting/?ref=plugin_data_storage_sqlite">Missing a feature? We'll build the plugin for you 💪</a></p>
 </div>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Cap-go/capacitor-data-storage-sqlite/main/assets/github-social-preview.png" alt="@capgo/capacitor-data-storage-sqlite for Capacitor apps" width="300" />
+</p>
+
+## Key features
+
+- **Key value API**: `set()`, `get()`, `remove()`, `clear()`, `iskey()`, `keys()`, `values()` and `keysvalues()`.
+- **Stores and tables**: `openStore()`, `setTable()`, `tables()`, `deleteTable()` and `deleteStore()`.
+- **Encryption**: optional encrypted stores on iOS and Android via SQLCipher.
+- **JSON import and export**: `importFromJson()`, `isJsonValid()` and `exportToJson()`.
+- **Filtering**: `filtervalues()` returns values for keys that match a filter.
+- **Platforms**: iOS, Android and Web. Web stores data in the browser with the same key value API.
 
 <p align="center"><br><img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" /></p>
 <h3 align="center">DATA STORAGE SQLITE</h3>
