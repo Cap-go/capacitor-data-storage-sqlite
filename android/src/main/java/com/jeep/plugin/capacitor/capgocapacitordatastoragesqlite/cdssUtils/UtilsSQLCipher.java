@@ -41,13 +41,13 @@ public class UtilsSQLCipher {
 
                 db.getVersion();
 
-                return (State.UNENCRYPTED);
+                return State.UNENCRYPTED;
             } catch (Exception e) {
                 try {
                     db = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), globVar.secret, null, SQLiteDatabase.OPEN_READONLY, null);
-                    return (State.ENCRYPTED_SECRET);
+                    return State.ENCRYPTED_SECRET;
                 } catch (Exception e1) {
-                    return (State.ENCRYPTED_NEW_SECRET);
+                    return State.ENCRYPTED_NEW_SECRET;
                 }
             } finally {
                 if (db != null) {
@@ -56,7 +56,7 @@ public class UtilsSQLCipher {
             }
         }
 
-        return (State.DOES_NOT_EXIST);
+        return State.DOES_NOT_EXIST;
     }
 
     /**
