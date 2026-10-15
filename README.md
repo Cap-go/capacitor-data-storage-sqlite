@@ -6,7 +6,6 @@ Store key and value strings in SQLite from your Capacitor app, with multiple sto
   <p><b>Capgo</b>: push fixes to your Capacitor users in minutes, build signed iOS and Android apps without a Mac, and roll back in one click.</p>
   <h2><a href="https://capgo.app/register/?ref=plugin_data_storage_sqlite">➡️ Get started for free</a></h2>
   <p>14-day unlimited free trial. No credit card required</p>
-  <p><a href="https://capgo.app/consulting/?ref=plugin_data_storage_sqlite">Missing a feature? We'll build the plugin for you 💪</a></p>
 </div>
 
 > 🤖 **Building with an AI coding agent?** Install [Capgo skills](https://capgo.app/skills/?ref=plugin_data_storage_sqlite) so Claude Code, Codex, Cursor, Copilot, or Gemini CLI know how to install and use `@capgo/capacitor-data-storage-sqlite` in your Capacitor app: `npx skills add Cap-go/capgo-skills`. Then ask your agent: *"Add @capgo/capacitor-data-storage-sqlite to my Capacitor app and wire it up."* [Agent setup guides](https://capgo.app/agents/?ref=plugin_data_storage_sqlite) · [Hosted MCP](https://capgo.app/docs/ai/mcp/?ref=plugin_data_storage_sqlite)
