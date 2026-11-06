@@ -45,7 +45,7 @@ case "$platform" in
     fi
     bunx cap sync android
     cd android
-    ./gradlew build test
+    ./gradlew build test assembleRelease
     ;;
   ios)
     if [ ! -d ios ]; then
